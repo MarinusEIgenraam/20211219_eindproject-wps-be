@@ -38,7 +38,7 @@ public class User {
     private Instant createdAt;
     private Instant updatedAt;
 
-    private boolean enabled;
+    private boolean enabled = false;
 
     @OneToMany(
             targetEntity = Authority.class,

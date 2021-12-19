@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,12 +30,10 @@ public class Project {
 
     private String description;
     private String url;
+    private boolean visible = true;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "parentProject",
-            cascade = CascadeType.REMOVE
-    )
+    @OneToMany
     @Size(max = 30, min = 1)
-    private List<Task> projectTasks = new ArrayList<>();
+    @JsonManagedReference("project_task")
+    private List<Task> taskList = new ArrayList<>();
 }

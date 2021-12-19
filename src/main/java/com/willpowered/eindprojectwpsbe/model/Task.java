@@ -1,6 +1,7 @@
 package com.willpowered.eindprojectwpsbe.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import java.util.List;
+import java.util.stream.LongStream;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -28,20 +30,18 @@ public class Task {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    private Project parentProject;
-
     @ManyToOne(fetch = LAZY)
-    @JsonBackReference
+    @JsonBackReference("task_task")
+    @JoinColumn(name = "parent_task_id", referencedColumnName = "id")
     private Task parentTask;
 
     @OneToMany
-    @JsonBackReference("task")
+    @JsonManagedReference("task_task")
     private List<Task> taskList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference("project_task")
+    @JoinColumn(name = "parent_project_id", referencedColumnName = "id")
+    private Project parentProject;
+
 }
