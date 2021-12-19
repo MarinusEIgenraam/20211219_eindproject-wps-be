@@ -10,12 +10,17 @@ VALUES ('new projecdsfgt', 'this is a new project', 1,null),
        ('new projfdgect', 'this project', 3, null),
        ('new projfdgect', 'this project', 3, null);
 
-INSERT INTO tasks_task_list (task_id, task_list_id)
-values (1,2),
-       (1,3),
-       (1,4),
-       (1,5);
-
+-- INSERT INTO tasks_task_list (task_id, task_list_id)
+-- values (1,2),
+--        (1,3),
+--        (1,4),
+--        (2,6),
+--        (2,7),
+--        (1,5);
+--
+-- INSERT INTO projects_task_list (project_id, task_list_id)
+-- VALUES
+-- (1,1);
 
 INSERT INTO authorities (username, authority)
 VALUES ('user', 'ROLE_USER'),

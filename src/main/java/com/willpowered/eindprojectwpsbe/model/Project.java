@@ -30,10 +30,9 @@ public class Project {
 
     private String description;
     private String url;
-    private boolean visible = true;
 
     @OneToMany
     @Size(max = 30, min = 1)
-    @JsonManagedReference("project_task")
+    @JsonManagedReference("task_project")
     private List<Task> taskList = new ArrayList<>();
 }

@@ -31,17 +31,17 @@ public class Task {
     private String description;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "parentTaskId", referencedColumnName = "id")
     @JsonBackReference("task_task")
-    @JoinColumn(name = "parent_task_id", referencedColumnName = "id")
     private Task parentTask;
 
     @OneToMany
     @JsonManagedReference("task_task")
     private List<Task> taskList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("project_task")
-    @JoinColumn(name = "parent_project_id", referencedColumnName = "id")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "parentProjectId", referencedColumnName = "id")
+    @JsonBackReference("task_project")
     private Project parentProject;
 
 }
