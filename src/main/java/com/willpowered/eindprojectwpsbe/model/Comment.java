@@ -30,13 +30,13 @@ public class Comment {
 
     private Instant createdDate;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "parent_project_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_project_id")
     @JsonBackReference
     private Task parentProject;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "parent_comment_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_comment_id")
     @JsonBackReference
     private Task parentComment;
 
