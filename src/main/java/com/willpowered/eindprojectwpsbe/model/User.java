@@ -25,19 +25,14 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank(message = "Password is required")
     private String password;
 
     @Email
-    @NotEmpty(message = "Email is required")
     private String email;
 
-    private Instant createdAt;
-    private Instant updatedAt;
-
+    private Instant created;
     private boolean enabled = false;
 
     @OneToMany(
@@ -47,4 +42,25 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+    public void addAuthority(String authorityString) {
+        this.authorities.add(new Authority(this.username, authorityString));
+    }
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
+    public void removeAuthority(String authorityString) {
+        this.authorities.removeIf(authority -> authority.getAuthority().equalsIgnoreCase(authorityString));
+    }
 }
