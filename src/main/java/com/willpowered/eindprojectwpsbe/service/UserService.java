@@ -1,6 +1,6 @@
 package com.willpowered.eindprojectwpsbe.service;
 
-import com.willpowered.eindprojectwpsbe.dto.RegisterRequest;
+import com.willpowered.eindprojectwpsbe.dto.UserPostRequestDto;
 import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import com.willpowered.eindprojectwpsbe.exception.InvalidPasswordException;
 import com.willpowered.eindprojectwpsbe.exception.NotAuthorizedException;
@@ -8,28 +8,27 @@ import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.Authority;
 import com.willpowered.eindprojectwpsbe.model.User;
 import com.willpowered.eindprojectwpsbe.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
-@Transactional
 public class UserService {
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     private String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,17 +47,17 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
-    public String signup(RegisterRequest registerRequest) {
-
+    public String createUser(UserPostRequestDto userPostRequest) {
         try {
+            String encryptedPassword = passwordEncoder.encode(userPostRequest.getPassword());
+
             User user = new User();
-            user.setUsername(registerRequest.getUsername());
-            user.setEmail(registerRequest.getEmail());
-            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-            user.setCreated(Instant.now());
+            user.setUsername(userPostRequest.getUsername());
+            user.setPassword(encryptedPassword);
+            user.setEmail(userPostRequest.getEmail());
             user.setEnabled(true);
             user.addAuthority("ROLE_USER");
-            for (String s : registerRequest.getAuthorities()) {
+            for (String s : userPostRequest.getAuthorities()) {
                 if (!s.startsWith("ROLE_")) {
                     s = "ROLE_" + s;
                 }
@@ -70,9 +69,9 @@ public class UserService {
 
             User newUser = userRepository.save(user);
             return newUser.getUsername();
-
-        } catch (Exception e) {
-            throw new BadRequestException("Cannot create user");
+        }
+        catch (Exception ex) {
+            throw new BadRequestException("Cannot create user.");
         }
 
     }
@@ -158,7 +157,7 @@ public class UserService {
         return validPassword;
     }
 
-    public void setNewPassword(String username, String password) {
+    public void setPassword(String username, String password) {
         if (username.equals(getCurrentUserName())) {
             if (isValidPassword(password)) {
                 Optional<User> userOptional = userRepository.findById(username);
@@ -179,6 +178,5 @@ public class UserService {
             throw new NotAuthorizedException();
         }
     }
-
 
 }

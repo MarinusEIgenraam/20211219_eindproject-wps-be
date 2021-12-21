@@ -1,19 +1,12 @@
 package com.willpowered.eindprojectwpsbe.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegisterRequest {
+public class UserPostRequestDto {
 
-    private String email;
     private String username;
     private String password;
+    private String email;
     private Set<String> authorities;
 
     public String getUsername() {

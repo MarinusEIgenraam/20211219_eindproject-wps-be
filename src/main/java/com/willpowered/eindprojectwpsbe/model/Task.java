@@ -22,6 +22,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name ="tasks")
 public class Task {
 
+
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -30,18 +32,18 @@ public class Task {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "parentTaskId", referencedColumnName = "id")
-    @JsonBackReference("task_task")
-    private Task parentTask;
-
-    @OneToMany
-    @JsonManagedReference("task_task")
-    private List<Task> taskList;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "parentProjectId", referencedColumnName = "id")
-    @JsonBackReference("task_project")
-    private Project parentProject;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "taskListId", referencedColumnName = "id")
+//    @JsonBackReference("parentTask")
+//    private Task parentTask;
+//
+//    @OneToMany
+//    @JsonManagedReference("parentTask")
+//    private List<Task> taskList;
+//
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "parentProjectId", referencedColumnName = "id")
+//    @JsonBackReference("task_project")
+//    private Project parentProject;
 
 }

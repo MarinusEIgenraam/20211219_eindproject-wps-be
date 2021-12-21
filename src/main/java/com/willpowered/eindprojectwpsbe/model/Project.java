@@ -31,8 +31,8 @@ public class Project {
     private String description;
     private String url;
 
-    @OneToMany
-    @Size(max = 30, min = 1)
-    @JsonManagedReference("task_project")
-    private List<Task> taskList = new ArrayList<>();
+//    @OneToMany
+//    @Size(max = 30, min = 1)
+//    @JsonManagedReference("task_project")
+//    private List<Task> taskList = new ArrayList<>();
 }
