@@ -36,11 +36,14 @@ public class Comment {
     private Task parentProject;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_comment_id")
-    @JsonBackReference
+    @JsonBackReference("comment_comment")
     private Task parentComment;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JoinTable(
+            name = "comments_comments",
+            joinColumns = @JoinColumn(name = "parent_comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id"))
+    @JsonManagedReference("comment_comment")
     private List<Comment> commentList;
 }

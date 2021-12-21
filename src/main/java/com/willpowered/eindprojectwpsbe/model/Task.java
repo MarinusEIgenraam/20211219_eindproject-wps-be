@@ -28,17 +28,20 @@ public class Task {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "parent_task_id", nullable = false)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference("task_task")
     private Task parentTask;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JoinTable(
+            name = "tasks_tasks",
+            joinColumns = @JoinColumn(name = "parent_task_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    @JsonManagedReference("task_task")
     private List<Task> taskList;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "task_project_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_project_id", nullable = false)
     @JsonManagedReference
     private Project parentProject;
 

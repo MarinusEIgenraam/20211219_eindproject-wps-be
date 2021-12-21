@@ -37,6 +37,10 @@ public class Project {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     @Size(max = 30, min = 1)
+    @JoinTable(
+            name = "projects_tasks",
+            joinColumns = @JoinColumn(name = "parent_project_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonManagedReference
     private List<Task> taskList = new ArrayList<>();
 
@@ -44,7 +48,7 @@ public class Project {
 
     @ManyToMany
     @JoinTable(
-            name = "project_categories",
+            name = "projects_categories",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     Set<Category> categories = new HashSet<>();
