@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -30,8 +31,10 @@ public class Task {
     private String name;
     private String description;
 
-    private LocalDateTime startTime;
-    private LocalDateTime deadLine;
+    private Instant startTime;
+    private Instant deadLine;
+
+    private boolean isRunning = true;
 
     @ManyToOne
     private User user;

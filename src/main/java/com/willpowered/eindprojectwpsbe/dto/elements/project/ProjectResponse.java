@@ -1,12 +1,10 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.project;
 
-import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +17,8 @@ public class ProjectResponse {
     private String url;
     private String user;
     private String category;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private boolean isRunning;
+    private Instant startTime;
+    private Instant endTime;
 
 }

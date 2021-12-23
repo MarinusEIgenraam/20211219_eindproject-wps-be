@@ -43,6 +43,7 @@ public class Project {
     private LocalDateTime startTime;
     private LocalDateTime deadLine;
 
+    private boolean isRunning = true;
     private Integer voteCount = 0;
 
     @ManyToOne
