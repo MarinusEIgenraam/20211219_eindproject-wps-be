@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.model.communication;
 
-import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

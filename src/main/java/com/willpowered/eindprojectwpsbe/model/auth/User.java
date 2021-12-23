@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.model.auth;
 
-import com.willpowered.eindprojectwpsbe.model.auth.Authority;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;

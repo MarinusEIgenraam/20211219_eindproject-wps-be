@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.mapping;
 
 import com.willpowered.eindprojectwpsbe.dto.elements.CategoryDTO;
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectResponse;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import org.mapstruct.InheritInverseConfiguration;

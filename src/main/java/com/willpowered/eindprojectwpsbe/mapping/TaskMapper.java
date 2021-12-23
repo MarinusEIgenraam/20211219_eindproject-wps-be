@@ -1,17 +1,12 @@
 package com.willpowered.eindprojectwpsbe.mapping;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectRequest;
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectResponse;
 import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskRequest;
 import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskResponse;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
-import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
 public abstract class TaskMapper {
