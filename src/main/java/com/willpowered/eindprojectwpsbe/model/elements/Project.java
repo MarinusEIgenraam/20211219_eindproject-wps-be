@@ -10,10 +10,10 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -25,10 +25,10 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long projectId;
 
     @NotBlank(message = "Project name can not be Null")
-    private String name;
+    private String projectName;
 
     @Nullable
     private String url;
@@ -37,17 +37,18 @@ public class Project {
     @Lob
     private String description;
 
-    private LocalDateTime startTime;
-    private LocalDateTime deadLine;
+    private Instant startTime;
+    private Instant deadLine;
 
-    private boolean isRunning = true;
     private Integer voteCount = 0;
 
-    @ManyToOne
-    private Category categoryName;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private Category category;
 
-    @ManyToOne
-    private User user;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User projectOwner;
 
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -58,14 +59,14 @@ public class Project {
             joinColumns = @JoinColumn(name = "parent_project_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonManagedReference
-    private List<Task> taskList = new ArrayList<>();
+    private List<Task> projectTaskList;
 
     @ManyToMany
     @JoinTable(
             name = "projects_collaborators",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> collaborators = new ArrayList<>();
+    private List<User> collaborators;
 
 
 }

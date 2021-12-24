@@ -21,7 +21,8 @@ public class Alert {
     private String title;
     private String text;
 
-    @ManyToOne
-    @JsonBackReference
-    private Portal profile;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "portalId", referencedColumnName = "id", nullable = false)
+    @JsonBackReference("portal_alerts")
+    private Portal portal;
 }

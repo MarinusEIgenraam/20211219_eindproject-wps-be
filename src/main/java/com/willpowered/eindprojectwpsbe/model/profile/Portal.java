@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "profiles")
+@Table(name = "portals")
 public class Portal {
 
     @Id
@@ -23,9 +23,13 @@ public class Portal {
 
     private String name;
 
-    @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Alert> alerts;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "portal_alerts",
+            joinColumns = @JoinColumn(name = "portal_id"),
+            inverseJoinColumns = @JoinColumn(name = "alert_id"))
+    @JsonManagedReference("portal_alerts")
+    private List<Alert> alertList;
 
     @OneToOne(fetch = LAZY)
     private User user;

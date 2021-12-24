@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectRequest {
 
-    private Long id;
-    private String name;
+    private Long projectId;
+    private String projectName;
     private String description;
     private String categoryName;
     private String url;

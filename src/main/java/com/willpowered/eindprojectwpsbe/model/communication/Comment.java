@@ -1,8 +1,8 @@
 package com.willpowered.eindprojectwpsbe.model.communication;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.willpowered.eindprojectwpsbe.model.elements.Task;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 
@@ -23,7 +24,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class Comment {
     @Id
     @GeneratedValue(strategy = SEQUENCE)
-    private Long commentId;
+    private Long id;
 
     @NotEmpty
     private String text;
@@ -31,15 +32,18 @@ public class Comment {
     private Instant createdDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_project_id")
-    @JsonBackReference
-    private Task parentProject;
+    @JoinColumn(name = "projectId", referencedColumnName = "id")
+    private Project project;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference("comment_comment")
-    private Task parentComment;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JsonBackReference("comment_comment")
+//    private Task parentComment;
+
+    @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "comments_comments",
             joinColumns = @JoinColumn(name = "parent_comment_id"),

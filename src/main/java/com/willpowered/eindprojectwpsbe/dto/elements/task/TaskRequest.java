@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TaskRequest {
 
-    private Long id;
-    private String name;
+    private Long taskId;
+    private String taskName;
     private String description;
-    private User user;
 
 }

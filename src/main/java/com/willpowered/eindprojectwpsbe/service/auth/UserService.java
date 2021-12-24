@@ -85,54 +85,6 @@ public class UserService {
         }
     }
 
-    public void updateUser(String username, User newUser) {
-        Optional<User> userOptional = userRepository.findById(username);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(username);
-        }
-        else {
-            User user = userOptional.get();
-            user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            user.setEmail(newUser.getEmail());
-            user.setEnabled(newUser.isEnabled());
-            userRepository.save(user);
-        }
-    }
-
-    public Set<Authority> getAuthorities(String username) {
-        Optional<User> userOptional = userRepository.findById(username);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(username);
-        }
-        else {
-            User user = userOptional.get();
-            return user.getAuthorities();
-        }
-    }
-
-    public void addAuthority(String username, String authorityString) {
-        Optional<User> userOptional = userRepository.findById(username);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(username);
-        }
-        else {
-            User user = userOptional.get();
-            user.addAuthority(authorityString);
-            userRepository.save(user);
-        }
-    }
-
-    public void removeAuthority(String username, String authorityString) {
-        Optional<User> userOptional = userRepository.findById(username);
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException(username);
-        }
-        else {
-            User user = userOptional.get();
-            user.removeAuthority(authorityString);
-            userRepository.save(user);
-        }
-    }
 
     private boolean isValidPassword(String password) {
         final int MIN_LENGTH = 8;

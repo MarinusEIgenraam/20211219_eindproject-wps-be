@@ -19,8 +19,9 @@ public class ProjectResponse {
     private String categoryName;
     private Integer voteCount;
     private Integer commentCount;
-    private boolean isRunning;
     private Instant startTime;
     private Instant endTime;
+    private boolean upVote;
+    private boolean downVote;
 
 }

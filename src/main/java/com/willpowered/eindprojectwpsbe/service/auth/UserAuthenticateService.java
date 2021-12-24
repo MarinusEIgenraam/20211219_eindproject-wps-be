@@ -4,14 +4,19 @@ import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationRequestDto;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponseDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserAuthenticateService {
@@ -24,6 +29,9 @@ public class UserAuthenticateService {
 
     @Autowired
     JwtUtil jwtUtl;
+
+    @Autowired
+    UserRepository userRepository;
 
     public AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequestDto) {
 
@@ -46,7 +54,17 @@ public class UserAuthenticateService {
         return new AuthenticationResponseDto(jwt);
     }
 
+    @Transactional(readOnly = true)
     public User getCurrentUser() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
+                getContext().getAuthentication().getPrincipal();
+        return userRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
+    }
+
+    public boolean isLoggedIn() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 
 }

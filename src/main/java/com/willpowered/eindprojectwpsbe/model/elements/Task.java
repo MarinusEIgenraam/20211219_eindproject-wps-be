@@ -24,10 +24,10 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long taskId;
 
     @NotBlank(message = "Task name required")
-    private String name;
+    private String taskName;
     private String description;
 
     private Instant startTime;
@@ -36,7 +36,7 @@ public class Task {
     private boolean isRunning = true;
 
     @ManyToOne
-    private User user;
+    private User taskOwner;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("task_task")
@@ -48,7 +48,7 @@ public class Task {
             joinColumns = @JoinColumn(name = "parent_task_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonManagedReference("task_task")
-    private List<Task> taskList;
+    private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_project_id", nullable = false)

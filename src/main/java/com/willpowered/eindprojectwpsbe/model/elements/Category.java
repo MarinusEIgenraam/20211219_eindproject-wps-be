@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -23,7 +22,7 @@ public class Category {
     private Long id;
 
     @NotBlank(message = "Category name is required")
-    private String categoryName;
+    private String name;
 
     @NotBlank(message = "Description is required")
     private String description;
@@ -36,6 +35,6 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     @JsonManagedReference
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> projects;
 
 }

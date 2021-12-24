@@ -12,7 +12,7 @@ import java.time.Instant;
 public class TaskResponse {
 
     private Long id;
-    private String name;
+    private String taskName;
     private String description;
     private Instant startTime;
     private Instant endTime;

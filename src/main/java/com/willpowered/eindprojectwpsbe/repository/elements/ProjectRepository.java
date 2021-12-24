@@ -13,5 +13,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByCategory(Category category);
 
-    List<Project> findByUser(User user);
 }

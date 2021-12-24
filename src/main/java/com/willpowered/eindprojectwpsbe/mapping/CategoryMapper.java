@@ -1,6 +1,6 @@
 package com.willpowered.eindprojectwpsbe.mapping;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.CategoryDTO;
+import com.willpowered.eindprojectwpsbe.dto.elements.CategoryDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import org.mapstruct.InheritInverseConfiguration;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface CategoryMapper {
 
     @Mapping(target = "numberOfProjects", expression = "java(mapProjects(category.getProjects()))")
-    public abstract CategoryDTO mapCategoryToDto(Category category);
+    CategoryDto mapCategoryToDto(Category category);
 
     default Integer mapProjects(List<Project> numberOfProjects) {
         return numberOfProjects.size();
@@ -21,6 +21,6 @@ public interface CategoryMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "projects", ignore = true)
-    Category mapDtoToCategory(Category category);
+    Category mapDtoToCategory(CategoryDto categoryDTO);
 
 }
