@@ -31,7 +31,7 @@ public class Task {
     private String description;
 
     private Instant startTime;
-    private Instant deadLine;
+    private Instant endTime;
 
     private boolean isRunning = true;
 

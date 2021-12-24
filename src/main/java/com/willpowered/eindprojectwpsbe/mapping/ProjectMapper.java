@@ -6,6 +6,8 @@ import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
+import com.willpowered.eindprojectwpsbe.repository.communication.VoteRepository;
+import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,10 @@ public abstract class ProjectMapper {
 
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private VoteRepository voteRepository;
+    @Autowired
+    private UserAuthenticateService userAuthenticateService;
 
     @Mapping(target = "startTime", expression = "java(java.time.Instant.now())")
     @Mapping(target = "description", source = "projectRequest.description")
@@ -25,7 +31,7 @@ public abstract class ProjectMapper {
     @Mapping(target = "id", source = "projectId")
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "userName", source = "user.name")
-    @Mapping(target = "commentCount", expression = "java(commentCount(post))")
+    @Mapping(target = "commentCount", expression = "java(commentCount(project))")
     @Mapping(target = "isRunning", source = "isRunning")
     public abstract ProjectResponse mapToDto(Project project);
 

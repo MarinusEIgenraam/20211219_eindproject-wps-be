@@ -19,8 +19,4 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getProject(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(projectService.getProject(id));
-    }
 }

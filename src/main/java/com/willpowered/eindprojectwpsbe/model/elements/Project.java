@@ -44,7 +44,7 @@ public class Project {
     private Integer voteCount = 0;
 
     @ManyToOne
-    private Category category;
+    private Category categoryName;
 
     @ManyToOne
     private User user;

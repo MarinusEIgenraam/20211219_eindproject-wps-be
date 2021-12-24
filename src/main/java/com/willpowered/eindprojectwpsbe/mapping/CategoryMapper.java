@@ -20,7 +20,7 @@ public interface CategoryMapper {
     }
 
     @InheritInverseConfiguration
-    @Mapping(target = "posts", ignore = true)
+    @Mapping(target = "projects", ignore = true)
     Category mapDtoToCategory(Category category);
 
 }

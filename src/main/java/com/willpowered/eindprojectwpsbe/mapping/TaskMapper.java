@@ -19,7 +19,7 @@ public abstract class TaskMapper {
 
     @Mapping(target = "id", source = "taskId")
     @Mapping(target = "parentProjectName", source = "project.name")
-    @Mapping(target = "taskProjectName", source = "task.name")
+    @Mapping(target = "parentTaskName", source = "task.name")
     @Mapping(target = "userName", source = "user.name")
     @Mapping(target = "isRunning", source = "isRunning")
     public abstract TaskResponse mapToDto(Task task);

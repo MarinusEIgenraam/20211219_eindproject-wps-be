@@ -3,6 +3,7 @@ package com.willpowered.eindprojectwpsbe.service.auth;
 import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationRequestDto;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponseDto;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,6 +44,9 @@ public class UserAuthenticateService {
         final String jwt = jwtUtl.generateToken(userDetails);
 
         return new AuthenticationResponseDto(jwt);
+    }
+
+    public User getCurrentUser() {
     }
 
 }

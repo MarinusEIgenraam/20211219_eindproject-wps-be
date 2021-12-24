@@ -18,7 +18,7 @@ public class TaskResponse {
     private Instant endTime;
     private String userName;
     private boolean isRunning;
-    private Long parentTask;
-    private Long parentProject;
+    private Long parentTaskName;
+    private Long parentProjectName;
 
 }

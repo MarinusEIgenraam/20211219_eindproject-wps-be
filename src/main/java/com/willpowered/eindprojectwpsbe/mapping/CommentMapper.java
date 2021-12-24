@@ -13,7 +13,7 @@ public interface CommentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "text", source = "commentDTO.text")
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "post", source = "post")
+    @Mapping(target = "project", source = "project")
     Comment map(CommentDTO commentDTO, Project project, User user);
 
     @Mapping(target = "id", expression = "java(comment.getProject().getProjectId())")

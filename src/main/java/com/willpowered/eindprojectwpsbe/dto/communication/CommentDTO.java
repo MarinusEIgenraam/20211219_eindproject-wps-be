@@ -12,7 +12,7 @@ import java.time.Instant;
 public class CommentDTO {
 
     private Long id;
-    private Long postId;
+    private Long projectId;
     private Instant createdDate;
     private String text;
     private String userName;

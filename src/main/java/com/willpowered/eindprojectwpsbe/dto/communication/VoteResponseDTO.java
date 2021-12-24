@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class VoteResponseDTO {
 
     private VoteType voteType;
-    private Long postId;
+    private Long projectId;
 }

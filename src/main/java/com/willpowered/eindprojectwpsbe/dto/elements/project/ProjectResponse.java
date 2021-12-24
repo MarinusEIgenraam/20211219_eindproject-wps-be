@@ -15,8 +15,10 @@ public class ProjectResponse {
     private String name;
     private String description;
     private String url;
-    private String user;
-    private String category;
+    private String userName;
+    private String categoryName;
+    private Integer voteCount;
+    private Integer commentCount;
     private boolean isRunning;
     private Instant startTime;
     private Instant endTime;
