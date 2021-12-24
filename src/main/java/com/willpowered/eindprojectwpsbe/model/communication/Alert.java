@@ -22,7 +22,6 @@ public class Alert {
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "portalId", referencedColumnName = "id", nullable = false)
-    @JsonBackReference("portal_alerts")
+    @JoinColumn(name = "portalId",nullable = false)
     private Portal portal;
 }

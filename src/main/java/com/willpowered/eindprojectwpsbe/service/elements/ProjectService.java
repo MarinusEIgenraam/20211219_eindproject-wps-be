@@ -4,6 +4,7 @@ import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectRequest;
 import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectResponse;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.mapping.ProjectMapper;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
@@ -13,6 +14,7 @@ import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,16 +28,11 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private UserAuthenticateService userAuthenticateService;
-    @Autowired
-    private ProjectMapper projectMapper;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserAuthenticateService userAuthenticateService;
+    private final ProjectMapper projectMapper;
 
     public void save(ProjectRequest projectRequest) {
         Category category = categoryRepository.findByName(projectRequest.getCategoryName())
@@ -64,5 +61,15 @@ public class ProjectService {
                 .orElseThrow(() -> new RecordNotFoundException(categoryId.toString()));
         List<Project> projects = projectRepository.findAllByCategory(category);
         return projects.stream().map(projectMapper::mapToDto).collect(toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectResponse> getProjectsByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        return projectRepository.findByProjectOwner(user)
+                .stream()
+                .map(projectMapper::mapToDto)
+                .collect(toList());
     }
 }

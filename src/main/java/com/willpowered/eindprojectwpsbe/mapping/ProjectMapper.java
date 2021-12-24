@@ -57,10 +57,10 @@ public abstract class ProjectMapper {
 
     private boolean checkVoteType(Project project, VoteType voteType) {
         if (userAuthenticateService.isLoggedIn()) {
-            Optional<Vote> voteForPostByUser =
+            Optional<Vote> voteForProjectByUser =
                     voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project,
                             userAuthenticateService.getCurrentUser());
-            return voteForPostByUser.filter(vote -> vote.getVoteType().equals(voteType))
+            return voteForProjectByUser.filter(vote -> vote.getVoteType().equals(voteType))
                     .isPresent();
         }
         return false;

@@ -39,7 +39,7 @@ public class Task {
     private User taskOwner;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference("task_task")
+    @JsonBackReference("tasks_tasks")
     private Task parentTask;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,12 +47,12 @@ public class Task {
             name = "tasks_tasks",
             joinColumns = @JoinColumn(name = "parent_task_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    @JsonManagedReference("task_task")
+    @JsonManagedReference("tasks_task")
     private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_project_id", nullable = false)
-    @JsonManagedReference
+    @JsonManagedReference("projects_tasks")
     private Project parentProject;
 
 

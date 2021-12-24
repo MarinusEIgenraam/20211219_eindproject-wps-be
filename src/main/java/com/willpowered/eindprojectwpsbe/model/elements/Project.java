@@ -58,7 +58,7 @@ public class Project {
             name = "projects_tasks",
             joinColumns = @JoinColumn(name = "parent_project_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    @JsonManagedReference
+    @JsonManagedReference("projects_tasks")
     private List<Task> projectTaskList;
 
     @ManyToMany

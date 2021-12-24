@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.model.communication;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
@@ -39,15 +40,15 @@ public class Comment {
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JsonBackReference("comment_comment")
-//    private Task parentComment;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference("comments_comments")
+    private Comment parentComment;
 
     @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "comments_comments",
             joinColumns = @JoinColumn(name = "parent_comment_id"),
             inverseJoinColumns = @JoinColumn(name = "comment_id"))
-    @JsonManagedReference("comment_comment")
+    @JsonManagedReference("comments_comments")
     private List<Comment> commentList;
 }

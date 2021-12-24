@@ -8,20 +8,21 @@ import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.Optional;
-
 @Mapper(componentModel = "spring")
 public abstract class TaskMapper {
 
-    @Mapping(target = "startTime", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "startTime", expression = "java(java.time.Instant.now())")
     @Mapping(target = "description", source = "taskRequest.description")
     @Mapping(target = "parentProject", source = "project")
+    @Mapping(target = "taskId", source = "taskRequest.taskId")
     @Mapping(target = "parentTask", source = "task")
-    public abstract Task map(TaskRequest taskRequest, Project project, User user);
+    @Mapping(target = "taskName", source = "taskRequest.taskName")
+    @Mapping(target = "taskOwner", source = "user")
+    public abstract Task map(TaskRequest taskRequest, Task task, Project project, User user);
 
     @Mapping(target = "parentProjectName", source = "parentProject.projectName")
     @Mapping(target = "parentTaskName", source = "parentTask.taskName")
-    @Mapping(target = "userName", source = "taskOwner.username")
+    @Mapping(target = "taskOwnerName", source = "taskOwner.username")
     public abstract TaskResponse mapToDto(Task task);
 
 }

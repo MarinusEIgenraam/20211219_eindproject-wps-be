@@ -15,5 +15,8 @@ public class TaskRequest {
     private Long taskId;
     private String taskName;
     private String description;
+    private String parentTaskName;
+    private String parentProjectName;
+    private String taskOwner;
 
 }

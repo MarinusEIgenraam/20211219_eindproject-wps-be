@@ -25,10 +25,9 @@ public class Portal {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "portal_alerts",
-            joinColumns = @JoinColumn(name = "portal_id"),
-            inverseJoinColumns = @JoinColumn(name = "alert_id"))
-    @JsonManagedReference("portal_alerts")
+            name = "portals_alerts",
+            joinColumns = @JoinColumn(name = "portalId"),
+            inverseJoinColumns = @JoinColumn(name = "alertId"))
     private List<Alert> alertList;
 
     @OneToOne(fetch = LAZY)
