@@ -1,4 +1,4 @@
-package com.willpowered.eindprojectwpsbe.Security;
+package com.willpowered.eindprojectwpsbe.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;

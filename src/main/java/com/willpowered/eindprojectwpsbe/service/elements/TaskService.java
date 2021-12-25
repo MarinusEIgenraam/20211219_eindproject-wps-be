@@ -75,7 +75,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskResponse> getTasksTaskOwner(String username) {
+    public List<TaskResponse> getTasksByTaskOwner(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         return taskRepository.findByTaskOwner(user)

@@ -1,6 +1,6 @@
 package com.willpowered.eindprojectwpsbe.service.auth;
 
-import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
+import com.willpowered.eindprojectwpsbe.security.JwtUtil;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationRequestDto;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponseDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
