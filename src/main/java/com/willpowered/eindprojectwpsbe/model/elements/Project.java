@@ -47,7 +47,7 @@ public class Project {
     private Category category;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "project_owner", referencedColumnName = "username")
     private User projectOwner;
 
     @OneToMany(

@@ -51,7 +51,7 @@ public class Task {
     private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_project_id", nullable = false)
+    @JoinColumn(name = "parent_project_id")
     @JsonManagedReference("projects_tasks")
     private Project parentProject;
 
