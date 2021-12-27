@@ -20,9 +20,11 @@ public abstract class TaskMapper {
     @Mapping(target = "taskOwner", source = "user")
     public abstract Task map(TaskRequest taskRequest, Task task, Project project, User user);
 
+    @Mapping(target = "id", source = "taskId")
     @Mapping(target = "parentProjectName", source = "parentProject.projectName")
     @Mapping(target = "parentTaskName", source = "parentTask.taskName")
     @Mapping(target = "taskOwnerName", source = "taskOwner.username")
+    @Mapping(target = "taskTaskList", source = "task.taskTaskList")
     public abstract TaskResponse mapToDto(Task task);
 
 }

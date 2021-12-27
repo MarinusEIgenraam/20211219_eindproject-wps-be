@@ -47,7 +47,7 @@ public class Task {
             name = "tasks_tasks",
             joinColumns = @JoinColumn(name = "parent_task_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    @JsonManagedReference("tasks_task")
+    @JsonManagedReference("tasks_tasks")
     private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)

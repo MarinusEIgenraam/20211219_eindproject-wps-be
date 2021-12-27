@@ -1,10 +1,12 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.project;
 
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +25,6 @@ public class ProjectResponse {
     private Instant endTime;
     private boolean upVote;
     private boolean downVote;
+    private List<ProjectResponse> projectTaskList;
 
 }

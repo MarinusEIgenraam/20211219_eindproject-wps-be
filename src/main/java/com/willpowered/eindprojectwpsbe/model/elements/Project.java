@@ -5,6 +5,7 @@ import com.willpowered.eindprojectwpsbe.model.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class Project {
 
     @Nullable
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     private Instant startTime;

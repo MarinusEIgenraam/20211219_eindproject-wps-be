@@ -36,11 +36,14 @@ public abstract class ProjectMapper {
     @Mapping(target = "projectOwner", source = "user")
     public abstract Project map(ProjectRequest projectRequest, Category category, User user);
 
+    @Mapping(target = "id", source = "projectId")
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "userName", source = "projectOwner.username")
     @Mapping(target = "commentCount", expression = "java(commentCount(project))")
     @Mapping(target = "upVote", expression = "java(isProjectUpVoted(project))")
     @Mapping(target = "downVote", expression = "java(isProjectDownVoted(project))")
+    @Mapping(target = "projectTaskList", source = "project.projectTaskList")
+
     public abstract ProjectResponse mapToDto(Project project);
 
     Integer commentCount(Project project) {

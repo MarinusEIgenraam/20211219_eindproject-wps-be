@@ -1,19 +1,18 @@
 package com.willpowered.eindprojectwpsbe.service.auth;
 
-import com.willpowered.eindprojectwpsbe.dto.auth.*;
-import com.willpowered.eindprojectwpsbe.security.JwtUtil;
+import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponse;
+import com.willpowered.eindprojectwpsbe.dto.auth.LoginRequest;
+import com.willpowered.eindprojectwpsbe.dto.auth.RefreshTokenRequest;
+import com.willpowered.eindprojectwpsbe.dto.auth.RegisterRequest;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.security.JwtUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,24 +23,13 @@ import java.time.Instant;
 @Service
 @AllArgsConstructor
 @Transactional
-public class UserAuthenticateService {
-
+public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtProvider;
     private final RefreshTokenService refreshTokenService;
-
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    JwtUtil jwtUtl;
-
-    @Autowired
-    UserRepository userRepository;
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
@@ -49,10 +37,9 @@ public class UserAuthenticateService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreated(Instant.now());
-        user.setEnabled(true);
+        user.setEnabled(false);
 
         userRepository.save(user);
-
     }
 
     @Transactional(readOnly = true)
@@ -63,26 +50,27 @@ public class UserAuthenticateService {
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
     }
 
+
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        String token = jwtUtl.generateToken(authenticate);
+        String token = jwtProvider.generateToken(authenticate);
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtUtl.getJwtExpirationInMillis()))
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
                 .build();
     }
 
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtUtl.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
-                .expiresAt(Instant.now().plusMillis(jwtUtl.getJwtExpirationInMillis()))
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getUsername())
                 .build();
     }
@@ -91,5 +79,4 @@ public class UserAuthenticateService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
-
 }

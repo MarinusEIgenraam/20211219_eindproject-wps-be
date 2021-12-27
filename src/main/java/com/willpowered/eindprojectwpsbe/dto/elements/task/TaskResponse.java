@@ -1,10 +1,12 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.task;
 
+import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +22,6 @@ public class TaskResponse {
     private boolean isRunning;
     private String parentTaskName;
     private String parentProjectName;
+    private List<TaskResponse> taskTaskList;
 
 }
