@@ -1,6 +1,5 @@
 package com.willpowered.eindprojectwpsbe.controller.auth;
 
-import com.willpowered.eindprojectwpsbe.dto.auth.RegisterRequest;
 import com.willpowered.eindprojectwpsbe.dto.auth.UserPostRequestDto;
 import com.willpowered.eindprojectwpsbe.service.auth.UserService;
 import lombok.AllArgsConstructor;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @AllArgsConstructor

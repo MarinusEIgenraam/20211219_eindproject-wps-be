@@ -1,45 +1,44 @@
 package com.willpowered.eindprojectwpsbe.controller.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskRequest;
-import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskResponse;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDTO;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDTO;
+import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.service.elements.TaskService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static org.springframework.http.ResponseEntity.status;
-
 @RestController
-@AllArgsConstructor
 @RequestMapping("/tasks")
+@AllArgsConstructor
+@Slf4j
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
-    @PostMapping
-    public ResponseEntity<Void> createTask(@RequestBody TaskRequest taskRequest) {
-        taskService.save(taskRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TaskResponse>> getAllTasks() {
-        return status(HttpStatus.OK).body(taskService.getAllTasks());
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponse> getTask(@PathVariable Long id) {
-        return status(HttpStatus.OK).body(taskService.getTask(id));
+    public TaskDTO getTask(@PathVariable("id") Long id) {
+        var task = taskService.getTask(id);
+        return TaskDTO.fromTask(task);
     }
 
-    @GetMapping("by-user/{username}")
-    public ResponseEntity<List<TaskResponse>> getTasksByTaskOwner(@PathVariable String username) {
-        return status(HttpStatus.OK).body(taskService.getTasksByTaskOwner(username));
+    @PostMapping
+    public TaskDTO saveTask(@RequestBody TaskInputDTO dto) {
+        var task = taskService.saveTask(dto.toTask());
+        return TaskDTO.fromTask(task);
     }
 
+    @PutMapping("/{id}")
+    public TaskDTO updateTask(@PathVariable Long id, @RequestBody Task task) {
+        taskService.updateTask(id, task);
+        return TaskDTO.fromTask(task);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable("id") Long id) {
+        taskService.deleteTask(id);
+    }
 }

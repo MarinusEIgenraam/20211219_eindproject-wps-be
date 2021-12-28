@@ -1,21 +1,16 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.VoteDto;
-import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.communication.Vote;
-import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.communication.VoteRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
-
-import static com.willpowered.eindprojectwpsbe.model.communication.VoteType.UPVOTE;
 
 @Service
 @AllArgsConstructor
@@ -28,32 +23,38 @@ public class VoteService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
 
-    @Transactional
-    public void vote(VoteDto voteDto) {
 
-        Project project = projectRepository.findById(voteDto.getProjectId())
-                .orElseThrow(() -> new RecordNotFoundException("Project Not Found with ID - " + voteDto.getProjectId()));
-        Optional<Vote> voteByProjectAndUser = voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project, userAuthenticateService.getCurrentUser());
+    public List<Vote> getVotes() {
+        return voteRepository.findAll();
+    }
 
-        if (voteByProjectAndUser.isPresent() && voteByProjectAndUser.get().getVoteType().equals(voteDto.getVoteType())) {
-            throw new BadRequestException("You have already " + voteDto.getVoteType() + "'d for this project");
-        }
+    public Vote getVote(Long id) {
+        Optional<Vote> vote = voteRepository.findById(id);
 
-        if (UPVOTE.equals(voteDto.getVoteType())) {
-            project.setVoteCount(project.getVoteCount() + 1);
+        if(vote.isPresent()) {
+            return vote.get();
         } else {
-            project.setVoteCount(project.getVoteCount() - 1);
+            throw new RecordNotFoundException("Machine does not exist");
         }
-
-        voteRepository.save(mapToVote(voteDto, project));
-        projectRepository.save(project);
     }
 
-    private Vote mapToVote(VoteDto voteDto, Project project) {
-        return Vote.builder()
-                .voteType(voteDto.getVoteType())
-                .project(project)
-                .user(userAuthenticateService.getCurrentUser())
-                .build();
+    public Vote saveVote(Vote vote) {
+        return voteRepository.save(vote);
     }
+
+    public void updateVote(Long id, Vote vote) {
+        Optional<Vote> optionalVote = voteRepository.findById(id);
+        if (optionalVote.isPresent()) {
+            voteRepository.deleteById(id);
+            voteRepository.save(vote);
+        } else {
+            throw new RecordNotFoundException("vote does not exist");
+        }
+    }
+
+    public void deleteVote(Long id) {
+        voteRepository.deleteById(id);
+    }
+
+
 }

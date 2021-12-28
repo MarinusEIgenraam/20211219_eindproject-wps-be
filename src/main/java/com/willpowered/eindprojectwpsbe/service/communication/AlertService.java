@@ -1,9 +1,9 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.model.communication.Comment;
+import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
+import com.willpowered.eindprojectwpsbe.repository.communication.AlertRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class CommentService {
+public class AlertService {
 
     private static String PROJECT_URL = "";
 
@@ -26,39 +26,39 @@ public class CommentService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
     @Autowired
-    private CommentRepository commentRepository;
+    private AlertRepository alertRepository;
 
 
-    public List<Comment> getComments() {
-        return commentRepository.findAll();
+    public List<Alert> getAlerts() {
+        return alertRepository.findAll();
     }
 
-    public Comment getComment(Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
+    public Alert getAlert(Long id) {
+        Optional<Alert> alert = alertRepository.findById(id);
 
-        if(comment.isPresent()) {
-            return comment.get();
+        if(alert.isPresent()) {
+            return alert.get();
         } else {
             throw new RecordNotFoundException("Machine does not exist");
         }
     }
 
-    public Comment saveComment(Comment comment) {
-        return commentRepository.save(comment);
+    public Alert saveAlert(Alert alert) {
+        return alertRepository.save(alert);
     }
 
-    public void updateComment(Long id, Comment comment) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
-        if (optionalComment.isPresent()) {
-            commentRepository.deleteById(id);
-            commentRepository.save(comment);
+    public void updateAlert(Long id, Alert alert) {
+        Optional<Alert> optionalAlert = alertRepository.findById(id);
+        if (optionalAlert.isPresent()) {
+            alertRepository.deleteById(id);
+            alertRepository.save(alert);
         } else {
-            throw new RecordNotFoundException("comment does not exist");
+            throw new RecordNotFoundException("alert does not exist");
         }
     }
 
-    public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
+    public void deleteAlert(Long id) {
+        alertRepository.deleteById(id);
     }
 
 
