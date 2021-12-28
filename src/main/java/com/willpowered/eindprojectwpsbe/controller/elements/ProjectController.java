@@ -18,7 +18,8 @@ import static org.springframework.http.ResponseEntity.status;
 @AllArgsConstructor
 public class ProjectController {
 
-    private final ProjectService projectService;
+    @Autowired
+    private ProjectService projectService;
 
     @PostMapping
     public ResponseEntity<Void> createProject(@RequestBody ProjectRequest projectRequest) {

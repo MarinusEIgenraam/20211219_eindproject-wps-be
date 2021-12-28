@@ -4,6 +4,7 @@ import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskRequest;
 import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskResponse;
 import com.willpowered.eindprojectwpsbe.service.elements.TaskService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    private final TaskService taskService;
+    @Autowired
+    private TaskService taskService;
 
     @PostMapping
     public ResponseEntity<Void> createTask(@RequestBody TaskRequest taskRequest) {

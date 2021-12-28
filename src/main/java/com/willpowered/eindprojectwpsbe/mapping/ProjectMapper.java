@@ -43,7 +43,6 @@ public abstract class ProjectMapper {
     @Mapping(target = "upVote", expression = "java(isProjectUpVoted(project))")
     @Mapping(target = "downVote", expression = "java(isProjectDownVoted(project))")
     @Mapping(target = "projectTaskList", source = "project.projectTaskList")
-
     public abstract ProjectResponse mapToDto(Project project);
 
     Integer commentCount(Project project) {

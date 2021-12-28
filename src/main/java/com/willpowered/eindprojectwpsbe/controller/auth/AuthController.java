@@ -1,50 +1,41 @@
 package com.willpowered.eindprojectwpsbe.controller.auth;
 
-import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponse;
-import com.willpowered.eindprojectwpsbe.dto.auth.LoginRequest;
-import com.willpowered.eindprojectwpsbe.dto.auth.RefreshTokenRequest;
 import com.willpowered.eindprojectwpsbe.dto.auth.RegisterRequest;
-import com.willpowered.eindprojectwpsbe.service.auth.AuthService;
-import com.willpowered.eindprojectwpsbe.service.auth.RefreshTokenService;
+import com.willpowered.eindprojectwpsbe.dto.auth.UserPostRequestDto;
+import com.willpowered.eindprojectwpsbe.service.auth.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
+import java.net.URI;
 
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/auth")
 @AllArgsConstructor
+@RequestMapping(value = "/auth")
 public class AuthController {
 
-    private final AuthService authService;
-    private final RefreshTokenService refreshTokenService;
+    @Autowired
+    private UserService userService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
-        authService.signup(registerRequest);
-        return new ResponseEntity<>("User Registration Successful",
-                OK);
-    }
+    @PostMapping(value = "")
+    public ResponseEntity<Object> createUser(@RequestBody UserPostRequestDto user) {
+        String newUsername = userService.createUser(user);
 
-    @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
-    }
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{username}")
+                .buildAndExpand(newUsername)
+                .toUri();
 
-    @PostMapping("/refresh/token")
-    public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return authService.refreshToken(refreshTokenRequest);
+        return ResponseEntity.created(location).build();
     }
+    
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
-    }
 }

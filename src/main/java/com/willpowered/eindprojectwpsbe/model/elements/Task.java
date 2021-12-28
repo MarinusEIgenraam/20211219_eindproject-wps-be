@@ -2,6 +2,7 @@ package com.willpowered.eindprojectwpsbe.model.elements;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class Task {
     private User taskOwner;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Nullable
     @JsonBackReference("tasks_tasks")
     private Task parentTask;
 
@@ -51,9 +53,8 @@ public class Task {
     private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Nullable
     @JoinColumn(name = "parent_project_id")
     @JsonManagedReference("projects_tasks")
     private Project parentProject;
-
-
 }

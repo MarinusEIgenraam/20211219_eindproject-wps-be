@@ -30,17 +30,17 @@ import static java.util.stream.Collectors.toList;
 public class TaskService {
 
     @Autowired
-    private final TaskRepository taskRepository;
+    private TaskRepository taskRepository;
     @Autowired
-    private final ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private final CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
-    private final UserAuthenticateService userAuthenticateService;
+    private UserAuthenticateService userAuthenticateService;
     @Autowired
-    private final TaskMapper taskMapper;
+    private TaskMapper taskMapper;
 
 
     public void save(TaskRequest taskRequest) {

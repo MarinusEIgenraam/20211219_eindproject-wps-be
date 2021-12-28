@@ -23,16 +23,21 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 @Transactional
-@AllArgsConstructor
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
-    private final UserAuthenticateService userAuthenticateService;
-    private final ProjectMapper projectMapper;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private UserAuthenticateService userAuthenticateService;
+    @Autowired
+    private ProjectMapper projectMapper;
 
     public void save(ProjectRequest projectRequest) {
         Category category = categoryRepository.findByName(projectRequest.getCategoryName())

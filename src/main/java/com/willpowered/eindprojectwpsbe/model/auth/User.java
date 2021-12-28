@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +26,6 @@ public class User {
     private boolean enabled = true;
 
     private String email;
-    private Instant created;
 
     @OneToMany(
             targetEntity = Authority.class,

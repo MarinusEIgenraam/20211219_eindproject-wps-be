@@ -1,10 +1,10 @@
 package com.willpowered.eindprojectwpsbe.service.auth;
 
-import com.willpowered.eindprojectwpsbe.dto.auth.*;
 import com.willpowered.eindprojectwpsbe.security.JwtUtil;
+import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationRequestDto;
+import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponseDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,21 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-
 @Service
-@AllArgsConstructor
-@Transactional
 public class UserAuthenticateService {
-
-
-    private final PasswordEncoder passwordEncoder;
-    private final RefreshTokenService refreshTokenService;
-
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -43,16 +33,25 @@ public class UserAuthenticateService {
     @Autowired
     UserRepository userRepository;
 
-    public void signup(RegisterRequest registerRequest) {
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setCreated(Instant.now());
-        user.setEnabled(true);
+    public AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequestDto) {
 
-        userRepository.save(user);
+        String username = authenticationRequestDto.getUsername();
+        String password = authenticationRequestDto.getPassword();
 
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        }
+        catch (BadCredentialsException ex) {
+            throw new UsernameNotFoundException("Incorrect username or password");
+        }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        final String jwt = jwtUtl.generateToken(userDetails);
+
+        return new AuthenticationResponseDto(jwt);
     }
 
     @Transactional(readOnly = true)
@@ -61,30 +60,6 @@ public class UserAuthenticateService {
                 getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
-    }
-
-    public AuthenticationResponse login(LoginRequest loginRequest) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-                loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        String token = jwtUtl.generateToken(authenticate);
-        return AuthenticationResponse.builder()
-                .authenticationToken(token)
-                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtUtl.getJwtExpirationInMillis()))
-                .username(loginRequest.getUsername())
-                .build();
-    }
-
-    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtUtl.generateTokenWithUserName(refreshTokenRequest.getUsername());
-        return AuthenticationResponse.builder()
-                .authenticationToken(token)
-                .refreshToken(refreshTokenRequest.getRefreshToken())
-                .expiresAt(Instant.now().plusMillis(jwtUtl.getJwtExpirationInMillis()))
-                .username(refreshTokenRequest.getUsername())
-                .build();
     }
 
     public boolean isLoggedIn() {
