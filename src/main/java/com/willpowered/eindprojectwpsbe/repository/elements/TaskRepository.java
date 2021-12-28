@@ -6,7 +6,6 @@ import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByParentProject(Project project);
 
-    Collection<Task> findByTaskOwner(User user);
+    List<Task> findAllByTaskOwner(User user);
 
-    Optional<Task> findByTaskName(String parentTaskName);
+    Optional<Task> findByTaskName(String taskName);
 }

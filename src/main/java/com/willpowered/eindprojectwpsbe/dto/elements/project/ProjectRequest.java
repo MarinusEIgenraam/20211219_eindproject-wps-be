@@ -12,7 +12,8 @@ public class ProjectRequest {
 
     private Long projectId;
     private String projectName;
-    private String categoryName;
     private String url;
     private String description;
+    private String categoryName;
+
 }

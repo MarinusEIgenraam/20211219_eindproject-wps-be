@@ -8,7 +8,6 @@ import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.TaskRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,19 +36,25 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private UserAuthenticateService userAuthenticateService;
     @Autowired
     private TaskMapper taskMapper;
 
 
     public void save(TaskRequest taskRequest) {
-        Project project = projectRepository.findByProjectName(taskRequest.getParentProjectName())
-                .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentProjectName()));
-        Task task = taskRepository.findByTaskName(taskRequest.getParentTaskName())
-                .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentTaskName()));
-        taskRepository.save(taskMapper.map(taskRequest, task, project, userAuthenticateService.getCurrentUser()));
+        if ((taskRequest.getParentTaskName() == null) && (taskRequest.getParentProjectName() == null)) {
+            throw new RecordNotFoundException("No parents found");
+        } else if (!(taskRequest.getParentTaskName() == null)) {
+            Project project = null;
+            Task task = taskRepository.findByTaskName(taskRequest.getParentTaskName())
+                    .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentTaskName()));
+            taskRepository.save(taskMapper.map(taskRequest, task, project, userAuthenticateService.getCurrentUser()));
+        } else {
+            Task task = null;
+            Project project = projectRepository.findByProjectName(taskRequest.getParentProjectName())
+                                .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentProjectName()));
+            taskRepository.save(taskMapper.map(taskRequest, task, project, userAuthenticateService.getCurrentUser()));
+        }
     }
 
     @Transactional(readOnly = true)
@@ -78,7 +84,7 @@ public class TaskService {
     public List<TaskResponse> getTasksByTaskOwner(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        return taskRepository.findByTaskOwner(user)
+        return taskRepository.findAllByTaskOwner(user)
                 .stream()
                 .map(taskMapper::mapToDto)
                 .collect(toList());

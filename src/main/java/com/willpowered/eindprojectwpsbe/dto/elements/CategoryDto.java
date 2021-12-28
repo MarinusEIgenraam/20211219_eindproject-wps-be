@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CategoryDto {
 
     private Long id;
     private String name;
-    private String text;
+    private String description;
     private Integer numberOfProjects;
 
 }

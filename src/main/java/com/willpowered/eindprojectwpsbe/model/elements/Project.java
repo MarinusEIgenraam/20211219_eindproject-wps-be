@@ -19,10 +19,10 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "projects")
 public class Project {
 
@@ -42,7 +42,7 @@ public class Project {
     private String description;
 
     private Instant startTime;
-    private Instant deadLine;
+    private Instant endTime;
 
     private Integer voteCount = 0;
 

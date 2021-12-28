@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +19,6 @@ public class TaskRequest {
     private String description;
     private String parentTaskName;
     private String parentProjectName;
+    private Instant endTime;
 
 }
