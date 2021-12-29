@@ -1,15 +1,24 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
+import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentDto;
+import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.model.communication.Comment;
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.repository.communication.AlertRepository;
 import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,23 +36,87 @@ public class CommentService {
     private UserAuthenticateService userAuthenticateService;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private AlertService alertService;
 
 
-    public List<Comment> getComments() {
-        return commentRepository.findAll();
-    }
+    public Comment getComment(Long commentId) {
+        Optional<Comment> comment = commentRepository.findById(commentId);
 
-    public Comment getComment(Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-
-        if(comment.isPresent()) {
+        if (comment.isPresent()) {
             return comment.get();
         } else {
             throw new RecordNotFoundException("Machine does not exist");
         }
     }
 
-    public Comment saveComment(Comment comment) {
+    public List<Comment> getCommentsForProject(Long projectId) {
+        var optionalProject = projectRepository.findById(projectId);
+
+        if (optionalProject.isPresent()) {
+            Project project = optionalProject.get();
+            return commentRepository.findAllByProject(project);
+        } else {
+            throw new RecordNotFoundException("Project does not exist");
+        }
+    }
+
+    public List<Comment> getCommentsForParentComment(Long parentCommentId) {
+        var optionalComment = commentRepository.findById(parentCommentId);
+        if (optionalComment.isPresent()) {
+            Comment comment = optionalComment.get();
+            return commentRepository.findAllByParentComment(comment);
+        } else {
+            throw new RecordNotFoundException("Parent comment does not exist");
+        }
+    }
+
+    public List<Comment> getCommentsForUser(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return commentRepository.findAllByUser(user);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
+    public Comment saveComment(Long projectId, Long parentCommentId, String username, Instant createdDate, String text) {
+
+        var optionalProject = projectRepository.findById(projectId);
+        var optionalParentComment = commentRepository.findById(parentCommentId);
+        var optionalUser = userRepository.findById(username);
+
+        if (!optionalUser.isPresent()) {
+            throw new UserNotFoundException("User" + username + "not found");
+        } else if (!optionalProject.isPresent() && !optionalParentComment.isPresent()) {
+            throw new RecordNotFoundException("Missing comment connection");
+        }
+
+        var project = optionalProject.get();
+        var user = optionalUser.get();
+        var parentComment = optionalParentComment.get();
+
+        var comment = new Comment();
+        comment.setProject(project);
+        comment.setUser(user);
+        comment.setParentComment(parentComment);
+        comment.setCreatedDate(createdDate);
+        comment.setText(text);
+
+
+        var optionalParentCommentUser = optionalParentComment.get().getUser();
+        var projectName = optionalProject.get().getProjectName();
+        var projectUser = optionalProject.get().getProjectOwner();
+
+
+        if (optionalParentComment.isPresent()) {
+            alertService.addAlert("Comment reply by " + username, "Someone replied on your comment", optionalParentCommentUser);
+        } else if (!optionalParentComment.isPresent() && optionalProject.isPresent()) {
+            alertService.addAlert("Comment on " + projectName, "Someone commented on your project", projectUser);
+        }
+
+
         return commentRepository.save(comment);
     }
 

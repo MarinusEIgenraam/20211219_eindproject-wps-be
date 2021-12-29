@@ -33,7 +33,7 @@ public class Category {
     @JoinTable(
             name = "category_projects",
             joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     @JsonManagedReference("projects_categories")
     private List<Project> projects;
 

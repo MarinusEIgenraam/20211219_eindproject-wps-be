@@ -1,5 +1,7 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.Project;
 
+import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
@@ -15,8 +17,8 @@ public class ProjectDto {
     public Instant startTime;
     public Instant endTime;
     public Integer voteCount;
-    public Category category;
-    public User projectOwner;
+    public CategoryDto category;
+    public UserDto projectOwner;
 
     public static ProjectDto fromProject(Project project) {
         var Dto = new ProjectDto();
@@ -27,8 +29,8 @@ public class ProjectDto {
         Dto.startTime = project.getStartTime();
         Dto.endTime = project.getEndTime();
         Dto.voteCount = project.getVoteCount();
-        Dto.category = project.getCategory();
-        Dto.projectOwner = project.getProjectOwner();
+        Dto.category = CategoryDto.fromCategory(project.getCategory());
+        Dto.projectOwner = UserDto.fromUser(project.getProjectOwner());
 
         return Dto;
     }

@@ -8,15 +8,13 @@ import lombok.var;
 public class PortalInputDto {
 
     public Long id;
-    public User user;
-    public SettingSchema settingsSchema;
+    public String username;
+    public Long settingsSchemaId;
 
     public Portal toPortal() {
         var portal = new Portal();
 
         portal.setId(id);
-        portal.setUser(user);
-        portal.setSettingsSchema(settingsSchema);
 
         return portal;
     }

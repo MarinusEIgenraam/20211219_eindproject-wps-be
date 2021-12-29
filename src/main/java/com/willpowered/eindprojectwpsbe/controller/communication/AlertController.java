@@ -10,6 +10,9 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/alerts")
 @AllArgsConstructor
@@ -25,15 +28,31 @@ public class AlertController {
         return AlertDto.fromAlert(alert);
     }
 
+    @GetMapping("/{username}")
+    public List<AlertDto> getAllAlertsForUser(@PathVariable("username")String username) {
+        var dtos = new ArrayList<AlertDto>();
+        var alerts = alertService.getAlertsForUser(username);
+
+        for (Alert alert : alerts) {
+            dtos.add(AlertDto.fromAlert(alert));
+        }
+        return dtos;
+    }
+
+    @GetMapping("/portal/{id}")
+    public List<AlertDto> getAllAlertsForPortal(@PathVariable("id")Long id) {
+        var dtos = new ArrayList<AlertDto>();
+        var alerts = alertService.getAlertsForPortal(id);
+
+        for (Alert alert : alerts) {
+            dtos.add(AlertDto.fromAlert(alert));
+        }
+        return dtos;
+    }
+
     @PostMapping
     public AlertDto saveAlert(@RequestBody AlertInputDto Dto) {
         var alert = alertService.saveAlert(Dto.toAlert());
-        return AlertDto.fromAlert(alert);
-    }
-
-    @PutMapping("/{id}")
-    public AlertDto updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
-        alertService.updateAlert(id, alert);
         return AlertDto.fromAlert(alert);
     }
 

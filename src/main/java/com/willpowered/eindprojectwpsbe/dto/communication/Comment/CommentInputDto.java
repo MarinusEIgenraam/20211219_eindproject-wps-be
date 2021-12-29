@@ -12,9 +12,9 @@ public class CommentInputDto {
     public Long id;
     public String text;
     public Instant createdDate;
-    public Project project;
-    public User user;
-    public Comment parentComment;
+    public Long projectId;
+    public String username;
+    public Long parentCommentId;
 
     public Comment toComment() {
         var comment = new Comment();
@@ -22,9 +22,6 @@ public class CommentInputDto {
         comment.setId(id);
         comment.setText(text);
         comment.setCreatedDate(createdDate);
-        comment.setProject(project);
-        comment.setUser(user);
-        comment.setParentComment(parentComment);
 
         return comment;
     }

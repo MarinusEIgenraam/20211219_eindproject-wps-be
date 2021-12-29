@@ -9,7 +9,7 @@ public class AlertInputDto {
     public Long id;
     public String title;
     public String text;
-    public Portal portal;
+    public Long portalId;
 
     public Alert toAlert() {
 
@@ -18,7 +18,6 @@ public class AlertInputDto {
         alert.setId(id);
         alert.setTitle(title);
         alert.setText(text);
-        alert.setPortal(portal);
 
         return alert;
     }

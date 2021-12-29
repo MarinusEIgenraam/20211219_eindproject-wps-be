@@ -1,0 +1,11 @@
+# Alerts
+- GetAlert(id)
+  - Gets a alert by its id
+- GetAlertsForUser(username)
+  - Gets all alerts a user has in his portal alertList by a username. This is a admin route
+- GetAlertsForPortal(id)
+  - Gets all alerts in the portal alertList
+- Save alert
+  - Makes a new alert according to the alertInputDto
+- DeleteAlert
+  - Deletes one alert

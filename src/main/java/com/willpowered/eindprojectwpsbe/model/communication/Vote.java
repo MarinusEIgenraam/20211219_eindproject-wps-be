@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "votes")
+@Table(name = "projectVotes")
 public class Vote {
     @Id
     @GeneratedValue(strategy = SEQUENCE)

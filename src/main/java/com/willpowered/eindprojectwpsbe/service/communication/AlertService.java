@@ -1,17 +1,22 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.communication.Alert;
+import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
 import com.willpowered.eindprojectwpsbe.repository.communication.AlertRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
+import com.willpowered.eindprojectwpsbe.repository.profile.PortalRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -27,11 +32,9 @@ public class AlertService {
     private UserAuthenticateService userAuthenticateService;
     @Autowired
     private AlertRepository alertRepository;
+    @Autowired
+    private PortalRepository portalRepository;
 
-
-    public List<Alert> getAlerts() {
-        return alertRepository.findAll();
-    }
 
     public Alert getAlert(Long id) {
         Optional<Alert> alert = alertRepository.findById(id);
@@ -39,11 +42,48 @@ public class AlertService {
         if(alert.isPresent()) {
             return alert.get();
         } else {
-            throw new RecordNotFoundException("Machine does not exist");
+            throw new RecordNotFoundException("Alert does not exist");
+        }
+    }
+
+    public List<Alert> getAlertsForUser(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            var user = optionalUser.get();
+            var optionalPortal = portalRepository.findByUser(user);
+            if (optionalPortal.isPresent()) {
+                var portal = optionalPortal.get();
+                return alertRepository.findAllByPortal(portal);
+            } else {
+                throw new RecordNotFoundException("This user has no portal");
+            }
+        } else {
+            throw new RecordNotFoundException("This portal has no open alerts");
+        }
+    }
+
+    public List<Alert> getAlertsForPortal(Long id) {
+        var optionalPortal = portalRepository.findById(id);
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            return alertRepository.findAllByPortal(portal);
+        } else {
+            throw new RecordNotFoundException("This portal has no open alerts");
         }
     }
 
     public Alert saveAlert(Alert alert) {
+        return alertRepository.save(alert);
+    }
+
+    public Alert addAlert(String title, String text, User user) {
+        var optionalPortal = portalRepository.findByUser(user);
+        var portal = optionalPortal.get();
+
+        var alert = new Alert();
+        alert.setPortal(portal);
+        alert.setText(text);
+        alert.setTitle(title);
         return alertRepository.save(alert);
     }
 
@@ -53,7 +93,7 @@ public class AlertService {
             alertRepository.deleteById(id);
             alertRepository.save(alert);
         } else {
-            throw new RecordNotFoundException("alert does not exist");
+            throw new RecordNotFoundException("Alert does not exist");
         }
     }
 

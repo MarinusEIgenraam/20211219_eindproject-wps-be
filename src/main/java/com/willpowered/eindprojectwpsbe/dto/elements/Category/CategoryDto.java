@@ -10,11 +10,12 @@ public class CategoryDto {
 
     public static CategoryDto fromCategory(Category category) {
 
-        var Dto = new CategoryDto();
-        Dto.id = category.getId();
-        Dto.name = category.getName();
-        Dto.description = category.getDescription();
+        var dto = new CategoryDto();
 
-        return Dto;
+        dto.id = category.getId();
+        dto.name = category.getName();
+        dto.description = category.getDescription();
+
+        return dto;
     }
 }

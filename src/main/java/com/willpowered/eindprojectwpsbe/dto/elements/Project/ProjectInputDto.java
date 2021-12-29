@@ -15,8 +15,8 @@ public class ProjectInputDto {
     public Instant startTime;
     public Instant endTime;
     public Integer voteCount;
-    public Category category;
-    public User projectOwner;
+    public Long categoryId;
+    public String projectOwnerName;
 
     public Project toProject() {
         var project = new Project();
@@ -28,8 +28,6 @@ public class ProjectInputDto {
         project.setStartTime(startTime);
         project.setEndTime(endTime);
         project.setVoteCount(voteCount);
-        project.setCategory(category);
-        project.setProjectOwner(projectOwner);
 
         return project;
     }

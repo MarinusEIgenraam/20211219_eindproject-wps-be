@@ -1,5 +1,7 @@
 package com.willpowered.eindprojectwpsbe.dto.profile.Portal;
 
+import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
+import com.willpowered.eindprojectwpsbe.dto.profile.SettingSchema.SettingSchemaDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import com.willpowered.eindprojectwpsbe.model.profile.SettingSchema;
@@ -8,17 +10,17 @@ import lombok.var;
 public class PortalDto {
 
     public Long id;
-    public User user;
-    public SettingSchema settingsSchema;
+    public UserDto user;
+    public SettingSchemaDto settingsSchema;
 
     public static PortalDto fromPortal(Portal portal) {
-        var Dto = new PortalDto();
+        var dto = new PortalDto();
 
-        Dto.id= portal.getId();
-        Dto.user= portal.getUser();
-        Dto.settingsSchema= portal.getSettingsSchema();
+        dto.id= portal.getId();
+        dto.user= UserDto.fromUser(portal.getUser());
+        dto.settingsSchema= SettingSchemaDto.fromSettingSchema(portal.getSettingsSchema());
 
-        return Dto;
+        return dto;
     }
 
 

@@ -14,9 +14,9 @@ public class TaskInputDto {
     public Instant startTime;
     public Instant endTime;
     public Boolean isRunning;
-    public User taskOwner;
-    public Task parentTask;
-    public Project parentProject;
+    public String taskOwnerName;
+    public Long parentTaskId;
+    public Long parentProjectId;
 
     public Task toTask() {
         var task = new Task();
@@ -27,9 +27,6 @@ public class TaskInputDto {
         task.setStartTime(startTime);
         task.setEndTime(endTime);
         task.setIsRunning(isRunning);
-        task.setTaskOwner(taskOwner);
-        task.setParentTask(parentTask);
-        task.setParentProject(parentProject);
 
         return task;
     }
