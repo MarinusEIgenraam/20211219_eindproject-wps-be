@@ -1,23 +1,25 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 @Transactional
 public class ProjectService {
 
@@ -31,26 +33,56 @@ public class ProjectService {
     private UserAuthenticateService userAuthenticateService;
 
 
-    public Project saveProject(Project project) {
-        return projectRepository.save(project);
-    }
+    public Project getProject(Long projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
 
-    public Project getProject(Long id) {
-        Optional<Project> project = projectRepository.findById(id);
-
-        if(project.isPresent()) {
+        if (project.isPresent()) {
             return project.get();
         } else {
             throw new RecordNotFoundException("Project does not exist");
         }
     }
 
-    public List<Project> getProjects() {
-        return projectRepository.findAll();
+    public List<Project> getProjectsForCategory(Long categoryId) {
+        var optionalCategory = categoryRepository.findById(categoryId);
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            return projectRepository.findAllByCategory(category);
+        } else {
+            throw new RecordNotFoundException("Category does not exist");
+        }
     }
 
-    public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+    public List<Project> getProjectsForProjectOwner(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return projectRepository.findAllByProjectOwner(user);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
+    public Project saveProject(String projectName, String url, Long categoryId, String description, Instant startTime, Instant endTime, Boolean publiclyVisible) {
+
+        var optionalCategory = categoryRepository.findById(categoryId);
+
+        if (!optionalCategory.isPresent()) {
+            throw new RecordNotFoundException("This category does not exist");
+        }
+
+        Category category = optionalCategory.get();
+
+        var project = new Project();
+        project.setCategory(category);
+        project.setProjectOwner(userAuthenticateService.getCurrentUser());
+        project.setPubliclyVisible(publiclyVisible);
+        project.setStartTime(startTime);
+        project.setDescription((description));
+        project.setEndTime(endTime);
+        project.setUrl(url);
+
+        return projectRepository.save(project);
     }
 
     public void updateProject(Long id, Project project) {
@@ -63,26 +95,9 @@ public class ProjectService {
         }
     }
 
-    public void partialUpdateProject(Long id, Project project) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-
-        if (optionalProject.isPresent()) {
-            Project storedProject = projectRepository.findById(id).orElse(null);
-
-            if (project.getProjectName()!=null && !project.getProjectName().isEmpty()) {
-                storedProject.setProjectName(project.getProjectName());
-            }
-            if (project.getProjectOwner()!=null && !(project.getProjectOwner() == null)) {
-                storedProject.setProjectOwner(project.getProjectOwner());
-            }
-            if (project.getDescription()!=null && !project.getDescription().isEmpty()) {
-                storedProject.setDescription(project.getDescription());
-            }
-            projectRepository.save(storedProject);
-
-        }
-        else {
-            throw new RecordNotFoundException("Project does not exist");
-        }
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
     }
+
+
 }

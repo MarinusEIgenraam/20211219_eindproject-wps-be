@@ -1,11 +1,13 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.Project;
 
-import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.elements.Category;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
+import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
+import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.List;
 
 public class ProjectInputDto {
     public Long projectId;
@@ -14,7 +16,7 @@ public class ProjectInputDto {
     public String description;
     public Instant startTime;
     public Instant endTime;
-    public Integer voteCount;
+    public Boolean publiclyVisible;
     public Long categoryId;
     public String projectOwnerName;
 
@@ -27,7 +29,7 @@ public class ProjectInputDto {
         project.setDescription(description);
         project.setStartTime(startTime);
         project.setEndTime(endTime);
-        project.setVoteCount(voteCount);
+        project.setPubliclyVisible(publiclyVisible);
 
         return project;
     }

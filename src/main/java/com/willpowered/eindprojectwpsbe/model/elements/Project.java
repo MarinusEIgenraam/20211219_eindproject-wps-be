@@ -45,6 +45,7 @@ public class Project {
     private Instant endTime;
 
     private Integer voteCount = 0;
+    private Boolean publiclyVisible;
 
     @ManyToOne(fetch = LAZY)
     @JsonBackReference("category_projects")

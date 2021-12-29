@@ -26,8 +26,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDto saveTask(@RequestBody TaskInputDto Dto) {
-        var task = taskService.saveTask(Dto.toTask());
+    public TaskDto saveTask(@RequestBody TaskInputDto dto) {
+        var task = taskService.saveTask(dto);
         return TaskDto.fromTask(task);
     }
 

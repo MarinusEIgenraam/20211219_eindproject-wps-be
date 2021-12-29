@@ -10,6 +10,9 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/categorys")
 @AllArgsConstructor
@@ -25,16 +28,28 @@ public class CategoryController {
         return CategoryDto.fromCategory(category);
     }
 
+    @GetMapping()
+    public List<CategoryDto> getCategories() {
+        var dtos = new ArrayList<CategoryDto>();
+        List<Category> categories;
+
+        categories = categoryService.getCategories();
+        for (Category category : categories) {
+            dtos.add(CategoryDto.fromCategory(category));
+        }
+        return dtos;
+    }
+
     @PostMapping
-    public CategoryDto saveCategory(@RequestBody CategoryInputDto Dto) {
-        var category = categoryService.saveCategory(Dto.toCategory());
+    public CategoryDto saveCategory(@RequestBody CategoryInputDto dto) {
+        var category = categoryService.saveCategory(dto.toCategory());
         return CategoryDto.fromCategory(category);
     }
 
     @PutMapping("/{id}")
-    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        categoryService.updateCategory(id, category);
-        return CategoryDto.fromCategory(category);
+    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody CategoryInputDto dto) {
+        categoryService.updateCategory(id, dto.toCategory());
+        return CategoryDto.fromCategory(dto.toCategory());
     }
 
     @DeleteMapping("/{id}")

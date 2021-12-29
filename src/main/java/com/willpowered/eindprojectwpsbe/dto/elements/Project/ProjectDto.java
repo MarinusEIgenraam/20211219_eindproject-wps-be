@@ -17,21 +17,23 @@ public class ProjectDto {
     public Instant startTime;
     public Instant endTime;
     public Integer voteCount;
+    public Boolean publiclyVisible;
     public CategoryDto category;
     public UserDto projectOwner;
 
     public static ProjectDto fromProject(Project project) {
-        var Dto = new ProjectDto();
-        Dto.projectId = project.getProjectId();
-        Dto.projectName = project.getProjectName();
-        Dto.url = project.getUrl();
-        Dto.description = project.getDescription();
-        Dto.startTime = project.getStartTime();
-        Dto.endTime = project.getEndTime();
-        Dto.voteCount = project.getVoteCount();
-        Dto.category = CategoryDto.fromCategory(project.getCategory());
-        Dto.projectOwner = UserDto.fromUser(project.getProjectOwner());
+        var dto = new ProjectDto();
+        dto.projectId = project.getProjectId();
+        dto.projectName = project.getProjectName();
+        dto.url = project.getUrl();
+        dto.description = project.getDescription();
+        dto.startTime = project.getStartTime();
+        dto.endTime = project.getEndTime();
+        dto.voteCount = project.getVoteCount();
+        dto.publiclyVisible = project.getPubliclyVisible();
+        dto.category = CategoryDto.fromCategory(project.getCategory());
+        dto.projectOwner = UserDto.fromUser(project.getProjectOwner());
 
-        return Dto;
+        return dto;
     }
 }

@@ -46,7 +46,7 @@ public class CommentService {
         if (comment.isPresent()) {
             return comment.get();
         } else {
-            throw new RecordNotFoundException("Machine does not exist");
+            throw new RecordNotFoundException("Comment does not exist");
         }
     }
 
@@ -87,19 +87,16 @@ public class CommentService {
         var optionalParentComment = commentRepository.findById(parentCommentId);
         var optionalUser = userRepository.findById(username);
 
-        if (!optionalUser.isPresent()) {
-            throw new UserNotFoundException("User" + username + "not found");
-        } else if (!optionalProject.isPresent() && !optionalParentComment.isPresent()) {
+        if (!optionalProject.isPresent() && !optionalParentComment.isPresent()) {
             throw new RecordNotFoundException("Missing comment connection");
         }
 
         var project = optionalProject.get();
-        var user = optionalUser.get();
         var parentComment = optionalParentComment.get();
 
         var comment = new Comment();
         comment.setProject(project);
-        comment.setUser(user);
+        comment.setUser(userAuthenticateService.getCurrentUser());
         comment.setParentComment(parentComment);
         comment.setCreatedDate(createdDate);
         comment.setText(text);

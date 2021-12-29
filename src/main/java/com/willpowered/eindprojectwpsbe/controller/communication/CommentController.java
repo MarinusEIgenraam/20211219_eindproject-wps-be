@@ -61,10 +61,7 @@ public class CommentController {
 
     @PostMapping
     public CommentDto saveComment(@RequestBody CommentInputDto dto) {
-
         var comment = commentService.saveComment(dto.projectId, dto.parentCommentId, dto.username, dto.createdDate, dto.text);
-
-
         return CommentDto.fromComment(comment);
     }
 

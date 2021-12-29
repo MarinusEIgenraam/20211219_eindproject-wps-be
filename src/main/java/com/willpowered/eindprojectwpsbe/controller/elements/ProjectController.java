@@ -2,6 +2,7 @@ package com.willpowered.eindprojectwpsbe.controller.elements;
 
 import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectInputDto;
+import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.service.elements.ProjectService;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/projects")
 @AllArgsConstructor
-@Slf4j
 public class ProjectController {
 
     @Autowired
@@ -29,19 +29,31 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectDto> getProjects() {
+    public List<ProjectDto> getProjects(
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "username", required = false) String username
+    ) {
         var dtos = new ArrayList<ProjectDto>();
-        var projects = projectService.getProjects();
+
+        List<Project> projects;
+        if (categoryId != null && username == null) {
+            projects = projectService.getProjectsForCategory(categoryId);
+        } else if  (categoryId == null && username != null) {
+            projects = projectService.getProjectsForProjectOwner(username);
+        } else {
+            throw new BadRequestException();
+        }
 
         for (Project project : projects) {
             dtos.add(ProjectDto.fromProject(project));
         }
+
         return dtos;
     }
 
     @PostMapping
-    public ProjectDto saveProject(@RequestBody ProjectInputDto Dto) {
-        Project project = projectService.saveProject(Dto.toProject());
+    public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
+        Project project = projectService.saveProject(dto.projectName, dto.url, dto.categoryId, dto.description, dto.startTime, dto.endTime, dto.publiclyVisible);
         return ProjectDto.fromProject(project);
     }
 

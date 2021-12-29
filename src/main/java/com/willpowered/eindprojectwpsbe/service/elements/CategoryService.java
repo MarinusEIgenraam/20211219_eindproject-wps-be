@@ -1,6 +1,7 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.model.communication.Comment;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
@@ -14,25 +15,22 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
     
-    public List<Category> getCategorys() {
+    public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
 
-    public Category getCategory(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
+    public Category getCategory(Long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
 
-        if(category.isPresent()) {
+        if (category.isPresent()) {
             return category.get();
         } else {
-            throw new RecordNotFoundException("Machine does not exist");
+            throw new RecordNotFoundException("Category does not exist");
         }
     }
 
@@ -46,7 +44,7 @@ public class CategoryService {
             categoryRepository.deleteById(id);
             categoryRepository.save(category);
         } else {
-            throw new RecordNotFoundException("category does not exist");
+            throw new RecordNotFoundException("Category does not exist");
         }
     }
 
