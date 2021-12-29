@@ -4,7 +4,7 @@ import com.willpowered.eindprojectwpsbe.model.elements.Category;
 
 import javax.validation.constraints.NotBlank;
 
-public class CategoryInputDTO {
+public class CategoryInputDto {
     public Long id;
     public String name;
     public String description;

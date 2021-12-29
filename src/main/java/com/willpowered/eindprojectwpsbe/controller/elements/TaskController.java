@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDTO;
-import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.service.elements.TaskService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/{id}")
-    public TaskDTO getTask(@PathVariable("id") Long id) {
+    public TaskDto getTask(@PathVariable("id") Long id) {
         var task = taskService.getTask(id);
-        return TaskDTO.fromTask(task);
+        return TaskDto.fromTask(task);
     }
 
     @PostMapping
-    public TaskDTO saveTask(@RequestBody TaskInputDTO dto) {
-        var task = taskService.saveTask(dto.toTask());
-        return TaskDTO.fromTask(task);
+    public TaskDto saveTask(@RequestBody TaskInputDto Dto) {
+        var task = taskService.saveTask(Dto.toTask());
+        return TaskDto.fromTask(task);
     }
 
     @PutMapping("/{id}")
-    public TaskDTO updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public TaskDto updateTask(@PathVariable Long id, @RequestBody Task task) {
         taskService.updateTask(id, task);
-        return TaskDTO.fromTask(task);
+        return TaskDto.fromTask(task);
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteDTO;
-import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteDto;
+import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteInputDto;
 import com.willpowered.eindprojectwpsbe.model.communication.Vote;
 import com.willpowered.eindprojectwpsbe.service.communication.VoteService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class VoteController {
     private VoteService voteService;
 
     @GetMapping("/{id}")
-    public VoteDTO getVote(@PathVariable("id") Long id) {
+    public VoteDto getVote(@PathVariable("id") Long id) {
         var vote = voteService.getVote(id);
-        return VoteDTO.fromVote(vote);
+        return VoteDto.fromVote(vote);
     }
 
     @PostMapping
-    public VoteDTO saveVote(@RequestBody VoteInputDTO dto) {
-        var vote = voteService.saveVote(dto.toVote());
-        return VoteDTO.fromVote(vote);
+    public VoteDto saveVote(@RequestBody VoteInputDto Dto) {
+        var vote = voteService.saveVote(Dto.toVote());
+        return VoteDto.fromVote(vote);
     }
 
     @PutMapping("/{id}")
-    public VoteDTO updateVote(@PathVariable Long id, @RequestBody Vote vote) {
+    public VoteDto updateVote(@PathVariable Long id, @RequestBody Vote vote) {
         voteService.updateVote(id, vote);
-        return VoteDTO.fromVote(vote);
+        return VoteDto.fromVote(vote);
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryDTO;
-import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryInputDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.service.elements.CategoryService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/{id}")
-    public CategoryDTO getCategory(@PathVariable("id") Long id) {
+    public CategoryDto getCategory(@PathVariable("id") Long id) {
         var category = categoryService.getCategory(id);
-        return CategoryDTO.fromCategory(category);
+        return CategoryDto.fromCategory(category);
     }
 
     @PostMapping
-    public CategoryDTO saveCategory(@RequestBody CategoryInputDTO dto) {
-        var category = categoryService.saveCategory(dto.toCategory());
-        return CategoryDTO.fromCategory(category);
+    public CategoryDto saveCategory(@RequestBody CategoryInputDto Dto) {
+        var category = categoryService.saveCategory(Dto.toCategory());
+        return CategoryDto.fromCategory(category);
     }
 
     @PutMapping("/{id}")
-    public CategoryDTO updateCategory(@PathVariable Long id, @RequestBody Category category) {
+    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody Category category) {
         categoryService.updateCategory(id, category);
-        return CategoryDTO.fromCategory(category);
+        return CategoryDto.fromCategory(category);
     }
 
     @DeleteMapping("/{id}")

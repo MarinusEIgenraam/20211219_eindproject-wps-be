@@ -6,23 +6,26 @@ import com.willpowered.eindprojectwpsbe.model.communication.VoteType;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.var;
 
-public class VoteDTO {
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+public class VoteInputDto {
 
     public Long voteId;
     public VoteType voteType;
     public Project project;
     public User user;
 
-    public static VoteDTO fromVote(Vote vote) {
-        var dto = new VoteDTO();
+    public Vote toVote() {
+        var vote = new Vote();
 
-        dto.voteId = vote.getVoteId();
-        dto.voteType = vote.getVoteType();
-        dto.project = vote.getProject();
-        dto.user = vote.getUser();
+        vote.setVoteId(voteId);
+        vote.setVoteType(voteType);
+        vote.setProject(project);
+        vote.setUser(user);
 
-        return dto;
+        return vote;
     }
-
-
 }

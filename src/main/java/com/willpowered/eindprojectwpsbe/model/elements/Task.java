@@ -34,7 +34,7 @@ public class Task {
     private Instant startTime;
     private Instant endTime;
 
-    private boolean isRunning;
+    private Boolean isRunning;
 
     @ManyToOne
     private User taskOwner;

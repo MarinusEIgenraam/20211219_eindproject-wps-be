@@ -26,7 +26,7 @@ public class TaskService {
     }
 
     public List<Task> findTasksByName(String name) {
-        return taskRepository.findByNameContainingIgnoreCase(name);}
+        return taskRepository.findByTaskNameContainingIgnoreCase(name);}
 
     public Task getTask(Long id) {
         Optional<Task> task = taskRepository.findById(id);

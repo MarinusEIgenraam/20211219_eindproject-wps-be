@@ -20,13 +20,13 @@ VALUES
     ('ROLE_ADMIN', 'adminmarinus'),
     ('ROLE_SUPER_USER', 'adminmarinus'),
     ('ROLE_USER', 'adminmarinus');
-INSERT INTO categories (id,description, name)
-VALUES
-    (1,'science of technology', 'technology'),
-    (2,'science of psychology', 'psychology'),
-    (3,'science of writing', 'literature'),
-    (4,'mathematics', 'match'),
-    (5,'science of computers', 'computer science');
+-- INSERT INTO categories (id,description, name)
+-- VALUES
+--     (1,'science of technology', 'technology'),
+--     (2,'science of psychology', 'psychology'),
+--     (3,'science of writing', 'literature'),
+--     (4,'mathematics', 'match'),
+--     (5,'science of computers', 'computer science');
 -- INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, project_owner)
 -- VALUES
 --     ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1, 'superuser'),

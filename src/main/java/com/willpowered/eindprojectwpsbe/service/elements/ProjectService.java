@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,11 @@ public class ProjectService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
 
+
+    public Project saveProject(Project project) {
+        return projectRepository.save(project);
+    }
+
     public Project getProject(Long id) {
         Optional<Project> project = projectRepository.findById(id);
 
@@ -39,8 +45,8 @@ public class ProjectService {
         }
     }
 
-    public Project saveProject(Project project) {
-        return projectRepository.save(project);
+    public List<Project> getProjects() {
+        return projectRepository.findAll();
     }
 
     public void deleteProject(Long id) {
@@ -54,6 +60,29 @@ public class ProjectService {
             projectRepository.save(project);
         } else {
             throw new RecordNotFoundException("project does not exist");
+        }
+    }
+
+    public void partialUpdateProject(Long id, Project project) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+
+        if (optionalProject.isPresent()) {
+            Project storedProject = projectRepository.findById(id).orElse(null);
+
+            if (project.getProjectName()!=null && !project.getProjectName().isEmpty()) {
+                storedProject.setProjectName(project.getProjectName());
+            }
+            if (project.getProjectOwner()!=null && !(project.getProjectOwner() == null)) {
+                storedProject.setProjectOwner(project.getProjectOwner());
+            }
+            if (project.getDescription()!=null && !project.getDescription().isEmpty()) {
+                storedProject.setDescription(project.getDescription());
+            }
+            projectRepository.save(storedProject);
+
+        }
+        else {
+            throw new RecordNotFoundException("Project does not exist");
         }
     }
 }

@@ -4,23 +4,23 @@ import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import lombok.var;
 
-public class AlertDTO {
+public class AlertDto {
 
     public Long id;
     public String title;
     public String text;
     public Portal portal;
 
-    public static AlertDTO fromAlert(Alert alert) {
+    public static AlertDto fromAlert(Alert alert) {
 
-        var dto = new AlertDTO();
+        var Dto = new AlertDto();
 
-        dto.id = alert.getId();
-        dto.title = alert.getTitle();
-        dto.text = alert.getText();
-        dto.portal = alert.getPortal();
+        Dto.id = alert.getId();
+        Dto.title = alert.getTitle();
+        Dto.text = alert.getText();
+        Dto.portal = alert.getPortal();
 
-        return dto;
+        return Dto;
     }
 
 

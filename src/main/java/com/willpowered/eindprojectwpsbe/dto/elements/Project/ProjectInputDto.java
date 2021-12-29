@@ -7,7 +7,7 @@ import lombok.var;
 
 import java.time.Instant;
 
-public class ProjectInputDTO {
+public class ProjectInputDto {
     public Long projectId;
     public String projectName;
     public String url;
@@ -20,6 +20,7 @@ public class ProjectInputDTO {
 
     public Project toProject() {
         var project = new Project();
+
         project.setProjectId(projectId);
         project.setProjectName(projectName);
         project.setUrl(url);

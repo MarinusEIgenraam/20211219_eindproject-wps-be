@@ -17,7 +17,7 @@ public class SettingSchema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean commentAlert = true;
-    private boolean taskAlert = true;
+    private Boolean commentAlert = true;
+    private Boolean taskAlert = true;
 
 }

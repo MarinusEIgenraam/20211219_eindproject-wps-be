@@ -4,7 +4,7 @@ import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import lombok.var;
 
-public class AlertInputDTO {
+public class AlertInputDto {
 
     public Long id;
     public String title;

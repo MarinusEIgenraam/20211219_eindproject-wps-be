@@ -5,21 +5,19 @@ import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import com.willpowered.eindprojectwpsbe.model.profile.SettingSchema;
 import lombok.var;
 
-public class PortalDTO {
+public class PortalInputDto {
 
     public Long id;
     public User user;
     public SettingSchema settingsSchema;
 
-    public static PortalDTO fromPortal(Portal portal) {
-        var dto = new PortalDTO();
+    public Portal toPortal() {
+        var portal = new Portal();
 
-        dto.id= portal.getId();
-        dto.user= portal.getUser();
-        dto.settingsSchema= portal.getSettingsSchema();
+        portal.setId(id);
+        portal.setUser(user);
+        portal.setSettingsSchema(settingsSchema);
 
-        return dto;
+        return portal;
     }
-
-
 }

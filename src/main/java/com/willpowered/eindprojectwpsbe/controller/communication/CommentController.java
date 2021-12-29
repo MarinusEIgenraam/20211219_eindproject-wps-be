@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentDTO;
-import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentDto;
+import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentInputDto;
 import com.willpowered.eindprojectwpsbe.model.communication.Comment;
 import com.willpowered.eindprojectwpsbe.service.communication.CommentService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class CommentController {
     private CommentService commentService;
 
     @GetMapping("/{id}")
-    public CommentDTO getComment(@PathVariable("id") Long id) {
+    public CommentDto getComment(@PathVariable("id") Long id) {
         var comment = commentService.getComment(id);
-        return CommentDTO.fromComment(comment);
+        return CommentDto.fromComment(comment);
     }
 
     @PostMapping
-    public CommentDTO saveComment(@RequestBody CommentInputDTO dto) {
-        var comment = commentService.saveComment(dto.toComment());
-        return CommentDTO.fromComment(comment);
+    public CommentDto saveComment(@RequestBody CommentInputDto Dto) {
+        var comment = commentService.saveComment(Dto.toComment());
+        return CommentDto.fromComment(comment);
     }
 
     @PutMapping("/{id}")
-    public CommentDTO updateComment(@PathVariable Long id, @RequestBody Comment comment) {
+    public CommentDto updateComment(@PathVariable Long id, @RequestBody Comment comment) {
         commentService.updateComment(id, comment);
-        return CommentDTO.fromComment(comment);
+        return CommentDto.fromComment(comment);
     }
 
     @DeleteMapping("/{id}")

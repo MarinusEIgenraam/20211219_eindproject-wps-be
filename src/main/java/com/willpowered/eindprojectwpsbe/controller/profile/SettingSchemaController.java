@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.profile;
 
-import com.willpowered.eindprojectwpsbe.dto.profile.SettingSchema.SettingSchemaDTO;
-import com.willpowered.eindprojectwpsbe.dto.profile.SettingSchema.SettingSchemaInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.profile.SettingSchema.SettingSchemaDto;
+import com.willpowered.eindprojectwpsbe.dto.profile.SettingSchema.SettingSchemaInputDto;
 import com.willpowered.eindprojectwpsbe.model.profile.SettingSchema;
 import com.willpowered.eindprojectwpsbe.service.profile.SettingSchemaService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class SettingSchemaController {
     private SettingSchemaService settingSchemaService;
 
     @GetMapping("/{id}")
-    public SettingSchemaDTO getSettingSchema(@PathVariable("id") Long id) {
+    public SettingSchemaDto getSettingSchema(@PathVariable("id") Long id) {
         var settingSchema = settingSchemaService.getSettingSchema(id);
-        return SettingSchemaDTO.fromSettingSchema(settingSchema);
+        return SettingSchemaDto.fromSettingSchema(settingSchema);
     }
 
     @PostMapping
-    public SettingSchemaDTO saveSettingSchema(@RequestBody SettingSchemaInputDTO dto) {
-        var settingSchema = settingSchemaService.saveSettingSchema(dto.toSettingSchema());
-        return SettingSchemaDTO.fromSettingSchema(settingSchema);
+    public SettingSchemaDto saveSettingSchema(@RequestBody SettingSchemaInputDto Dto) {
+        var settingSchema = settingSchemaService.saveSettingSchema(Dto.toSettingSchema());
+        return SettingSchemaDto.fromSettingSchema(settingSchema);
     }
 
     @PutMapping("/{id}")
-    public SettingSchemaDTO updateSettingSchema(@PathVariable Long id, @RequestBody SettingSchema settingSchema) {
+    public SettingSchemaDto updateSettingSchema(@PathVariable Long id, @RequestBody SettingSchema settingSchema) {
         settingSchemaService.updateSettingSchema(id, settingSchema);
-        return SettingSchemaDTO.fromSettingSchema(settingSchema);
+        return SettingSchemaDto.fromSettingSchema(settingSchema);
     }
 
     @DeleteMapping("/{id}")

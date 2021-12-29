@@ -7,7 +7,7 @@ import lombok.var;
 
 import java.time.Instant;
 
-public class CommentDTO {
+public class CommentInputDto {
 
     public Long id;
     public String text;
@@ -16,18 +16,16 @@ public class CommentDTO {
     public User user;
     public Comment parentComment;
 
-    public static CommentDTO fromComment(Comment comment) {
-        var dto = new CommentDTO();
+    public Comment toComment() {
+        var comment = new Comment();
 
-        dto.id = comment.getId();
-        dto.text = comment.getText();
-        dto.createdDate = comment.getCreatedDate();
-        dto.project = comment.getProject();
-        dto.user = comment.getUser();
-        dto.parentComment = comment.getParentComment();
+        comment.setId(id);
+        comment.setText(text);
+        comment.setCreatedDate(createdDate);
+        comment.setProject(project);
+        comment.setUser(user);
+        comment.setParentComment(parentComment);
 
-        return dto;
+        return comment;
     }
-
-
 }

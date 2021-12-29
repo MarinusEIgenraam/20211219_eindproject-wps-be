@@ -28,7 +28,7 @@ public class Vote {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId", referencedColumnName = "id")
+    @JoinColumn(name = "projectId", referencedColumnName = "projectId")
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)

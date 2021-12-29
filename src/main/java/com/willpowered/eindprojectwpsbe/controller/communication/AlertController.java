@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.controller.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Alert.AlertDTO;
-import com.willpowered.eindprojectwpsbe.dto.communication.Alert.AlertInputDTO;
+import com.willpowered.eindprojectwpsbe.dto.communication.Alert.AlertDto;
+import com.willpowered.eindprojectwpsbe.dto.communication.Alert.AlertInputDto;
 import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.service.communication.AlertService;
 import lombok.AllArgsConstructor;
@@ -20,21 +20,21 @@ public class AlertController {
     private AlertService alertService;
 
     @GetMapping("/{id}")
-    public AlertDTO getAlert(@PathVariable("id") Long id) {
+    public AlertDto getAlert(@PathVariable("id") Long id) {
         var alert = alertService.getAlert(id);
-        return AlertDTO.fromAlert(alert);
+        return AlertDto.fromAlert(alert);
     }
 
     @PostMapping
-    public AlertDTO saveAlert(@RequestBody AlertInputDTO dto) {
-        var alert = alertService.saveAlert(dto.toAlert());
-        return AlertDTO.fromAlert(alert);
+    public AlertDto saveAlert(@RequestBody AlertInputDto Dto) {
+        var alert = alertService.saveAlert(Dto.toAlert());
+        return AlertDto.fromAlert(alert);
     }
 
     @PutMapping("/{id}")
-    public AlertDTO updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
+    public AlertDto updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
         alertService.updateAlert(id, alert);
-        return AlertDTO.fromAlert(alert);
+        return AlertDto.fromAlert(alert);
     }
 
     @DeleteMapping("/{id}")

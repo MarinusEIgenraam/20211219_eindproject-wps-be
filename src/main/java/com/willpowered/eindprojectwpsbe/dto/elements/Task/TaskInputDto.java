@@ -7,13 +7,13 @@ import lombok.var;
 
 import java.time.Instant;
 
-public class TaskInputDTO {
+public class TaskInputDto {
     public Long taskId;
     public String taskName;
     public String description;
     public Instant startTime;
     public Instant endTime;
-    public boolean isRunning;
+    public Boolean isRunning;
     public User taskOwner;
     public Task parentTask;
     public Project parentProject;
