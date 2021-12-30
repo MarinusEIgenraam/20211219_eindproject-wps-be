@@ -2,10 +2,8 @@ package com.willpowered.eindprojectwpsbe.dto.elements.Project;
 
 import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
-import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
-import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,8 +16,7 @@ public class ProjectInputDto {
     public Instant endTime;
     public Boolean publiclyVisible;
     public Long categoryId;
-    public String projectOwnerName;
-    public List<Task> projectTaskList;
+    public List<TaskInputDto> projectTaskList;
 
     public Project toProject() {
         var project = new Project();
@@ -31,7 +28,6 @@ public class ProjectInputDto {
         project.setStartTime(startTime);
         project.setEndTime(endTime);
         project.setPubliclyVisible(publiclyVisible);
-        project.setProjectTaskList(projectTaskList);
 
         return project;
     }

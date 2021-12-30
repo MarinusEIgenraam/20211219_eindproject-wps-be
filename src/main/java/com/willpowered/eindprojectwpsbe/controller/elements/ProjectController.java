@@ -4,6 +4,7 @@ import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectInputDto;
 import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
+import com.willpowered.eindprojectwpsbe.service.communication.CommentService;
 import com.willpowered.eindprojectwpsbe.service.elements.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,18 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/{id}")
     public ProjectDto getProject(@PathVariable("id") Long id) {
         var project = projectService.getProject(id);
-        return ProjectDto.fromProject(project);
+        Integer commentCount = commentService.calculateComments(project);
+
+        ProjectDto projectDto = ProjectDto.fromProject(project);
+        projectDto.commentCount = commentCount;
+
+        return projectDto;
     }
 
     @GetMapping
@@ -53,7 +61,7 @@ public class ProjectController {
 
     @PostMapping
     public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
-        Project project = projectService.saveProject(dto.projectName, dto.url, dto.categoryId, dto.description, dto.startTime, dto.endTime, dto.publiclyVisible);
+        Project project = projectService.saveProject(dto);
         return ProjectDto.fromProject(project);
     }
 

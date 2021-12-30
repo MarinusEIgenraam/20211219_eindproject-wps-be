@@ -34,7 +34,7 @@ public class Category {
             name = "category_projects",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
-    @JsonManagedReference("projects_categories")
+    @JsonManagedReference("category_projects")
     private List<Project> projects;
 
 }

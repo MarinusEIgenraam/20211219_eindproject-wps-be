@@ -1,12 +1,17 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
+import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectInputDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
+import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
+import com.willpowered.eindprojectwpsbe.repository.elements.TaskRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
 import lombok.var;
@@ -14,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +36,61 @@ public class ProjectService {
     private CategoryRepository categoryRepository;
     @Autowired
     private UserAuthenticateService userAuthenticateService;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private TaskRepository taskRepository;
 
+
+    public Project saveProject(ProjectInputDto projectInputDto) {
+        var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
+        Project project = new Project();
+
+        if (!optionalCategory.isPresent()) {
+            throw new RecordNotFoundException("This category does not exist");
+        }
+        Category category = optionalCategory.get();
+
+
+
+        project.setProjectId(projectInputDto.projectId);
+        project.setProjectOwner(userAuthenticateService.getCurrentUser());
+        project.setUrl(projectInputDto.url);
+        project.setProjectName(projectInputDto.projectName);
+        project.setDescription(projectInputDto.description);
+        project.setStartTime(projectInputDto.startTime);
+        project.setEndTime(projectInputDto.endTime);
+        project.setPubliclyVisible(projectInputDto.publiclyVisible);
+        project.setCategory(category);
+
+        List<Task> newList = new ArrayList<>();
+
+        for (TaskInputDto dto : projectInputDto.projectTaskList) {
+            taskService.saveTask(dto);
+            newList.add(dto.toTask());
+        }
+
+        project.setProjectTaskList(newList);
+        Project newProject = projectRepository.save(project);
+        return newProject;
+    }
+
+    public void addTask(TaskInputDto dto, Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        Task task = new Task();
+        if(project != null) {
+            task.setDescription(dto.description);
+            task.setTaskName(dto.taskName);
+            task.setTaskOwner(userAuthenticateService.getCurrentUser());
+            task.setParentProject(project);
+            task.setStartTime(dto.startTime);
+            task.setEndTime(dto.endTime);
+            task.setIsRunning(dto.isRunning);
+            taskRepository.save(task);
+        }
+    }
 
     public Project getProject(Long projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
@@ -63,28 +122,6 @@ public class ProjectService {
         }
     }
 
-    public Project saveProject(String projectName, String url, Long categoryId, String description, Instant startTime, Instant endTime, Boolean publiclyVisible) {
-
-        var optionalCategory = categoryRepository.findById(categoryId);
-
-        if (!optionalCategory.isPresent()) {
-            throw new RecordNotFoundException("This category does not exist");
-        }
-
-        Category category = optionalCategory.get();
-
-        var project = new Project();
-        project.setCategory(category);
-        project.setProjectOwner(userAuthenticateService.getCurrentUser());
-        project.setPubliclyVisible(publiclyVisible);
-        project.setStartTime(startTime);
-        project.setDescription((description));
-        project.setEndTime(endTime);
-        project.setUrl(url);
-
-        return projectRepository.save(project);
-    }
-
     public void updateProject(Long id, Project project) {
         Optional<Project> optionalProject = projectRepository.findById(id);
         if (optionalProject.isPresent()) {
@@ -95,9 +132,9 @@ public class ProjectService {
         }
     }
 
+
+
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);
     }
-
-
 }

@@ -1,13 +1,15 @@
 package com.willpowered.eindprojectwpsbe.controller.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteDto;
 import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteInputDto;
-import com.willpowered.eindprojectwpsbe.model.communication.Vote;
 import com.willpowered.eindprojectwpsbe.service.communication.VoteService;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/votes")
@@ -18,19 +20,9 @@ public class VoteController {
     private VoteService voteService;
 
     @PostMapping
-    public VoteDto saveVote(@RequestBody VoteInputDto voteInputDto) {
-        var vote = voteService.saveVote(voteInputDto.toVote());
-        return VoteDto.fromVote(vote);
+    public ResponseEntity<Void> vote(@RequestBody VoteInputDto voteInputDto) {
+        voteService.vote(voteInputDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public VoteDto updateVote(@PathVariable Long id, @RequestBody Vote vote) {
-        voteService.updateVote(id, vote);
-        return VoteDto.fromVote(vote);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteVote(@PathVariable("id") Long id) {
-        voteService.deleteVote(id);
-    }
 }

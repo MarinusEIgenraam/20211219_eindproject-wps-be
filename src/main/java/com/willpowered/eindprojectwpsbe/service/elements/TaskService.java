@@ -79,6 +79,7 @@ public class TaskService {
 
         Task task = new Task();
 
+        task.setTaskId(dto.taskId);
         task.setTaskOwner(userAuthenticateService.getCurrentUser());
         task.setTaskName(dto.taskName);
         task.setIsRunning(true);

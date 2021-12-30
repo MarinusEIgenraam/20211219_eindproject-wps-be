@@ -79,5 +79,4 @@ public class VoteService {
         voteRepository.deleteById(id);
     }
 
-
 }

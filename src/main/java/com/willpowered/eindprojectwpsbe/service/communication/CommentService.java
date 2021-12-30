@@ -131,5 +131,7 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-
+    public Integer calculateComments(Project project) {
+        return commentRepository.findByProject(project).size();
+    }
 }

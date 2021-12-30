@@ -2,9 +2,6 @@ package com.willpowered.eindprojectwpsbe.dto.elements.Project;
 
 import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryDto;
-import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
-import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
@@ -24,6 +21,7 @@ public class ProjectDto {
     public CategoryDto category;
     public UserDto projectOwner;
     public List<Task> projectTaskList;
+    public Integer commentCount;
 
     public static ProjectDto fromProject(Project project) {
         var dto = new ProjectDto();
