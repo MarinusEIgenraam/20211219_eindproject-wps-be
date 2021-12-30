@@ -66,6 +66,7 @@ public class ProjectService {
         project.setCategory(category);
 
         List<Task> newList = new ArrayList<>();
+        User currentUser = userAuthenticateService.getCurrentUser();
 
         for (TaskInputDto dto : projectInputDto.projectTaskList) {
             taskService.saveTask(dto);
