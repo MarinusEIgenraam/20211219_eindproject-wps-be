@@ -20,27 +20,27 @@ VALUES
     ('ROLE_ADMIN', 'adminmarinus'),
     ('ROLE_SUPER_USER', 'adminmarinus'),
     ('ROLE_USER', 'adminmarinus');
--- INSERT INTO categories (id,description, name)
--- VALUES
---     (1,'science of technology', 'technology'),
---     (2,'science of psychology', 'psychology'),
---     (3,'science of writing', 'literature'),
---     (4,'mathematics', 'match'),
---     (5,'science of computers', 'computer science');
--- INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, project_owner)
--- VALUES
---     ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1, 'superuser'),
---     ('6/6/2021', 'creating a flying carpet', 'exam project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1, 'superuser'),
---     ('6/6/2021', 'creating a unicorn', 'hobby project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1, 'adminmarinus');
--- INSERT INTO tasks (description, end_time, is_running, start_time, task_name, parent_project_id, parent_task_task_id, task_owner_username)
--- VALUES
---     ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 1, null, 'user'),
---     ('buy pokeballs from store', '9/9/2023', true, '1/1/1', 'get pokeballs', null, 1, 'user'),
---     ('practice my pokeball throw with pikachu', '9/9/2023', true, '1/1/1', 'practice trowing', null, 1, 'user'),
---     ('check if pokemon still exist', '9/9/2023', true, '1/1/1', 'do research', null, 1, 'user'),
---     ('is pokemon.com stil open?', '9/9/2023', true, '1/1/1', 'get domain name', 1, null, 'user'),
---     ('does internet want to work with me?', '9/9/2023', true, '1/1/1', 'call internet', null, 5, 'user'),
---     ('internet had internet money?', '9/9/2023', false, '1/1/1', 'ask for money', null, 6, 'user');
+INSERT INTO categories (id,description, name)
+VALUES
+    (1,'science of technology', 'technology'),
+    (2,'science of psychology', 'psychology'),
+    (3,'science of writing', 'literature'),
+    (4,'mathematics', 'match'),
+    (5,'science of computers', 'computer science');
+INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, category_id, project_owner)
+VALUES
+    ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'superuser'),
+    ('6/6/2021', 'creating a flying carpet', 'exam project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'superuser'),
+    ('6/6/2021', 'creating a unicorn', 'hobby project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'adminmarinus');
+INSERT INTO tasks (description, end_time, is_running, start_time, task_name, parent_project_id, parent_task_task_id, task_owner_username)
+VALUES
+    ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 1, null, 'user'),
+    ('buy pokeballs from store', '9/9/2023', true, '1/1/1', 'get pokeballs', null, 1, 'user'),
+    ('practice my pokeball throw with pikachu', '9/9/2023', true, '1/1/1', 'practice trowing', null, 1, 'user'),
+    ('check if pokemon still exist', '9/9/2023', true, '1/1/1', 'do research', null, 1, 'user'),
+    ('is pokemon.com stil open?', '9/9/2023', true, '1/1/1', 'get domain name', 1, null, 'user'),
+    ('does internet want to work with me?', '9/9/2023', true, '1/1/1', 'call internet', null, 5, 'user'),
+    ('internet had internet money?', '9/9/2023', false, '1/1/1', 'ask for money', null, 6, 'user');
 -- INSERT INTO votes (vote_id, vote_type, user_name, project_id)
 -- VALUES
 --     (1, 1, 'user', 1),

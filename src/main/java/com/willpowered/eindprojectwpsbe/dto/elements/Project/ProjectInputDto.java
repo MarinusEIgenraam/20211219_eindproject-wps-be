@@ -19,6 +19,7 @@ public class ProjectInputDto {
     public Boolean publiclyVisible;
     public Long categoryId;
     public String projectOwnerName;
+    public List<Task> projectTaskList;
 
     public Project toProject() {
         var project = new Project();
@@ -30,6 +31,7 @@ public class ProjectInputDto {
         project.setStartTime(startTime);
         project.setEndTime(endTime);
         project.setPubliclyVisible(publiclyVisible);
+        project.setProjectTaskList(projectTaskList);
 
         return project;
     }

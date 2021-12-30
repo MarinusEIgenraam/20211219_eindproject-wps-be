@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/tasks")
 @AllArgsConstructor
-@Slf4j
 public class TaskController {
 
     @Autowired
