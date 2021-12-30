@@ -36,6 +36,7 @@ public class TaskService {
     private UserAuthenticateService userAuthenticateService;
 
 
+
     public Task getTask(Long taskId) {
         Optional<Task> task = taskRepository.findById(taskId);
 
@@ -46,7 +47,11 @@ public class TaskService {
         }
     }
 
-    public List<Task> getTasksForProject(Long projectId) {
+    public List<Task> getTasks() {
+        return taskRepository.findAll();
+    }
+
+    public List<Task> getTasksForParentProject(Long projectId) {
         var optionalProject = projectRepository.findById(projectId);
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
@@ -66,10 +71,21 @@ public class TaskService {
         }
     }
 
+    public List<Task> getTasksForParentTask(Long parentTaskId) {
+        var optionalTask = taskRepository.findById(parentTaskId);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            return taskRepository.findAllByParentTask(task);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
     public Task saveTask(TaskInputDto dto) {
 
-        var optionalProject = projectRepository.findById(dto.parentProjectId);
-        var optionalParentTask = taskRepository.findById(dto.parentProjectId);
+        Optional<Project> optionalProject = projectRepository.findById(dto.parentProject.getProjectId());
+        Optional<Task> optionalParentTask = taskRepository.findById(dto.parentTask.getTaskId());
+        User currentUser = userAuthenticateService.getCurrentUser();
 
         if (!optionalProject.isPresent() && !optionalParentTask.isPresent()) {
             throw new RecordNotFoundException("No parent found");
@@ -80,7 +96,7 @@ public class TaskService {
         Task task = new Task();
 
         task.setTaskId(dto.taskId);
-        task.setTaskOwner(userAuthenticateService.getCurrentUser());
+        task.setTaskOwner(dto.taskOwner);
         task.setTaskName(dto.taskName);
         task.setIsRunning(true);
         task.setParentProject(parentProject);

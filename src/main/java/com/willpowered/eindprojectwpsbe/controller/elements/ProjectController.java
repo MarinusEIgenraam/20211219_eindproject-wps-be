@@ -36,6 +36,18 @@ public class ProjectController {
         return projectDto;
     }
 
+    @GetMapping("/all")
+    public List<ProjectDto> getAllProjects() {
+        var dtos = new ArrayList<ProjectDto>();
+        List<Project> projects;
+
+        projects = projectService.getAllProjects();
+        for (Project project : projects) {
+            dtos.add(ProjectDto.fromProject(project));
+        }
+        return dtos;
+    }
+
     @GetMapping
     public List<ProjectDto> getProjects(
             @RequestParam(value = "categoryId", required = false) Long categoryId,

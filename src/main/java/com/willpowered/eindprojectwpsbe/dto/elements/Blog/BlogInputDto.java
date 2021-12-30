@@ -13,7 +13,7 @@ import java.time.Instant;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-public class BloginputDTO {
+public class BlogInputDto {
 
     public Long blogId;
     public String blogName;

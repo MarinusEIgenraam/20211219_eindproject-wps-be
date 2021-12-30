@@ -43,6 +43,9 @@ public class ProjectService {
     @Autowired
     private TaskRepository taskRepository;
 
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
+    }
 
     public Project saveProject(ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
@@ -69,6 +72,10 @@ public class ProjectService {
         User currentUser = userAuthenticateService.getCurrentUser();
 
         for (TaskInputDto dto : projectInputDto.projectTaskList) {
+            if (dto.taskOwner == null) {
+                dto.taskOwner = userAuthenticateService.getCurrentUser();
+            }
+            dto.parentProject = project;
             taskService.saveTask(dto);
             newList.add(dto.toTask());
         }

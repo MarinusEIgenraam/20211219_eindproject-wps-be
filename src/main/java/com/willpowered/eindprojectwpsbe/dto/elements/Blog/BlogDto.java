@@ -1,13 +1,12 @@
 package com.willpowered.eindprojectwpsbe.dto.elements.Blog;
 
 import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
-import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Blog;
 import lombok.var;
 
 import java.time.Instant;
 
-public class BlogDTO {
+public class BlogDto {
 
     public Long blogId;
     public String blogName;
@@ -16,8 +15,8 @@ public class BlogDTO {
     public Instant startTime;
     public UserDto blogOwner;
 
-    public static BlogDTO fromBlog(Blog blog) {
-        var dto = new BlogDTO();
+    public static BlogDto fromBlog(Blog blog) {
+        var dto = new BlogDto();
 
         dto.blogId = blog.getBlogId();
         dto.blogName = blog.getBlogName();

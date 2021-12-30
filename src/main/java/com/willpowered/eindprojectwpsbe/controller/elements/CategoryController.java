@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categorys")
+@RequestMapping("/categories")
 @AllArgsConstructor
-@Slf4j
 public class CategoryController {
 
     @Autowired
@@ -28,7 +27,7 @@ public class CategoryController {
         return CategoryDto.fromCategory(category);
     }
 
-    @GetMapping()
+    @GetMapping("/categories")
     public List<CategoryDto> getCategories() {
         var dtos = new ArrayList<CategoryDto>();
         List<Category> categories;

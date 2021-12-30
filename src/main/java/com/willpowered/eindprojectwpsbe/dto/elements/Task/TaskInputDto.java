@@ -2,6 +2,7 @@ package com.willpowered.eindprojectwpsbe.dto.elements.Task;
 
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
@@ -17,9 +18,9 @@ public class TaskInputDto {
     @Nullable
     public User taskOwner;
     @Nullable
-    public Long parentTaskId;
+    public Task parentTask;
     @Nullable
-    public Long parentProjectId;
+    public Project parentProject;
 
     public Task toTask() {
         var task = new Task();
@@ -30,6 +31,9 @@ public class TaskInputDto {
         task.setStartTime(startTime);
         task.setEndTime(endTime);
         task.setIsRunning(isRunning);
+        task.setTaskOwner(taskOwner);
+        task.setParentProject(parentProject);
+        task.setParentTask(parentTask);
 
         return task;
     }
