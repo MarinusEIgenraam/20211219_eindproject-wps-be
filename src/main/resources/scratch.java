@@ -1,17 +1,31 @@
-import org.springframework.web.bind.annotation.GetMapping;
+public Task saveTask(Task task) {
 
-@GetMapping()
-public List<ProjectDto> getProjects() {
-        var dtos = new ArrayList<ProjectDto>();
-        List<Project> projects;
-
-        projects = projectService.getProjects();
-        for (Project project : projects) {
-        dtos.add(ProjectDto.fromProject(project));
+        if (dto.parentProjectId != null && dto.parentTaskId != null) {
+        task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else if (dto.parentProjectId == null && dto.parentTaskId != null) {
+        task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
+        task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else {
+        throw new RecordNotFoundException("No parent found");
         }
-        return dtos;
+        User currentUser = userAuthenticateService.getCurrentUser();
+
+        if (dto.taskOwnerName != null) {
+        task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
+        } else if (dto.taskOwnerName == null && currentUser == null) {
+        throw new UserNotFoundException("No user");
+        } else {
+        task.setTaskOwner(currentUser);
         }
 
-public List<Project> getProjects() {
-        return projectRepository.findAll();
+        task.setTaskId(dto.taskId);
+        task.setTaskName(dto.taskName);
+        task.setIsRunning(true);
+        task.setDescription((dto.description));
+        task.setStartTime(dto.startTime);
+        task.setEndTime(dto.endTime);
+
+        return taskRepository.save(task);
         }

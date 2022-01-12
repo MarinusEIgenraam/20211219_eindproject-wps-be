@@ -27,7 +27,7 @@ public class CategoryController {
         return CategoryDto.fromCategory(category);
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/all")
     public List<CategoryDto> getCategories() {
         var dtos = new ArrayList<CategoryDto>();
         List<Category> categories;

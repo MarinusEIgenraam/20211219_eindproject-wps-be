@@ -1,15 +1,10 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentDto;
-import com.willpowered.eindprojectwpsbe.dto.communication.Comment.CommentInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import com.willpowered.eindprojectwpsbe.model.communication.Comment;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.repository.communication.AlertRepository;
 import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;

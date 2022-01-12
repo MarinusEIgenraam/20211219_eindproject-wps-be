@@ -2,6 +2,7 @@ package com.willpowered.eindprojectwpsbe.service.elements;
 
 import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
@@ -82,25 +83,31 @@ public class TaskService {
     }
 
     public Task saveTask(TaskInputDto dto) {
-
-        Optional<Project> optionalProject = projectRepository.findById(dto.parentProject.getProjectId());
-        Optional<Task> optionalParentTask = taskRepository.findById(dto.parentTask.getTaskId());
-        User currentUser = userAuthenticateService.getCurrentUser();
-
-        if (!optionalProject.isPresent() && !optionalParentTask.isPresent()) {
-            throw new RecordNotFoundException("No parent found");
-        }
-        Task parentTask = optionalParentTask.get();
-        Project parentProject = optionalProject.get();
-
         Task task = new Task();
 
+        if (dto.parentProjectId != null && dto.parentTaskId != null) {
+            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else if (dto.parentProjectId == null && dto.parentTaskId != null) {
+            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
+            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else {
+            throw new RecordNotFoundException("No parent found");
+        }
+        User currentUser = userAuthenticateService.getCurrentUser();
+
+        if (dto.taskOwnerName != null) {
+            task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
+        } else if (dto.taskOwnerName == null && currentUser == null) {
+            throw new UserNotFoundException("No user");
+        } else {
+            task.setTaskOwner(currentUser);
+        }
+
         task.setTaskId(dto.taskId);
-        task.setTaskOwner(dto.taskOwner);
         task.setTaskName(dto.taskName);
         task.setIsRunning(true);
-        task.setParentProject(parentProject);
-        task.setParentTask(parentTask);
         task.setDescription((dto.description));
         task.setStartTime(dto.startTime);
         task.setEndTime(dto.endTime);

@@ -47,43 +47,43 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project saveProject(ProjectInputDto projectInputDto) {
-        var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
-        Project project = new Project();
-
-        if (!optionalCategory.isPresent()) {
-            throw new RecordNotFoundException("This category does not exist");
-        }
-        Category category = optionalCategory.get();
-
-
-
-        project.setProjectId(projectInputDto.projectId);
-        project.setProjectOwner(userAuthenticateService.getCurrentUser());
-        project.setUrl(projectInputDto.url);
-        project.setProjectName(projectInputDto.projectName);
-        project.setDescription(projectInputDto.description);
-        project.setStartTime(projectInputDto.startTime);
-        project.setEndTime(projectInputDto.endTime);
-        project.setPubliclyVisible(projectInputDto.publiclyVisible);
-        project.setCategory(category);
-
-        List<Task> newList = new ArrayList<>();
-        User currentUser = userAuthenticateService.getCurrentUser();
-
-        for (TaskInputDto dto : projectInputDto.projectTaskList) {
-            if (dto.taskOwner == null) {
-                dto.taskOwner = userAuthenticateService.getCurrentUser();
-            }
-            dto.parentProject = project;
-            taskService.saveTask(dto);
-            newList.add(dto.toTask());
-        }
-
-        project.setProjectTaskList(newList);
-        Project newProject = projectRepository.save(project);
-        return newProject;
+    public Project saveProject(Project project) {
+        return projectRepository.save(project);
     }
+
+//    public Project saveProject(Project projectInputDto) {
+//        var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
+//        Project project = new Project();
+//
+//        if (!optionalCategory.isPresent()) {
+//            throw new RecordNotFoundException("This category does not exist");
+//        }
+//        Category category = optionalCategory.get();
+//
+//
+//
+//        project.setProjectOwner(userAuthenticateService.getCurrentUser());
+//        project.setUrl(projectInputDto.url);
+//        project.setProjectName(projectInputDto.projectName);
+//        project.setDescription(projectInputDto.description);
+//        project.setCategory(category);
+//
+//        List<Task> newList = new ArrayList<>();
+//        User currentUser = userAuthenticateService.getCurrentUser();
+//
+//        for (TaskInputDto dto : projectInputDto.projectTaskList) {
+//            if (dto.taskOwnerName == null) {
+//                dto.taskOwnerName = userAuthenticateService.getCurrentUser().getUsername();
+//            }
+//            dto.parentProjectId = project.getProjectId();
+//            taskService.saveTask(dto);
+//            newList.add(dto.toTask());
+//        }
+//
+//        project.setProjectTaskList(newList);
+//        Project newProject = projectRepository.save(project);
+//        return newProject;
+//    }
 
     public void addTask(TaskInputDto dto, Long projectId) {
         Project project = projectRepository.findById(projectId).orElse(null);

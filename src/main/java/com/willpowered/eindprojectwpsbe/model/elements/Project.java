@@ -38,6 +38,8 @@ public class Project {
 
     @Nullable
     private String url;
+    @Nullable
+    private String imageUrl;
 
     @Nullable
     @Lob

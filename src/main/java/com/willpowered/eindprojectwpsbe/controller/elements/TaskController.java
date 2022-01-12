@@ -69,8 +69,7 @@ public class TaskController {
 
     @PostMapping
     public TaskDto saveTask(@RequestBody TaskInputDto dto) {
-        var task = taskService.saveTask(dto);
-        return TaskDto.fromTask(task);
+        return TaskDto.fromTask(taskService.saveTask(dto));
     }
 
     @PutMapping("/{id}")

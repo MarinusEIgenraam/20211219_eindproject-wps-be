@@ -37,19 +37,16 @@ public class Task {
     private Boolean isRunning;
 
     @ManyToOne
-    @Nullable
     private User taskOwner;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("task_tasks")
-    @Nullable
     private Task parentTask;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_project_id")
     @JsonBackReference("project_tasks")
-    @Nullable
     private Project parentProject;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

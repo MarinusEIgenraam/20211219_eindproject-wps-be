@@ -20,7 +20,7 @@ public class BlogInputDto {
     public String url;
     public String description;
     public Instant startTime;
-    public Long blogOwnerId;
+    public String blogOwnerId;
 
     public Blog toBlog() {
         var blog = new Blog();

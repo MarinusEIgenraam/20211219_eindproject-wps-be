@@ -7,7 +7,6 @@ import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.service.communication.CommentService;
 import com.willpowered.eindprojectwpsbe.service.elements.ProjectService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +72,7 @@ public class ProjectController {
 
     @PostMapping
     public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
-        Project project = projectService.saveProject(dto);
+        Project project = projectService.saveProject(dto.toProject());
         return ProjectDto.fromProject(project);
     }
 

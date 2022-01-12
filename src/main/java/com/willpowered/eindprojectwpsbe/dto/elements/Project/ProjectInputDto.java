@@ -11,6 +11,7 @@ public class ProjectInputDto {
     public Long projectId;
     public String projectName;
     public String url;
+    public String imageUrl;
     public String description;
     public Instant startTime;
     public Instant endTime;
@@ -24,10 +25,11 @@ public class ProjectInputDto {
         project.setProjectId(projectId);
         project.setProjectName(projectName);
         project.setUrl(url);
+        project.setImageUrl(imageUrl);
         project.setDescription(description);
-        project.setStartTime(startTime);
-        project.setEndTime(endTime);
-        project.setPubliclyVisible(publiclyVisible);
+//        project.setStartTime(startTime);
+//        project.setEndTime(endTime);
+//        project.setPubliclyVisible(publiclyVisible);
 
         return project;
     }
