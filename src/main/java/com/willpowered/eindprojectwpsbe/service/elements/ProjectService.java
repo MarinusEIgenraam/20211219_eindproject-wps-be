@@ -1,30 +1,30 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectRequest;
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectResponse;
+import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectInputDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.mapping.ProjectMapper;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
+import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.repository.communication.CommentRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
+import com.willpowered.eindprojectwpsbe.repository.elements.TaskRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 @Transactional
 public class ProjectService {
 
@@ -37,44 +37,112 @@ public class ProjectService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
     @Autowired
-    private ProjectMapper projectMapper;
+    private CommentRepository commentRepository;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private TaskRepository taskRepository;
 
-    public void save(ProjectRequest projectRequest) {
-        Category category = categoryRepository.findByName(projectRequest.getCategoryName())
-                .orElseThrow(() -> new RecordNotFoundException(projectRequest.getCategoryName()));
-        projectRepository.save(projectMapper.map(projectRequest, category, userAuthenticateService.getCurrentUser()));
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
     }
 
-    @Transactional(readOnly = true) // Minder ballast voor server door data verkeer te verkleinen
-    public ProjectResponse getProject(Long id) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException(id.toString()));
-        return projectMapper.mapToDto(project);
+    public Project saveProject(Project project) {
+        return projectRepository.save(project);
     }
 
-    @Transactional(readOnly = true)
-    public List<ProjectResponse> getAllProjects() {
-        return projectRepository.findAll()
-                .stream()
-                .map(projectMapper::mapToDto)
-                .collect(toList());
+//    public Project saveProject(Project projectInputDto) {
+//        var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
+//        Project project = new Project();
+//
+//        if (!optionalCategory.isPresent()) {
+//            throw new RecordNotFoundException("This category does not exist");
+//        }
+//        Category category = optionalCategory.get();
+//
+//
+//
+//        project.setProjectOwner(userAuthenticateService.getCurrentUser());
+//        project.setUrl(projectInputDto.url);
+//        project.setProjectName(projectInputDto.projectName);
+//        project.setDescription(projectInputDto.description);
+//        project.setCategory(category);
+//
+//        List<Task> newList = new ArrayList<>();
+//        User currentUser = userAuthenticateService.getCurrentUser();
+//
+//        for (TaskInputDto dto : projectInputDto.projectTaskList) {
+//            if (dto.taskOwnerName == null) {
+//                dto.taskOwnerName = userAuthenticateService.getCurrentUser().getUsername();
+//            }
+//            dto.parentProjectId = project.getProjectId();
+//            taskService.saveTask(dto);
+//            newList.add(dto.toTask());
+//        }
+//
+//        project.setProjectTaskList(newList);
+//        Project newProject = projectRepository.save(project);
+//        return newProject;
+//    }
+
+    public void addTask(TaskInputDto dto, Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+        Task task = new Task();
+        if(project != null) {
+            task.setDescription(dto.description);
+            task.setTaskName(dto.taskName);
+            task.setTaskOwner(userAuthenticateService.getCurrentUser());
+            task.setParentProject(project);
+            task.setStartTime(dto.startTime);
+            task.setEndTime(dto.endTime);
+            task.setIsRunning(dto.isRunning);
+            taskRepository.save(task);
+        }
     }
 
-    @Transactional(readOnly = true)
-    public List<ProjectResponse> getProjectsByCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RecordNotFoundException(categoryId.toString()));
-        List<Project> projects = projectRepository.findAllByCategory(category);
-        return projects.stream().map(projectMapper::mapToDto).collect(toList());
+    public Project getProject(Long projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        if (project.isPresent()) {
+            return project.get();
+        } else {
+            throw new RecordNotFoundException("Project does not exist");
+        }
     }
 
-    @Transactional(readOnly = true)
-    public List<ProjectResponse> getProjectsByUsername(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-        return projectRepository.findByProjectOwner(user)
-                .stream()
-                .map(projectMapper::mapToDto)
-                .collect(toList());
+    public List<Project> getProjectsForCategory(Long categoryId) {
+        var optionalCategory = categoryRepository.findById(categoryId);
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            return projectRepository.findAllByCategory(category);
+        } else {
+            throw new RecordNotFoundException("Category does not exist");
+        }
+    }
+
+    public List<Project> getProjectsForProjectOwner(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return projectRepository.findAllByProjectOwner(user);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
+    public void updateProject(Long id, Project project) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            projectRepository.deleteById(id);
+            projectRepository.save(project);
+        } else {
+            throw new RecordNotFoundException("project does not exist");
+        }
+    }
+
+
+
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
     }
 }

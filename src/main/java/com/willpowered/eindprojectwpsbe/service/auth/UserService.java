@@ -8,6 +8,7 @@ import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.auth.Authority;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,16 +20,13 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +83,6 @@ public class UserService {
         }
     }
 
-
     private boolean isValidPassword(String password) {
         final int MIN_LENGTH = 8;
         final int MIN_DIGITS = 1;
@@ -129,6 +126,34 @@ public class UserService {
         else {
             throw new NotAuthorizedException();
         }
+    }
+
+    public void updateUser(String username, User newUser) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException();
+        User user = userRepository.findById(username).get();
+        user.setPassword(newUser.getPassword());
+        userRepository.save(user);
+    }
+
+    public Set<Authority> getAuthorities(String username) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        return user.getAuthorities();
+    }
+
+    public void addAuthority(String username, String authority) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        user.addAuthority(new Authority(username, authority));
+        userRepository.save(user);
+    }
+
+    public void removeAuthority(String username, String authority) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
     }
 
 }

@@ -1,9 +1,8 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskRequest;
-import com.willpowered.eindprojectwpsbe.dto.elements.task.TaskResponse;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.mapping.TaskMapper;
+import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
@@ -13,15 +12,14 @@ import com.willpowered.eindprojectwpsbe.repository.elements.TaskRepository;
 import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -32,63 +30,105 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private ProjectRepository projectRepository;
     @Autowired
-    private TaskMapper taskMapper;
+    private UserAuthenticateService userAuthenticateService;
 
 
-    public void save(TaskRequest taskRequest) {
-        if ((taskRequest.getParentTaskName() == null) && (taskRequest.getParentProjectName() == null)) {
-            throw new RecordNotFoundException("No parents found");
-        } else if (!(taskRequest.getParentTaskName() == null)) {
-            Project project = null;
-            Task task = taskRepository.findByTaskName(taskRequest.getParentTaskName())
-                    .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentTaskName()));
-            taskRepository.save(taskMapper.map(taskRequest, task, project, userAuthenticateService.getCurrentUser()));
+
+    public Task getTask(Long taskId) {
+        Optional<Task> task = taskRepository.findById(taskId);
+
+        if (task.isPresent()) {
+            return task.get();
         } else {
-            Task task = null;
-            Project project = projectRepository.findByProjectName(taskRequest.getParentProjectName())
-                                .orElseThrow(() -> new RecordNotFoundException(taskRequest.getParentProjectName()));
-            taskRepository.save(taskMapper.map(taskRequest, task, project, userAuthenticateService.getCurrentUser()));
+            throw new RecordNotFoundException("Task does not exist");
         }
     }
 
-    @Transactional(readOnly = true)
-    public TaskResponse getTask(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException(id.toString()));
-        return taskMapper.mapToDto(task);
+    public List<Task> getTasks() {
+        return taskRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public List<TaskResponse> getAllTasks() {
-        return taskRepository.findAll()
-                .stream()
-                .map(taskMapper::mapToDto)
-                .collect(toList());
+    public List<Task> getTasksForParentProject(Long projectId) {
+        var optionalProject = projectRepository.findById(projectId);
+        if (optionalProject.isPresent()) {
+            Project project = optionalProject.get();
+            return taskRepository.findAllByParentProject(project);
+        } else {
+            throw new RecordNotFoundException("Project does not exist");
+        }
     }
 
-    @Transactional(readOnly = true)
-    public List<TaskResponse> getTasksByProject(Long projectId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RecordNotFoundException(projectId.toString()));
-        List<Task> tasks = taskRepository.findAllByParentProject(project);
-        return tasks.stream().map(taskMapper::mapToDto).collect(toList());
+    public List<Task> getTasksForTaskOwner(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return taskRepository.findAllByTaskOwner(user);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
     }
 
-    @Transactional(readOnly = true)
-    public List<TaskResponse> getTasksByTaskOwner(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-        return taskRepository.findAllByTaskOwner(user)
-                .stream()
-                .map(taskMapper::mapToDto)
-                .collect(toList());
+    public List<Task> getTasksForParentTask(Long parentTaskId) {
+        var optionalTask = taskRepository.findById(parentTaskId);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            return taskRepository.findAllByParentTask(task);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
     }
+
+    public Task saveTask(TaskInputDto dto) {
+        Task task = new Task();
+
+        if (dto.parentProjectId != null && dto.parentTaskId != null) {
+            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else if (dto.parentProjectId == null && dto.parentTaskId != null) {
+            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
+            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else {
+            throw new RecordNotFoundException("No parent found");
+        }
+        User currentUser = userAuthenticateService.getCurrentUser();
+
+        if (dto.taskOwnerName != null) {
+            task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
+        } else if (dto.taskOwnerName == null && currentUser == null) {
+            throw new UserNotFoundException("No user");
+        } else {
+            task.setTaskOwner(currentUser);
+        }
+
+        task.setTaskId(dto.taskId);
+        task.setTaskName(dto.taskName);
+        task.setIsRunning(true);
+        task.setDescription((dto.description));
+        task.setStartTime(dto.startTime);
+        task.setEndTime(dto.endTime);
+
+        return taskRepository.save(task);
+    }
+
+    public void updateTask(Long id, Task task) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            taskRepository.deleteById(id);
+            taskRepository.save(task);
+        } else {
+            throw new RecordNotFoundException("task does not exist");
+        }
+    }
+
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
+    }
+
 }
 
 

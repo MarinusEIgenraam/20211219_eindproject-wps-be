@@ -1,17 +1,18 @@
 package com.willpowered.eindprojectwpsbe.controller.elements;
 
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectRequest;
-import com.willpowered.eindprojectwpsbe.dto.elements.project.ProjectResponse;
+import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectInputDto;
+import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
+import com.willpowered.eindprojectwpsbe.model.elements.Project;
+import com.willpowered.eindprojectwpsbe.service.communication.CommentService;
 import com.willpowered.eindprojectwpsbe.service.elements.ProjectService;
 import lombok.AllArgsConstructor;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/projects")
@@ -20,31 +21,69 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private CommentService commentService;
 
-    @PostMapping
-    public ResponseEntity<Void> createProject(@RequestBody ProjectRequest projectRequest) {
-        projectService.save(projectRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping("/{id}")
+    public ProjectDto getProject(@PathVariable("id") Long id) {
+        var project = projectService.getProject(id);
+        Integer commentCount = commentService.calculateComments(project);
+
+        ProjectDto projectDto = ProjectDto.fromProject(project);
+        projectDto.commentCount = commentCount;
+
+        return projectDto;
+    }
+
+    @GetMapping("/all")
+    public List<ProjectDto> getAllProjects() {
+        var dtos = new ArrayList<ProjectDto>();
+        List<Project> projects;
+
+        projects = projectService.getAllProjects();
+        for (Project project : projects) {
+            dtos.add(ProjectDto.fromProject(project));
+        }
+        return dtos;
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponse>> getAllProjects() {
-        return status(HttpStatus.OK).body(projectService.getAllProjects());
+    public List<ProjectDto> getProjects(
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "username", required = false) String username
+    ) {
+        var dtos = new ArrayList<ProjectDto>();
+
+        List<Project> projects;
+        if (categoryId != null && username == null) {
+            projects = projectService.getProjectsForCategory(categoryId);
+        } else if  (categoryId == null && username != null) {
+            projects = projectService.getProjectsForProjectOwner(username);
+        } else {
+            throw new BadRequestException();
+        }
+
+        for (Project project : projects) {
+            dtos.add(ProjectDto.fromProject(project));
+        }
+
+        return dtos;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse> getProject(@PathVariable Long id) {
-        return status(HttpStatus.OK).body(projectService.getProject(id));
+    @PostMapping
+    public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
+        Project project = projectService.saveProject(dto.toProject());
+        return ProjectDto.fromProject(project);
     }
 
-    @GetMapping("by-category/{id}")
-    public ResponseEntity<List<ProjectResponse>> getProjectsByCategory(Long id) {
-        return status(HttpStatus.OK).body(projectService.getProjectsByCategory(id));
+    @PutMapping("/{id}")
+    public ProjectDto updateProject(@PathVariable Long id, @RequestBody Project project) {
+        projectService.updateProject(id, project);
+        return ProjectDto.fromProject(project);
     }
 
-    @GetMapping("by-user/{name}")
-    public ResponseEntity<List<ProjectResponse>> getProjectsByUsername(@PathVariable String name) {
-        return status(HttpStatus.OK).body(projectService.getProjectsByUsername(name));
+    @DeleteMapping("/{id}")
+    public void deleteProject(@PathVariable("id") Long id) {
+        projectService.deleteProject(id);
     }
-
 }

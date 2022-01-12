@@ -1,6 +1,9 @@
 package com.willpowered.eindprojectwpsbe.model.elements;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +13,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -20,7 +24,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "projects")
@@ -35,6 +38,8 @@ public class Project {
 
     @Nullable
     private String url;
+    @Nullable
+    private String imageUrl;
 
     @Nullable
     @Lob
@@ -45,9 +50,10 @@ public class Project {
     private Instant endTime;
 
     private Integer voteCount = 0;
+    private Boolean publiclyVisible;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JsonBackReference("category_projects")
     private Category category;
 
     @ManyToOne(fetch = LAZY)
@@ -59,18 +65,17 @@ public class Project {
             cascade = CascadeType.ALL)
     @Size(max = 30, min = 1)
     @JoinTable(
-            name = "projects_tasks",
+            name = "project_tasks",
             joinColumns = @JoinColumn(name = "parent_project_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    @JsonManagedReference("projects_tasks")
+    @JsonManagedReference("project_tasks")
     private List<Task> projectTaskList;
 
     @ManyToMany
     @JoinTable(
-            name = "projects_collaborators",
-            joinColumns = @JoinColumn(name = "project_id"),
+            name = "project_collaborators",
+            joinColumns = @JoinColumn(name = "projectId"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> collaborators;
-
 
 }

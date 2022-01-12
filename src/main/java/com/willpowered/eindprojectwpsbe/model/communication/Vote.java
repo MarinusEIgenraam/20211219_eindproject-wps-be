@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "votes")
+@Table(name = "projectVotes")
 public class Vote {
     @Id
     @GeneratedValue(strategy = SEQUENCE)
@@ -28,7 +28,7 @@ public class Vote {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId", referencedColumnName = "id")
+    @JoinColumn(name = "projectId", referencedColumnName = "projectId")
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)

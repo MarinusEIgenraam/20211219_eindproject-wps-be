@@ -34,25 +34,26 @@ public class Task {
     private Instant startTime;
     private Instant endTime;
 
-    private boolean isRunning = true;
+    private Boolean isRunning;
 
     @ManyToOne
     private User taskOwner;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference("tasks_tasks")
+    @JsonBackReference("task_tasks")
     private Task parentTask;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "tasks_tasks",
-            joinColumns = @JoinColumn(name = "parent_task_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
-    @JsonManagedReference("tasks_tasks")
-    private List<Task> taskTaskList;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_project_id")
-    @JsonManagedReference("projects_tasks")
+    @JsonBackReference("project_tasks")
     private Project parentProject;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "task_tasks",
+            joinColumns = @JoinColumn(name = "parent_task_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    @JsonManagedReference("task_tasks")
+    private List<Task> taskTaskList;
 }

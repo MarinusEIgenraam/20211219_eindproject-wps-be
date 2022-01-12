@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.model.elements;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Builder
 @Table(name = "categories")
 public class Category {
     @Id
@@ -30,6 +30,11 @@ public class Category {
     private String description;
 
     @OneToMany(fetch = LAZY)
+    @JoinTable(
+            name = "category_projects",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonManagedReference("category_projects")
     private List<Project> projects;
 
 }

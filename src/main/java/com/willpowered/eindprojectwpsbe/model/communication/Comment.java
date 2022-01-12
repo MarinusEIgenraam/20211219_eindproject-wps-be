@@ -33,7 +33,7 @@ public class Comment {
     private Instant createdDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "projectId", referencedColumnName = "id")
+    @JoinColumn(name = "projectId", referencedColumnName = "projectId")
     private Project project;
 
     @ManyToOne(fetch = LAZY)
@@ -41,7 +41,7 @@ public class Comment {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference("comments_comments")
+    @JsonBackReference("comment_comments")
     private Comment parentComment;
 
     @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
