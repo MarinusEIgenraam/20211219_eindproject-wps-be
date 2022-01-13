@@ -4,7 +4,9 @@ import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.var;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProjectInputDto {
@@ -13,11 +15,13 @@ public class ProjectInputDto {
     public String url;
     public String imageUrl;
     public String description;
-    public Instant startTime;
-    public Instant endTime;
-    public Boolean publiclyVisible;
+    public String username;
     public Long categoryId;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
+    public Boolean publiclyVisible;
     public List<TaskInputDto> projectTaskList;
+    public List<String> collaborators;
 
     public Project toProject() {
         var project = new Project();
@@ -27,9 +31,9 @@ public class ProjectInputDto {
         project.setUrl(url);
         project.setImageUrl(imageUrl);
         project.setDescription(description);
-//        project.setStartTime(startTime);
-//        project.setEndTime(endTime);
-//        project.setPubliclyVisible(publiclyVisible);
+        project.setStartTime(startTime);
+        project.setEndTime(endTime);
+        project.setPubliclyVisible(publiclyVisible);
 
         return project;
     }

@@ -7,15 +7,17 @@ import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TaskDto {
     private Long taskId;
     private String taskName;
     private String description;
-    public Instant startTime;
-    public Instant endTime;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
     public Boolean isRunning;
     public UserDto taskOwner;
     @Nullable

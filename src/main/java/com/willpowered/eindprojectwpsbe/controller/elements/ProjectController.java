@@ -72,7 +72,7 @@ public class ProjectController {
 
     @PostMapping
     public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
-        Project project = projectService.saveProject(dto.toProject());
+        Project project = projectService.saveProject(dto);
         return ProjectDto.fromProject(project);
     }
 

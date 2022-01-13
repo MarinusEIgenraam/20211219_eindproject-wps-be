@@ -6,14 +6,16 @@ import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 import org.springframework.lang.Nullable;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class TaskInputDto {
     public Long taskId;
     public String taskName;
     public String description;
-    public Instant startTime;
-    public Instant endTime;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
     public Boolean isRunning;
     public String taskOwnerName;
     @Nullable

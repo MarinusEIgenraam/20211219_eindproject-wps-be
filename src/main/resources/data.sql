@@ -27,11 +27,11 @@ VALUES
     (3,'science of writing', 'literature'),
     (4,'mathematics', 'match'),
     (5,'science of computers', 'computer science');
-INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, category_id, project_owner)
+INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, category_id)
 VALUES
-    ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2021', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'superuser'),
-    ('6/6/2021', 'creating a flying carpet', 'exam project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'superuser'),
-    ('6/6/2021', 'creating a unicorn', 'hobby project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'adminmarinus');
+    ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2021', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1),
+    ('6/6/2021', 'creating a flying carpet', 'exam project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1),
+    ('6/6/2021', 'creating a unicorn', 'hobby project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1);
 INSERT INTO tasks (description, end_time, is_running, start_time, task_name, parent_project_id, parent_task_task_id, task_owner_username)
 VALUES
     ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 1, null, 'user'),

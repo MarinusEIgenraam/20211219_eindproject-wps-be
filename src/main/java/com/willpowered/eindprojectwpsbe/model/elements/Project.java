@@ -16,7 +16,9 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -46,8 +48,8 @@ public class Project {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    private Instant startTime;
-    private Instant endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     private Integer voteCount = 0;
     private Boolean publiclyVisible;
