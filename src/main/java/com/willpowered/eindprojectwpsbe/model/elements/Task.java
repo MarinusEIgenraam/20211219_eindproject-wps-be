@@ -4,15 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -33,10 +29,12 @@ public class Task {
     private String taskName;
     private String description;
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate startTime;
+    @Nullable
+    private LocalDate editedTime;
+    private LocalDate endTime;
 
-    private Boolean isRunning;
+    private Boolean isRunning = true;
 
     @ManyToOne
     private User taskOwner;

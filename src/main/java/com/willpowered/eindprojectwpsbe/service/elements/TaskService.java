@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
@@ -17,7 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,16 +39,102 @@ public class TaskService {
     private UserAuthenticateService userAuthenticateService;
 
 
+    public Task saveTask(TaskInputDto dto) {
+        Task task = saveTaskData(dto);
 
-    public Task getTask(Long taskId) {
-        Optional<Task> task = taskRepository.findById(taskId);
+        if (dto.parentProjectId == null && dto.parentTaskId != null) {
+            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
+            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        } else {
+            throw new RecordNotFoundException("No parent found");
+        }
+        User currentUser = userAuthenticateService.getCurrentUser();
 
-        if (task.isPresent()) {
-            return task.get();
+        if (dto.taskOwnerName != null) {
+            task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
+        } else if (dto.taskOwnerName == null && currentUser == null) {
+            throw new UserNotFoundException("No user");
+        } else {
+            task.setTaskOwner(currentUser);
+        }
+
+        Task parentTask = taskRepository.save(task);
+
+
+        if (dto.taskTaskList != null) {
+            List<Task> newTaskList = new ArrayList<>();
+
+            for (TaskInputDto taskTaskInputDto : dto.taskTaskList) {
+                taskTaskInputDto.parentTaskId = parentTask.getTaskId();
+                newTaskList.add(saveTask(taskTaskInputDto));
+            }
+
+
+
+            parentTask.setTaskTaskList(newTaskList);
+        }
+
+        return parentTask;
+    }
+
+    public void updateTask(Long id, Task task) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isPresent()) {
+            Task newTask = optionalTask.get();
+            if (newTask.getTaskTaskList().equals(task.getTaskTaskList())) {
+                taskRepository.deleteById(id);
+                taskRepository.save(task);
+            } else {
+                taskRepository.deleteById(id);
+
+                Task updatedTask = taskRepository.save(task);
+                List newTaskList = new ArrayList<>();
+
+                for (Task subTask : task.getTaskTaskList()) {
+                    if (taskRepository.findById(subTask.getTaskId()).isPresent()) {
+                        taskRepository.deleteById(subTask.getTaskId());
+
+                        newTaskList.add(taskRepository.save(subTask));
+                    }
+                }
+
+                updatedTask.setTaskTaskList((newTaskList));
+                taskRepository.save(updatedTask);
+            }
         } else {
             throw new RecordNotFoundException("Task does not exist");
         }
     }
+
+    public Task saveTaskData(TaskInputDto taskInputdto) {
+        Task task = new Task();
+
+        task.setDescription(taskInputdto.description);
+        task.setTaskName(taskInputdto.taskName);
+        task.setEndTime(taskInputdto.endTime);
+        if (taskInputdto.startTime == null) {
+            task.setStartTime(LocalDate.now());
+        } else {
+            task.setStartTime(taskInputdto.startTime);
+            task.setEditedTime(LocalDate.now());
+        }
+
+        return task;
+    }
+
+    public TaskDto getTask(Long taskId) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            return TaskDto.fromTask(task);
+        } else {
+            throw new RecordNotFoundException("Task does not exist");
+        }
+    }
+
 
     public List<Task> getTasks() {
         return taskRepository.findAll();
@@ -79,49 +167,6 @@ public class TaskService {
             return taskRepository.findAllByParentTask(task);
         } else {
             throw new RecordNotFoundException("No user found");
-        }
-    }
-
-    public Task saveTask(TaskInputDto dto) {
-        Task task = new Task();
-
-        if (dto.parentProjectId != null && dto.parentTaskId != null) {
-            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
-            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
-        } else if (dto.parentProjectId == null && dto.parentTaskId != null) {
-            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
-        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
-            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
-        } else {
-            throw new RecordNotFoundException("No parent found");
-        }
-        User currentUser = userAuthenticateService.getCurrentUser();
-
-        if (dto.taskOwnerName != null) {
-            task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
-        } else if (dto.taskOwnerName == null && currentUser == null) {
-            throw new UserNotFoundException("No user");
-        } else {
-            task.setTaskOwner(currentUser);
-        }
-
-        task.setTaskId(dto.taskId);
-        task.setTaskName(dto.taskName);
-        task.setIsRunning(true);
-        task.setDescription((dto.description));
-        task.setStartTime(dto.startTime);
-        task.setEndTime(dto.endTime);
-
-        return taskRepository.save(task);
-    }
-
-    public void updateTask(Long id, Task task) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            taskRepository.deleteById(id);
-            taskRepository.save(task);
-        } else {
-            throw new RecordNotFoundException("task does not exist");
         }
     }
 

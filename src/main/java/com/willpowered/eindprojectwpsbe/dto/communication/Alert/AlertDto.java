@@ -2,7 +2,6 @@ package com.willpowered.eindprojectwpsbe.dto.communication.Alert;
 
 import com.willpowered.eindprojectwpsbe.dto.profile.Portal.PortalDto;
 import com.willpowered.eindprojectwpsbe.model.communication.Alert;
-import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import lombok.var;
 
 public class AlertDto {

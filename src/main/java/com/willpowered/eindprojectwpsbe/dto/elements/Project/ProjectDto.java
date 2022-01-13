@@ -3,13 +3,12 @@ package com.willpowered.eindprojectwpsbe.dto.elements.Project;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Category.CategoryDto;
+import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
-import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -22,13 +21,16 @@ public class ProjectDto {
     public String url;
     public String imageUrl;
     public String description;
-    public LocalDateTime startTime;
-    public LocalDateTime endTime;
+    public LocalDate startTime;
+    @Nullable
+    public LocalDate editedTime;
+    public LocalDate endTime;
     public Integer voteCount;
+    public Boolean isRunning;
     public Boolean publiclyVisible;
     public CategoryDto category;
     public UserDto projectOwner;
-    public List<Task> projectTaskList;
+    public List<TaskDto> projectTaskList;
     public Integer commentCount;
 
     public static ProjectDto fromProject(Project project) {
@@ -39,7 +41,9 @@ public class ProjectDto {
         dto.imageUrl = project.getImageUrl();
         dto.description = project.getDescription();
         dto.startTime = project.getStartTime();
+        dto.editedTime = project.getEditedTime();
         dto.endTime = project.getEndTime();
+        dto.isRunning = project.getIsRunning();
         dto.voteCount = project.getVoteCount();
         dto.publiclyVisible = project.getPubliclyVisible();
         dto.category = CategoryDto.fromCategory(project.getCategory());

@@ -1,31 +1,36 @@
-public Task saveTask(Task task) {
+public Task saveTask(TaskInputDto dto){
+        Task task=saveTaskData(dto);
 
-        if (dto.parentProjectId != null && dto.parentTaskId != null) {
+        if(dto.parentProjectId==null&&dto.parentTaskId!=null){
         task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
+        }else if(dto.parentProjectId!=null&&dto.parentTaskId==null){
         task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
-        } else if (dto.parentProjectId == null && dto.parentTaskId != null) {
-        task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
-        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
-        task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
-        } else {
+        }else{
         throw new RecordNotFoundException("No parent found");
         }
-        User currentUser = userAuthenticateService.getCurrentUser();
+        User currentUser=userAuthenticateService.getCurrentUser();
 
-        if (dto.taskOwnerName != null) {
+        if(dto.taskOwnerName!=null){
         task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
-        } else if (dto.taskOwnerName == null && currentUser == null) {
+        }else if(dto.taskOwnerName==null&&currentUser==null){
         throw new UserNotFoundException("No user");
-        } else {
+        }else{
         task.setTaskOwner(currentUser);
         }
 
-        task.setTaskId(dto.taskId);
-        task.setTaskName(dto.taskName);
-        task.setIsRunning(true);
-        task.setDescription((dto.description));
-        task.setStartTime(dto.startTime);
-        task.setEndTime(dto.endTime);
+        Task parentTask=taskRepository.save(task);
 
-        return taskRepository.save(task);
+
+        if(dto.taskTaskList!=null){
+        List<Task> newTaskList=new ArrayList<>();
+
+        for(TaskInputDto taskTaskInputDto:dto.taskTaskList){
+        taskTaskInputDto.parentTaskId=parentTask.getTaskId();
+        newTaskList.add(saveTask(taskTaskInputDto));
+        }
+
+        parentTask.setTaskTaskList(newTaskList);
+        }
+
+        return parentTask;
         }

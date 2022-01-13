@@ -1,8 +1,6 @@
 package com.willpowered.eindprojectwpsbe.dto.communication.Comment;
 
-import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.communication.Comment;
-import com.willpowered.eindprojectwpsbe.model.elements.Project;
 import lombok.var;
 
 import java.time.Instant;

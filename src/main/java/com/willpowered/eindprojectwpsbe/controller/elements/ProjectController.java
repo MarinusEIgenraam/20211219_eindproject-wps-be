@@ -50,15 +50,18 @@ public class ProjectController {
     @GetMapping
     public List<ProjectDto> getProjects(
             @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "collaborator", required = false) String collaborator,
             @RequestParam(value = "username", required = false) String username
     ) {
         var dtos = new ArrayList<ProjectDto>();
 
         List<Project> projects;
-        if (categoryId != null && username == null) {
+        if (categoryId != null && username == null && collaborator == null) {
             projects = projectService.getProjectsForCategory(categoryId);
-        } else if  (categoryId == null && username != null) {
+        } else if  (categoryId == null && username != null && collaborator == null) {
             projects = projectService.getProjectsForProjectOwner(username);
+        }else if  (categoryId == null && username == null && collaborator != null) {
+            projects = projectService.getProjectsForProjectCollaborator(collaborator);
         } else {
             throw new BadRequestException();
         }

@@ -1,10 +1,10 @@
 package com.willpowered.eindprojectwpsbe.service.auth;
 
-import com.willpowered.eindprojectwpsbe.security.JwtUtil;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationRequestDto;
 import com.willpowered.eindprojectwpsbe.dto.auth.AuthenticationResponseDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;

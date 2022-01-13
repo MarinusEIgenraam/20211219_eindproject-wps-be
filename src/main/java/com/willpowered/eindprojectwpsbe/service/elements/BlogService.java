@@ -26,7 +26,7 @@ public class BlogService {
         return blogRepository.findAll();
     }
 
-    public List<Blog> getBlogsForBlowOwner(String blogOwner) {
+    public List<Blog> getBlogsForBlogOwner(String blogOwner) {
         var optionalUser = userRepository.findById(blogOwner);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();

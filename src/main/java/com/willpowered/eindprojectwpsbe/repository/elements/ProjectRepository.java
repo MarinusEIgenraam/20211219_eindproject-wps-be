@@ -3,7 +3,6 @@ package com.willpowered.eindprojectwpsbe.repository.elements;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.model.elements.Project;
-import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +23,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findAllByCategory(Category category);
 
     List<Project> findAllByProjectOwner(User user);
+
+    List<Project> findAllByCollaborators(User user);
 }

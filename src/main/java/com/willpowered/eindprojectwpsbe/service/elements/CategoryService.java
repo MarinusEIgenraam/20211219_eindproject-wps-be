@@ -1,12 +1,9 @@
 package com.willpowered.eindprojectwpsbe.service.elements;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.model.communication.Comment;
 import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import com.willpowered.eindprojectwpsbe.repository.elements.CategoryRepository;
-import com.willpowered.eindprojectwpsbe.repository.elements.ProjectRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,10 +49,6 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-//    public Project saveProject(Project project) {
-//        return projectRepository.save(project);
-//    }
-
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
         Project project = new Project();
@@ -61,11 +58,19 @@ public class ProjectService {
         }
         Category category = optionalCategory.get();
 
+        project.setPubliclyVisible(projectInputDto.publiclyVisible);
         project.setProjectOwner(userAuthenticateService.getCurrentUser());
         project.setUrl(projectInputDto.url);
         project.setProjectName(projectInputDto.projectName);
         project.setDescription(projectInputDto.description);
         project.setCategory(category);
+        project.setEndTime(projectInputDto.endTime);
+        if (projectInputDto.startTime == null) {
+            project.setStartTime(LocalDate.now());
+        } else {
+            project.setStartTime(projectInputDto.startTime);
+            project.setEditedTime(LocalDate.now());
+        }
 
         List<Task> newTaskList = new ArrayList<>();
 
@@ -85,27 +90,75 @@ public class ProjectService {
             if (dto.taskOwnerName == null) {
                 dto.taskOwnerName = userAuthenticateService.getCurrentUser().getUsername();
             }
-            dto.parentProjectId = project.getProjectId();
+            dto.parentProjectId = newProject.getProjectId();
             newTaskList.add(taskService.saveTask(dto));
         }
         newProject.setProjectTaskList(newTaskList);
         return newProject;
     }
 
-    public void addTask(TaskInputDto dto, Long projectId) {
-        Project project = projectRepository.findById(projectId).orElse(null);
-        Task task = new Task();
-        if(project != null) {
-            task.setDescription(dto.description);
-            task.setTaskName(dto.taskName);
-            task.setTaskOwner(userAuthenticateService.getCurrentUser());
-            task.setParentProject(project);
-            task.setStartTime(dto.startTime);
-            task.setEndTime(dto.endTime);
-            task.setIsRunning(dto.isRunning);
-            taskRepository.save(task);
+    public void updateProject(Long id, Project project) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+
+        if (optionalProject.isPresent()) {
+            Project newProject = optionalProject.get();
+            if (newProject.getProjectTaskList().equals(project.getProjectTaskList())) {
+                projectRepository.deleteById(id);
+                projectRepository.save(project);
+            } else {
+                projectRepository.deleteById(id);
+
+                Project updatedProject = projectRepository.save(project);
+                List newTaskList = new ArrayList<>();
+
+                for (Task task : project.getProjectTaskList()) {
+                    if (taskRepository.findById(task.getTaskId()).isPresent()) {
+                        taskRepository.deleteById(task.getTaskId());
+
+                        newTaskList.add(taskRepository.save(task));
+                    }
+                }
+
+                updatedProject.setProjectTaskList((newTaskList));
+                projectRepository.save(updatedProject);
+            }
+        } else {
+            throw new RecordNotFoundException("Task does not exist");
         }
     }
+
+//    public void updateProject(Long id, Project project) {
+//        Optional<Task> optionalTask = taskRepository.findById(id);
+//        if (optionalTask.isPresent()) {
+//            projectRepository.deleteById(id);
+//            projectRepository.save(project);
+//        } else {
+//            throw new RecordNotFoundException("Task does not exist");
+//        }
+//    }
+
+//    public Task addProjectTask(TaskInputDto dto, Long projectId) {
+//        var project = projectRepository.findById(projectId).orElse(null);
+//        Task task = new Task();
+//        if (project != null) {
+//            task.setDescription(dto.description);
+//            task.setTaskName(dto.taskName);
+//            task.setTaskOwner(userAuthenticateService.getCurrentUser());
+//            task.setParentProject(project);
+//            task.setStartTime(dto.startTime);
+//            task.setEndTime(dto.endTime);
+//            task.setIsRunning(dto.isRunning);
+//        } else {
+//            throw new RecordNotFoundException("Project does not exist");
+//        }
+//
+//        List<Task> projectTaskList = project.getProjectTaskList();
+//        projectTaskList.add(task);
+//        project.setProjectTaskList(projectTaskList);
+//        projectRepository.save(project);
+//
+//        return taskRepository.save(task);
+//    }
 
     public Project getProject(Long projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
@@ -121,6 +174,7 @@ public class ProjectService {
         var optionalCategory = categoryRepository.findById(categoryId);
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
+            User user = userAuthenticateService.getCurrentUser();
             return projectRepository.findAllByCategory(category);
         } else {
             throw new RecordNotFoundException("Category does not exist");
@@ -137,17 +191,15 @@ public class ProjectService {
         }
     }
 
-    public void updateProject(Long id, Project project) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-        if (optionalProject.isPresent()) {
-            projectRepository.deleteById(id);
-            projectRepository.save(project);
+    public List<Project> getProjectsForProjectCollaborator(String username) {
+        var optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return projectRepository.findAllByCollaborators(user);
         } else {
-            throw new RecordNotFoundException("project does not exist");
+            throw new RecordNotFoundException("No user found");
         }
     }
-
-
 
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);
