@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.communication.Alert;
 import lombok.AllArgsConstructor;

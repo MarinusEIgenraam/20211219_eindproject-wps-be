@@ -1,8 +1,6 @@
 package com.willpowered.eindprojectwpsbe.dto.profile.Portal;
 
-import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.profile.Portal;
-import com.willpowered.eindprojectwpsbe.model.profile.SettingSchema;
 import lombok.var;
 
 public class PortalInputDto {

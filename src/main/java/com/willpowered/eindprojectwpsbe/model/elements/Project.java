@@ -2,21 +2,17 @@ package com.willpowered.eindprojectwpsbe.model.elements;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskDto;
-import com.willpowered.eindprojectwpsbe.dto.elements.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -46,15 +42,20 @@ public class Project {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    private Instant startTime;
-    private Instant endTime;
+    private LocalDate startTime;
+    @Nullable
+    private LocalDate editedTime;
+    private LocalDate endTime;
 
     private Integer voteCount = 0;
+
     private Boolean publiclyVisible;
 
     @ManyToOne(fetch = LAZY)
     @JsonBackReference("category_projects")
     private Category category;
+
+    private Boolean isRunning = true;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "project_owner", referencedColumnName = "username")

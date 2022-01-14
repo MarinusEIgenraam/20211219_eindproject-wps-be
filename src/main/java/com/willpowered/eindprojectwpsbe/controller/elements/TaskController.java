@@ -6,7 +6,6 @@ import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import com.willpowered.eindprojectwpsbe.service.elements.TaskService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class TaskController {
     @GetMapping("/{id}")
     public TaskDto getTask(@PathVariable("id") Long id) {
         var task = taskService.getTask(id);
-        return TaskDto.fromTask(task);
+        return task;
     }
 
     @GetMapping("/all")

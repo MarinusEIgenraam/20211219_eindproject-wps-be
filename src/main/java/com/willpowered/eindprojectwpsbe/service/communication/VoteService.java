@@ -1,6 +1,5 @@
 package com.willpowered.eindprojectwpsbe.service.communication;
 
-import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteDto;
 import com.willpowered.eindprojectwpsbe.dto.communication.Vote.VoteInputDto;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.exception.WillpoweredException;
@@ -14,7 +13,6 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.willpowered.eindprojectwpsbe.model.communication.VoteType.UPVOTE;

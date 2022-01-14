@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -31,10 +31,12 @@ public class Task {
     private String taskName;
     private String description;
 
-    private Instant startTime;
-    private Instant endTime;
+    private LocalDate startTime;
+    @Nullable
+    private LocalDate editedTime;
+    private LocalDate endTime;
 
-    private Boolean isRunning;
+    private Boolean isRunning = true;
 
     @ManyToOne
     private User taskOwner;

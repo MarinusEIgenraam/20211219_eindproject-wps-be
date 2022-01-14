@@ -1,8 +1,6 @@
 package com.willpowered.eindprojectwpsbe.model.elements;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
-import com.willpowered.eindprojectwpsbe.model.elements.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +30,8 @@ public class Blog {
 
     @Nullable
     private String url;
+    @Nullable
+    private String imageUrl;
 
     @Nullable
     @Lob

@@ -1,6 +1,7 @@
 package com.willpowered.eindprojectwpsbe.service.profile;
 
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.profile.Portal;
 import com.willpowered.eindprojectwpsbe.repository.profile.PortalRepository;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,12 @@ public class PortalService {
         if(portal.isPresent()) {
             return portal.get();
         } else {
-            throw new RecordNotFoundException("Machine does not exist");
+            throw new RecordNotFoundException("Portal does not exist");
         }
+    }
+
+    public Optional<Portal> getUserPortal(User user) {
+        return portalRepository.findByUser(user);
     }
 
     public Portal savePortal(Portal portal) {
@@ -45,7 +50,7 @@ public class PortalService {
             portalRepository.deleteById(id);
             portalRepository.save(portal);
         } else {
-            throw new RecordNotFoundException("portal does not exist");
+            throw new RecordNotFoundException("Portal does not exist");
         }
     }
 

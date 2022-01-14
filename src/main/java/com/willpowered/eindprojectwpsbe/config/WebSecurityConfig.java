@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.config;
 
 import com.willpowered.eindprojectwpsbe.security.JwtRequestFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,6 +74,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST,"/blogs/**").hasRole("ADMIN")
                 .antMatchers(POST,"/projects").hasRole("SUPER_USER")
                 .antMatchers("/tasks/**").hasRole("USER")
+                .antMatchers(POST,"/files/**").hasRole("USER")
+                .antMatchers(GET,"/files/**").hasRole("USER")
                 .antMatchers(POST,"/authenticate").permitAll()
                 .antMatchers(GET,"/**/**").permitAll()
                 .anyRequest().denyAll()
