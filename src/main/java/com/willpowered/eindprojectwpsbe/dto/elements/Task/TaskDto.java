@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.dto.auth.User.UserDto;
 import com.willpowered.eindprojectwpsbe.dto.elements.Project.ProjectDto;
+import com.willpowered.eindprojectwpsbe.mapping.ObjectMapperUtils;
 import com.willpowered.eindprojectwpsbe.model.elements.Task;
 import lombok.var;
 
@@ -26,7 +27,7 @@ public class TaskDto {
     @Nullable
     @JsonSerialize
     public ProjectDto parentProject;
-    public List<Task> taskTaskList;
+    public List<TaskDto> taskTaskList;
 
     public static TaskDto fromTask(Task task) {
         var dto = new TaskDto();
@@ -43,7 +44,7 @@ public class TaskDto {
         } else {
             dto.parentTask = TaskDto.fromTask(task.getParentTask());
         }
-        dto.taskTaskList = task.getTaskTaskList();
+        dto.taskTaskList = ObjectMapperUtils.mapAll(task.getTaskTaskList(), TaskDto.class);
         return dto;
     }
 }

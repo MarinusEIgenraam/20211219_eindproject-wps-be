@@ -10,9 +10,9 @@ public class BlogInputDto {
     public Long blogId;
     public String blogName;
     public String url;
+    public String imageUrl;
     public String description;
     public Instant startTime;
-    public String blogOwnerId;
 
     public Blog toBlog() {
         var blog = new Blog();
@@ -20,6 +20,7 @@ public class BlogInputDto {
         blog.setBlogId(blogId);
         blog.setBlogName(blogName);
         blog.setUrl(url);
+        blog.setImageUrl(imageUrl);
         blog.setDescription(description);
         blog.setStartTime(startTime);
 

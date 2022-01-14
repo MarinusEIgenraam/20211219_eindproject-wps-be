@@ -5,6 +5,7 @@ import com.willpowered.eindprojectwpsbe.model.auth.User;
 import com.willpowered.eindprojectwpsbe.model.elements.Blog;
 import com.willpowered.eindprojectwpsbe.repository.auth.UserRepository;
 import com.willpowered.eindprojectwpsbe.repository.elements.BlogRepository;
+import com.willpowered.eindprojectwpsbe.service.auth.UserAuthenticateService;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class BlogService {
     private BlogRepository blogRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserAuthenticateService userAuthenticateService;
 
     public List<Blog> getBlogs() {
         return blogRepository.findAll();
@@ -47,6 +50,7 @@ public class BlogService {
     }
 
     public Blog saveBlog(Blog blog) {
+        blog.setBlogOwner(userAuthenticateService.getCurrentUser());
         return blogRepository.save(blog);
     }
 

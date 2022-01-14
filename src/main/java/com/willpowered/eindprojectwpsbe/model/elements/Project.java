@@ -3,7 +3,9 @@ package com.willpowered.eindprojectwpsbe.model.elements;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.model.auth.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 

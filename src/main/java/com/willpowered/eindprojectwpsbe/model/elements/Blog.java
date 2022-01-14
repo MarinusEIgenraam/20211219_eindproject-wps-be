@@ -30,6 +30,8 @@ public class Blog {
 
     @Nullable
     private String url;
+    @Nullable
+    private String imageUrl;
 
     @Nullable
     @Lob
