@@ -1,9 +1,9 @@
 ## Models
 
 - **elements**
-    - [Category](./src/main/java/com/willpowered/eindprojectwpsbe/model/elements/Category.java)
-    - [Project](./src/main/java/com/willpowered/eindprojectwpsbe/model/elements/Project.java)
-    - [Task](./src/main/java/com/willpowered/eindprojectwpsbe/model/elements/Task.java)
+    - [Category](Novi/Eindproject/20211219_eindproject-wps-be/src/main/java/com/willpowered/eindprojectwpsbe/old/model/elements/Category.java)
+    - [Project](Novi/Eindproject/20211219_eindproject-wps-be/src/main/java/com/willpowered/eindprojectwpsbe/old/model/elements/Project.java)
+    - [Task](Novi/Eindproject/20211219_eindproject-wps-be/src/main/java/com/willpowered/eindprojectwpsbe/old/model/elements/Task.java)
 
 ## The process
 
