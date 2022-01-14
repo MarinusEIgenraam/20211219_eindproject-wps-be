@@ -142,9 +142,10 @@ public class TaskService {
 
     public List<Task> getTasksForParentProject(Long projectId) {
         var optionalProject = projectRepository.findById(projectId);
+        User currentUser = userAuthenticateService.getCurrentUser();
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
-            return taskRepository.findAllByParentProject(project);
+            return taskRepository.findAllByParentProject(project, currentUser);
         } else {
             throw new RecordNotFoundException("Project does not exist");
         }
@@ -152,19 +153,23 @@ public class TaskService {
 
     public List<Task> getTasksForTaskOwner(String username) {
         var optionalUser = userRepository.findById(username);
+        User currentUser = userAuthenticateService.getCurrentUser();
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return taskRepository.findAllByTaskOwner(user);
+            return taskRepository.findAllByTaskOwner(user, currentUser);
         } else {
             throw new RecordNotFoundException("No user found");
         }
     }
 
     public List<Task> getTasksForParentTask(Long parentTaskId) {
+        User currentUser = userAuthenticateService.getCurrentUser();
+
         var optionalTask = taskRepository.findById(parentTaskId);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-            return taskRepository.findAllByParentTask(task);
+            return taskRepository.findAllByParentTask(task, currentUser);
         } else {
             throw new RecordNotFoundException("No user found");
         }

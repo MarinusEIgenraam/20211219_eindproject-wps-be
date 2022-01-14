@@ -1,7 +1,9 @@
 package com.willpowered.eindprojectwpsbe.exception;
 
 
-public class NotAuthorizedException extends RuntimeException {
+import java.io.Serializable;
+
+public class NotAuthorizedException extends RuntimeException implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

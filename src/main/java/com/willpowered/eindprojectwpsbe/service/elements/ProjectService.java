@@ -46,7 +46,15 @@ public class ProjectService {
     private TaskRepository taskRepository;
 
     public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+        User user = userAuthenticateService.getCurrentUser();
+
+        if (user.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"))
+        ) {
+//            return projectRepository.findAll();
+            return projectRepository.findAllViewableProjects(user);
+        } else {
+            return projectRepository.findAllViewableProjects(user);
+        }
     }
 
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
@@ -127,39 +135,6 @@ public class ProjectService {
         }
     }
 
-//    public void updateProject(Long id, Project project) {
-//        Optional<Task> optionalTask = taskRepository.findById(id);
-//        if (optionalTask.isPresent()) {
-//            projectRepository.deleteById(id);
-//            projectRepository.save(project);
-//        } else {
-//            throw new RecordNotFoundException("Task does not exist");
-//        }
-//    }
-
-//    public Task addProjectTask(TaskInputDto dto, Long projectId) {
-//        var project = projectRepository.findById(projectId).orElse(null);
-//        Task task = new Task();
-//        if (project != null) {
-//            task.setDescription(dto.description);
-//            task.setTaskName(dto.taskName);
-//            task.setTaskOwner(userAuthenticateService.getCurrentUser());
-//            task.setParentProject(project);
-//            task.setStartTime(dto.startTime);
-//            task.setEndTime(dto.endTime);
-//            task.setIsRunning(dto.isRunning);
-//        } else {
-//            throw new RecordNotFoundException("Project does not exist");
-//        }
-//
-//        List<Task> projectTaskList = project.getProjectTaskList();
-//        projectTaskList.add(task);
-//        project.setProjectTaskList(projectTaskList);
-//        projectRepository.save(project);
-//
-//        return taskRepository.save(task);
-//    }
-
     public Project getProject(Long projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
 
@@ -175,7 +150,7 @@ public class ProjectService {
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
             User user = userAuthenticateService.getCurrentUser();
-            return projectRepository.findAllByCategory(category);
+            return projectRepository.findAllByCategory(categoryId, user);
         } else {
             throw new RecordNotFoundException("Category does not exist");
         }
@@ -183,6 +158,7 @@ public class ProjectService {
 
     public List<Project> getProjectsForProjectOwner(String username) {
         var optionalUser = userRepository.findById(username);
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return projectRepository.findAllByProjectOwner(user);
@@ -194,8 +170,9 @@ public class ProjectService {
     public List<Project> getProjectsForProjectCollaborator(String username) {
         var optionalUser = userRepository.findById(username);
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return projectRepository.findAllByCollaborators(user);
+            User collaborator = optionalUser.get();
+            User currentUser = userAuthenticateService.getCurrentUser();
+            return projectRepository.findAllByCollaborators(collaborator, currentUser);
         } else {
             throw new RecordNotFoundException("No user found");
         }
