@@ -1,12 +1,16 @@
 package com.willpowered.eindprojectwpsbe.auth;
 
 import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,10 +21,6 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping(value = "")
-    public ResponseEntity<Object> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
-    }
 
     @GetMapping(value = "/{username}")
     public ResponseEntity<Object> getUser(@PathVariable("username") String username) {
@@ -35,6 +35,32 @@ public class UserController {
                 .buildAndExpand(newUsername).toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public Page<UserDto> getUsers(
+                    @RequestParam(value = "authority", required = false) String authority,
+                    @RequestParam(value = "page", defaultValue = "0") int page,
+                    @RequestParam(value = "size", defaultValue = "10") int size,
+                    @RequestParam(value = "sort", defaultValue = "authorities,username") String[] sort
+    ){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        List<User> users;
+        Page<UserDto> userDtoPage;
+        var dtos = new ArrayList<UserDto>();
+
+        if (authority == null) {
+            users = userService.getUsers();
+        } else {
+            users = userService.getUsersByRole(authority, pageable);
+        }
+
+        for (User user : users) {
+            dtos.add(UserDto.fromUser(user));
+        }
+        Page<UserDto> pageOfUsers = new PageImpl<>(dtos);
+
+        return pageOfUsers;
     }
 
     @PutMapping(value = "/{username}")

@@ -1,46 +1,145 @@
 INSERT INTO users (username, email, enabled, "password")
-VALUES
-    ('user', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
-    ('admin', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
-    ('superuser', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
-    ('marinus', 'marinus@wilpoweredstudents.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
-    ('usermarinus', 'marinus@wilpoweredstudents.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
-    ('adminmarinus', 'marinus@wilpoweredstudents.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq');
+VALUES ('user', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
+       ('admin', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
+       ('superuser', 'dummy@novi.nl', true, '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
+       ('marinus', 'marinus@wilpoweredstudents.nl', true,
+        '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
+       ('usermarinus', 'marinus@wilpoweredstudents.nl', true,
+        '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq'),
+       ('adminmarinus', 'marinus@wilpoweredstudents.nl', true,
+        '$2y$10$vkCdc8it8.DuZpdFLZju1uK9SkzSQ0olcI/6WcggH1JanRMu6uMdq');
 INSERT INTO authorities (authority, username)
+VALUES ('ROLE_USER', 'user'),
+       ('ROLE_ADMIN', 'admin'),
+       ('ROLE_USER', 'admin'),
+       ('ROLE_SUPER_USER', 'admin'),
+       ('ROLE_SUPER_USER', 'superuser'),
+       ('ROLE_USER', 'superuser'),
+       ('ROLE_USER', 'usermarinus'),
+       ('ROLE_USER', 'superusermarinus'),
+       ('ROLE_SUPER_USER', 'superusermarinus'),
+       ('ROLE_ADMIN', 'adminmarinus'),
+       ('ROLE_SUPER_USER', 'adminmarinus'),
+       ('ROLE_USER', 'adminmarinus');
+INSERT INTO categories (id, description, name)
+VALUES (1, 'science of technology', 'technology'),
+       (2, 'science of psychology', 'psychology'),
+       (3, 'science of writing', 'literature'),
+       (4, 'mathematics', 'match'),
+       (5, 'science of computers', 'computer science');
+INSERT INTO projects (end_time, project_name, description,  start_time, url, image_url, vote_count, category_id, project_owner)
 VALUES
-    ('ROLE_USER', 'user'),
-    ('ROLE_ADMIN', 'admin'),
-    ('ROLE_USER', 'admin'),
-    ('ROLE_SUPER_USER', 'admin'),
-    ('ROLE_SUPER_USER', 'superuser'),
-    ('ROLE_USER', 'superuser'),
-    ('ROLE_USER', 'usermarinus'),
-    ('ROLE_USER', 'superusermarinus'),
-    ('ROLE_SUPER_USER', 'superusermarinus'),
-    ('ROLE_ADMIN', 'adminmarinus'),
-    ('ROLE_SUPER_USER', 'adminmarinus'),
-    ('ROLE_USER', 'adminmarinus');
-INSERT INTO categories (id,description, name)
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser'),
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser'),
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser'),
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser'),
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser'),
+       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.', '6/6/2021',
+        'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
+        'https://i.imgur.com/Sdi0eAB.jpeg',1, 1, 'superuser');
+INSERT INTO blogs ( start_time,  blog_name, description, url, image_url, blog_owner)
 VALUES
-    (1,'science of technology', 'technology'),
-    (2,'science of psychology', 'psychology'),
-    (3,'science of writing', 'literature'),
-    (4,'mathematics', 'match'),
-    (5,'science of computers', 'computer science');
-INSERT INTO projects (end_time, description, project_name, start_time, url, vote_count, category_id, project_owner)
-VALUES
-    ('6/6/2021', 'creating a pokemon application', 'homework assignment', '6/6/2021', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'admin'),
-    ('6/6/2021', 'creating a flying carpet', 'exam project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'admin'),
-    ('6/6/2021', 'creating a unicorn', 'hobby project', '6/6/2020', 'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla', 1,1, 'admin');
-INSERT INTO tasks (description, end_time, is_running, start_time, task_name, parent_project_id, parent_task_task_id, task_owner_username)
-VALUES
-    ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 1, null, 'user'),
-    ('buy pokeballs from store', '9/9/2023', true, '1/1/1', 'get pokeballs', null, 1, 'user'),
-    ('practice my pokeball throw with pikachu', '9/9/2023', true, '1/1/1', 'practice trowing', null, 1, 'user'),
-    ('check if pokemon still exist', '9/9/2023', true, '1/1/1', 'do research', null, 1, 'user'),
-    ('is pokemon.com stil open?', '9/9/2023', true, '1/1/1', 'get domain name', 1, null, 'user'),
-    ('does internet want to work with me?', '9/9/2023', true, '1/1/1', 'call internet', null, 5, 'user'),
-    ('internet had internet money?', '9/9/2023', false, '1/1/1', 'ask for money', null, 6, 'user');
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser'),
+    ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.',
+     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+            magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
+            doloremque ipsam laudantium libero temporibus.
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
+            laborum minus quaerat quidem reprehenderit tenetur.',
+     'www.google.com',
+     'https://i.imgur.com/Sdi0eAB.jpeg','superuser');
+
+INSERT INTO tasks (description, end_time, is_running, start_time, task_name, parent_project_id, parent_task_task_id,
+                   task_owner_username)
+VALUES ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 1, null, 'user'),
+       ('buy pokeballs from store', '9/9/2023', true, '1/1/1', 'get pokeballs', null, 1, 'user'),
+       ('practice my pokeball throw with pikachu', '9/9/2023', true, '1/1/1', 'practice trowing', null, 1, 'user'),
+       ('check if pokemon still exist', '9/9/2023', true, '1/1/1', 'do research', null, 1, 'user'),
+       ('is pokemon.com stil open?', '9/9/2023', true, '1/1/1', 'get domain name', 1, null, 'user'),
+       ('does internet want to work with me?', '9/9/2023', true, '1/1/1', 'call internet', null, 5, 'user'),
+       ('internet had internet money?', '9/9/2023', false, '1/1/1', 'ask for money', null, 6, 'user');
 -- INSERT INTO votes (vote_id, vote_type, user_name, project_id)
 -- VALUES
 --     (1, 1, 'user', 1),

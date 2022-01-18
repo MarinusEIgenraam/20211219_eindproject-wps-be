@@ -46,15 +46,21 @@ public class ProjectService {
     private TaskRepository taskRepository;
 
     public List<Project> getAllProjects(Pageable pageable) {
-        User user = userAuthenticateService.getCurrentUser();
+        var optionalUser = userAuthenticateService.getCurrentUser();
+        User user = new User();
 
-        if (user.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"))
-        ) {
+
+        if (optionalUser.getAuthorities().isEmpty()) {
+            return projectRepository.findAllViewableProjects(user, pageable);
+        } else if (optionalUser.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"))) {
             return projectRepository.findAll();
         } else {
+            user = optionalUser;
             return projectRepository.findAllViewableProjects(user, pageable);
         }
     }
+
+    // TODO need to find out how i can give special abilities to loged in users
 
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);

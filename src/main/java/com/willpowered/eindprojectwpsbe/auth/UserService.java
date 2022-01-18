@@ -7,12 +7,14 @@ import com.willpowered.eindprojectwpsbe.exception.NotAuthorizedException;
 import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,12 +32,16 @@ public class UserService {
         return ((UserDetails) authentication.getPrincipal()).getUsername();
     }
 
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
+    public List<User> getUsers() {
+        return (List<User>) userRepository.findAll();
     }
 
     public Optional<User> getUser(String username) {
         return userRepository.findById(username);
+    }
+
+    public List<User> getUsersByRole(String authority, Pageable pageable) {
+        return userRepository.getAllByAuthority(authority, pageable);
     }
 
     public boolean userExists(String username) {
