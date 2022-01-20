@@ -24,124 +24,124 @@ VALUES (1, 'science of technology', 'technology'),
        (3, 'science of writing', 'literature'),
        (4, 'mathematics', 'match'),
        (5, 'science of computers', 'computer science');
-INSERT INTO projects (end_time, project_name, description, start_time, url, image_url, vote_count, category_id,
+INSERT INTO projects (publicly_visible, end_time, project_name, description, start_time, url, image_url, vote_count, category_id,
                       project_owner)
-VALUES ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+VALUES (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 5, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 4, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 3, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 2, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 5, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 4, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 3, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 2, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 5, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 4, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 3, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 2, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 5, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 4, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 3, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 2, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',
         'https://i.imgur.com/Sdi0eAB.jpeg', 1, 1, 'superuser'),
-       ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
+       (true, '6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
             magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
             doloremque ipsam laudantium libero temporibus.', '6/6/2021',
         'https://technorati.com/libero/ut/massa/volutpat/convallis/morbi.js?mattis=in&pulvinar=lacus&nulla=curabitur&pede=at&ullamcorper=ipsum&augue=ac&a=tellus&suscipit=semper&nulla=interdum&elit=mauris&ac=ullamcorper&nulla=purus&sed=sit&vel=amet&enim=nulla',

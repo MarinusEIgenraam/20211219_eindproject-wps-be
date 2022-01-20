@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,13 +47,15 @@ public class TaskService {
         } else {
             throw new RecordNotFoundException("No parent found");
         }
-        User currentUser = userAuthenticateService.getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 
         if (dto.taskOwnerName != null) {
             task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
-        } else if (dto.taskOwnerName == null && currentUser == null) {
+        } else if (dto.taskOwnerName == null && authentication == null) {
             throw new UserNotFoundException("No user");
         } else {
+            User currentUser = userAuthenticateService.getCurrentUser();
             task.setTaskOwner(currentUser);
         }
 
@@ -138,9 +142,14 @@ public class TaskService {
 
     public List<Task> getTasksForParentProject(Long projectId) {
         var optionalProject = projectRepository.findById(projectId);
-        User currentUser = userAuthenticateService.getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userAuthenticateService.getCurrentUser();
+            }
             return taskRepository.findAllByParentProject(project, currentUser);
         } else {
             throw new RecordNotFoundException("Project does not exist");
@@ -149,10 +158,14 @@ public class TaskService {
 
     public List<Task> getTasksForTaskOwner(String username) {
         var optionalUser = userRepository.findById(username);
-        User currentUser = userAuthenticateService.getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userAuthenticateService.getCurrentUser();
+            }
             return taskRepository.findAllByTaskOwner(user, currentUser);
         } else {
             throw new RecordNotFoundException("No user found");
@@ -160,11 +173,15 @@ public class TaskService {
     }
 
     public List<Task> getTasksForParentTask(Long parentTaskId) {
-        User currentUser = userAuthenticateService.getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         var optionalTask = taskRepository.findById(parentTaskId);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userAuthenticateService.getCurrentUser();
+            }
             return taskRepository.findAllByParentTask(task, currentUser);
         } else {
             throw new RecordNotFoundException("No user found");

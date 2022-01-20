@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,16 +48,16 @@ public class ProjectService {
     private TaskRepository taskRepository;
 
     public List<Project> getAllProjects(Pageable pageable) {
-        var optionalUser = userAuthenticateService.getCurrentUser();
-        User user = new User();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
 
 
-        if (optionalUser.getAuthorities().isEmpty()) {
+        if (!userAuthenticateService.isLoggedIn()) {
             return projectRepository.findAllViewableProjects(user, pageable);
-        } else if (optionalUser.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"))) {
+        } else if (userAuthenticateService.isLoggedIn() && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             return projectRepository.findAll();
         } else {
-            user = optionalUser;
+            user = userAuthenticateService.getCurrentUser();
             return projectRepository.findAllViewableProjects(user, pageable);
         }
     }
@@ -152,10 +154,15 @@ public class ProjectService {
 
     public List<Project> getProjectsForCategory(Long categoryId, Pageable pageable) {
         var optionalCategory = categoryRepository.findById(categoryId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
-            User user = userAuthenticateService.getCurrentUser();
-            return projectRepository.findAllByCategory(categoryId, user, pageable);
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userAuthenticateService.getCurrentUser();
+            }
+            return projectRepository.findAllByCategory(categoryId, currentUser, pageable);
         } else {
             throw new RecordNotFoundException("Category does not exist");
         }
@@ -166,6 +173,7 @@ public class ProjectService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+
             return projectRepository.findAllByProjectOwner(user, pageable);
         } else {
             throw new RecordNotFoundException("No user found");
@@ -174,9 +182,14 @@ public class ProjectService {
 
     public List<Project> getProjectsForProjectCollaborator(String username, Pageable pageable) {
         var optionalUser = userRepository.findById(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (optionalUser.isPresent()) {
             User collaborator = optionalUser.get();
-            User currentUser = userAuthenticateService.getCurrentUser();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userAuthenticateService.getCurrentUser();
+            }
             return projectRepository.findAllByCollaborators(collaborator, currentUser,pageable);
         } else {
             throw new RecordNotFoundException("No user found");
