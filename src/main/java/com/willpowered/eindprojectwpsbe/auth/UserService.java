@@ -77,6 +77,26 @@ public class UserService {
 
     }
 
+    public String registerUser(AuthenticationRequestDto authenticationRequestDto) {
+        try {
+            String encryptedPassword = passwordEncoder.encode(authenticationRequestDto.getPassword());
+
+            User user = new User();
+            user.setUsername(authenticationRequestDto.getUsername());
+            user.setPassword(encryptedPassword);
+            user.setEmail(authenticationRequestDto.getEmail());
+            user.setEnabled(true);
+            user.addAuthority("ROLE_USER");
+
+            User newUser = userRepository.save(user);
+            return newUser.getUsername();
+        }
+        catch (Exception ex) {
+            throw new BadRequestException("Cannot create user.");
+        }
+
+    }
+
     public void deleteUser(String username) {
         if (userRepository.existsById(username)) {
             userRepository.deleteById(username);

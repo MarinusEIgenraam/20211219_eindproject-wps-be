@@ -13,15 +13,15 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/authenticate")
 public class AuthController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "")
-    public ResponseEntity<Object> createUser(@RequestBody UserPostRequestDto user) {
-        String newUsername = userService.createUser(user);
+    @PostMapping(value = "/register")
+    public ResponseEntity<Object> createUser(@RequestBody AuthenticationRequestDto user) {
+        String newUsername = userService.registerUser(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

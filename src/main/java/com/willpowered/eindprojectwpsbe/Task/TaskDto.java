@@ -11,9 +11,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class TaskDto {
-    private Long taskId;
-    private String taskName;
-    private String description;
+    public Long taskId;
+    public String taskName;
+    public String description;
     public LocalDate startTime;
     @Nullable
     public LocalDate editedTime;
@@ -34,7 +34,7 @@ public class TaskDto {
         dto.taskName = task.getTaskName();
         dto.description = task.getDescription();
         dto.startTime = task.getStartTime();
-        dto.endTime = task.getEditedTime();
+        dto.editedTime = task.getEditedTime();
         dto.endTime = task.getEndTime();
         dto.isRunning = task.getIsRunning();
         dto.taskOwner = UserDto.fromUser(task.getTaskOwner());

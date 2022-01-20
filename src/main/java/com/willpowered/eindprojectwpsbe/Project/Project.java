@@ -78,7 +78,7 @@ public class Project {
     @JoinTable(
             name = "project_collaborators",
             joinColumns = @JoinColumn(name = "projectId"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            inverseJoinColumns = @JoinColumn(name = "username"))
     private List<User> collaborators;
 
     public Project(String projectName, String description) {

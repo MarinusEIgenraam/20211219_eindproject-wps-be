@@ -76,7 +76,7 @@ public class CommentService {
         }
     }
 
-    public Comment saveComment(Long projectId, Long parentCommentId, String username, Instant createdDate, String text) {
+    public Comment saveComment(Long projectId, Long parentCommentId, String username, String text) {
 
         var optionalProject = projectRepository.findById(projectId);
         var optionalParentComment = commentRepository.findById(parentCommentId);
@@ -93,7 +93,6 @@ public class CommentService {
         comment.setProject(project);
         comment.setUser(userAuthenticateService.getCurrentUser());
         comment.setParentComment(parentComment);
-        comment.setCreatedDate(createdDate);
         comment.setText(text);
 
 
