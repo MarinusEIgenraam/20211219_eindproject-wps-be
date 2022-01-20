@@ -3,9 +3,7 @@ package com.willpowered.eindprojectwpsbe.Blog;
 
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.auth.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -15,7 +13,8 @@ import java.time.Instant;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

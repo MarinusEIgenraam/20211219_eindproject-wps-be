@@ -6,8 +6,9 @@ import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +17,8 @@ import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

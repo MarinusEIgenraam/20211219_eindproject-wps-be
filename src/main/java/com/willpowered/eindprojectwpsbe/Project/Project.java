@@ -6,8 +6,9 @@ import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
@@ -20,7 +21,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,14 +1,14 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.auth.UserDto;
-import com.willpowered.eindprojectwpsbe.config.ObjectMapperUtils;
 import lombok.var;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskDto {
     public Long taskId;
@@ -20,15 +20,12 @@ public class TaskDto {
     public LocalDate endTime;
     public Boolean isRunning;
     public UserDto taskOwner;
-    @Nullable
-    @JsonSerialize
-    public TaskDto parentTask;
-    @Nullable
-    @JsonSerialize
-    public ProjectDto parentProject;
     public List<TaskDto> taskTaskList;
 
     public static TaskDto fromTask(Task task) {
+
+        ModelMapper modelMapper = new ModelMapper();
+
         var dto = new TaskDto();
         dto.taskId = task.getTaskId();
         dto.taskName = task.getTaskName();
@@ -38,12 +35,7 @@ public class TaskDto {
         dto.endTime = task.getEndTime();
         dto.isRunning = task.getIsRunning();
         dto.taskOwner = UserDto.fromUser(task.getTaskOwner());
-        if (task.getParentProject() != null && task.getParentTask() == null) {
-            dto.parentProject = ProjectDto.fromProject(task.getParentProject());
-        } else {
-            dto.parentTask = TaskDto.fromTask(task.getParentTask());
-        }
-        dto.taskTaskList = ObjectMapperUtils.mapAll(task.getTaskTaskList(), TaskDto.class);
+        dto.taskTaskList = task.getTaskTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
         return dto;
     }
 }

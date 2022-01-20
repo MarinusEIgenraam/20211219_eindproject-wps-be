@@ -1,16 +1,15 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

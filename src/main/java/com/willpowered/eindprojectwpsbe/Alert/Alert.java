@@ -2,13 +2,12 @@ package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

@@ -4,16 +4,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
 import com.willpowered.eindprojectwpsbe.SettingSchema.SettingSchema;
 import com.willpowered.eindprojectwpsbe.auth.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

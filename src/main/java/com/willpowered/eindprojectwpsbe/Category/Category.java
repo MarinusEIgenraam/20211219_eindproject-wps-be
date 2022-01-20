@@ -2,9 +2,7 @@ package com.willpowered.eindprojectwpsbe.Category;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Project.Project;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +11,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
