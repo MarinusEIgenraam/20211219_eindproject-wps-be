@@ -28,9 +28,7 @@ public class ProjectDto {
     public Boolean publiclyVisible;
     public CategoryDto category;
     public UserDto projectOwner;
-    @Nullable
     public List<TaskDto> projectTaskList;
-    @Nullable
     public List<UserDto> collaborators;
 
     public Integer commentCount;
