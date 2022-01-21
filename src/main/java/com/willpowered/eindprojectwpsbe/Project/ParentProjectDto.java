@@ -1,9 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Category.CategoryDto;
-import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskDto;
 import com.willpowered.eindprojectwpsbe.auth.UserDto;
 import lombok.var;
@@ -14,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class ProjectDto {
+public class ParentProjectDto {
 
     @Nullable
     public Long projectId;
@@ -31,16 +29,13 @@ public class ProjectDto {
     public Boolean publiclyVisible;
     public CategoryDto category;
     public UserDto projectOwner;
-    public List<TaskDto> projectTaskList;
-    public List<UserDto> collaborators;
-
     public Integer commentCount;
 
-    public static ProjectDto fromProject(Project project) {
+    public static ParentProjectDto fromParentProject(Project project) {
 
         ModelMapper modelMapper = new ModelMapper();
 
-        var dto = new ProjectDto();
+        var dto = new ParentProjectDto();
         dto.projectId = project.getProjectId();
         dto.projectName = project.getProjectName();
         dto.url = project.getUrl();
@@ -54,8 +49,6 @@ public class ProjectDto {
         dto.publiclyVisible = project.getPubliclyVisible();
         dto.category = CategoryDto.fromCategory(project.getCategory());
         dto.projectOwner = UserDto.fromUser(project.getProjectOwner());
-        dto.projectTaskList = project.getProjectTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
-        dto.collaborators = project.getCollaborators().stream().map(p -> UserDto.fromUser(p)).collect(Collectors.toList());
 
         return dto;
     }

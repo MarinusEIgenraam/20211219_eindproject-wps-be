@@ -1,19 +1,15 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Project.ParentProjectDto;
-import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.auth.UserDto;
 import lombok.var;
-import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskDto {
+public class ParentTaskDto {
     public Long taskId;
     public String taskName;
     public String description;
@@ -27,11 +23,11 @@ public class TaskDto {
     public ParentProjectDto parentProject;
     @Nullable
     public ParentTaskDto parentTask;
-    public List<TaskDto> taskTaskList;
+    public List<ParentTaskDto> taskTaskList;
 
-    public static TaskDto fromTask(Task task) {
+    public static ParentTaskDto fromParentTask(Task task) {
 
-        var dto = new TaskDto();
+        var dto = new ParentTaskDto();
         dto.taskId = task.getTaskId();
         dto.taskName = task.getTaskName();
         dto.description = task.getDescription();
@@ -45,7 +41,6 @@ public class TaskDto {
         }
         dto.isRunning = task.getIsRunning();
         dto.taskOwner = UserDto.fromUser(task.getTaskOwner());
-        dto.taskTaskList = task.getTaskTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
         return dto;
     }
 }

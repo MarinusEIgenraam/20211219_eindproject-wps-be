@@ -84,30 +84,38 @@ public class TaskService {
         if (optionalTask.isPresent()) {
             Task newTask = optionalTask.get();
             if (newTask.getTaskTaskList().equals(task.getTaskTaskList())) {
-                taskRepository.deleteById(id);
-                taskRepository.save(task);
+                return;
             } else {
-                taskRepository.deleteById(id);
-
                 Task updatedTask = taskRepository.save(task);
-                List newTaskList = new ArrayList<>();
-
-                for (Task subTask : task.getTaskTaskList()) {
-                    if (taskRepository.findById(subTask.getTaskId()).isPresent()) {
-                        taskRepository.deleteById(subTask.getTaskId());
-
-                        newTaskList.add(taskRepository.save(subTask));
-                    }
-                }
-
-                updatedTask.setTaskTaskList((newTaskList));
-                taskRepository.save(updatedTask);
             }
         } else {
             throw new RecordNotFoundException("Task does not exist");
         }
     }
-
+//
+//    public void updateTask(Long id, TaskInputDto taskInputDto) {
+//        Optional<Task> optionalTask = taskRepository.findById(id);
+//        Task updatedTask = taskInputDto.toTask();
+//        updatedTask.setTaskOwner(userRepository.findById(taskInputDto.taskOwnerName).get());
+//        if (taskInputDto.parentTaskId != null) {
+//            updatedTask.setParentTask(taskRepository.findById(taskInputDto.parentTaskId).get());
+//        }
+//        if (taskInputDto.parentProjectId != null) {
+//            updatedTask.setParentTask(taskRepository.findById(taskInputDto.parentProjectId).get());
+//        }
+//
+//        if (optionalTask.isPresent()) {
+//            Task newTask = optionalTask.get();
+//            if (newTask.getTaskTaskList().equals(updatedTask.getTaskTaskList())) {
+//                taskRepository.save(updatedTask);
+//            } else {
+//                Optional<User> optionalUser = userRepository.findById(task.getTaskOwner().getUsername());
+//            }
+//        } else {
+//            throw new RecordNotFoundException("Task does not exist");
+//        }
+//
+//    }
     public Task saveTaskData(TaskInputDto taskInputdto) {
         Task task = new Task();
 

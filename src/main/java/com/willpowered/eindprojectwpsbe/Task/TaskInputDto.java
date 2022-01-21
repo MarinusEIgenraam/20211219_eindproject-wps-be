@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskInputDto {
     public Long taskId;
@@ -32,6 +33,7 @@ public class TaskInputDto {
         task.setStartTime(startTime);
         task.setEditedTime(editedTime);
         task.setEndTime(endTime);
+//        task.setTaskTaskList(taskTaskList.stream().map(p-> p.toTask()).collect(Collectors.toList()));
 
         return task;
     }
