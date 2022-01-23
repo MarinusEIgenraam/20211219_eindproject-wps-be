@@ -15,7 +15,7 @@ public class TaskInputDto {
     @Nullable
     public LocalDate editedTime;
     public LocalDate endTime;
-    public boolean isRunning;
+//    public boolean isRunning;
     public String taskOwnerName;
     @Nullable
     public Long parentTaskId;
@@ -33,7 +33,7 @@ public class TaskInputDto {
         task.setStartTime(startTime);
         task.setEditedTime(editedTime);
         task.setEndTime(endTime);
-//        task.setTaskTaskList(taskTaskList.stream().map(p-> p.toTask()).collect(Collectors.toList()));
+        task.setTaskTaskList(taskTaskList.stream().map(p-> p.toTask()).collect(Collectors.toList()));
 
         return task;
     }

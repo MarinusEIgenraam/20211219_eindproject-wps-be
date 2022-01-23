@@ -67,6 +67,12 @@ public class TaskController {
         return TaskDto.fromTask(taskService.saveTask(dto));
     }
 
+//    @PutMapping("/{id}")
+//    public TaskInputDto updateTask(@PathVariable Long id, @RequestBody TaskInputDto taskInputDto) {
+//        taskService.updateTask(id, taskInputDto);
+//        return taskInputDto;
+//    }
+
     @PutMapping("/{id}")
     public TaskDto updateTask(@PathVariable Long id, @RequestBody Task task) {
         taskService.updateTask(id, task);

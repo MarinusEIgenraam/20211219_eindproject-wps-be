@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,43 +40,59 @@ public class TaskService {
 
     public Task saveTask(TaskInputDto dto) {
         Task task = saveTaskData(dto);
+        Optional<Task> optionalParentTask = null;
+        Optional<Project> optionalParentProject = null;
+        Task taskParentTask = new Task();
+        Project taskParentProject = new Project();
 
-        if (dto.parentProjectId == null && dto.parentTaskId != null) {
-            task.setParentTask(taskRepository.findById(dto.parentTaskId).get());
-        } else if (dto.parentProjectId != null && dto.parentTaskId == null) {
-            task.setParentProject(projectRepository.findById(dto.parentProjectId).get());
+        if (dto.parentTaskId == null && dto.parentProjectId != null) {
+            optionalParentProject = projectRepository.findById(dto.parentProjectId);
+            if (optionalParentProject.isPresent()) {
+                taskParentProject = optionalParentProject.get();
+                task.setParentProject(taskParentProject);
+            }
+        } else if (dto.parentTaskId != null && dto.parentProjectId == null) {
+            optionalParentTask = taskRepository.findById(dto.parentTaskId);
+            if (optionalParentTask.isPresent()) {
+                taskParentTask = optionalParentTask.get();
+                task.setParentTask(taskParentTask);
+            }
         } else {
-            throw new RecordNotFoundException("No parent found");
+            throw new RecordNotFoundException("No parent was found");
         }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 
         if (dto.taskOwnerName != null) {
             task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
-        } else if (dto.taskOwnerName == null && authentication == null) {
-            throw new UserNotFoundException("No user");
         } else {
             User currentUser = userAuthenticateService.getCurrentUser();
             task.setTaskOwner(currentUser);
         }
 
-        Task parentTask = taskRepository.save(task);
-
+        Task newTask = taskRepository.save(task);
+        if (newTask.getParentProject() != null && newTask.getParentTask() == null) {
+            taskParentProject.getProjectTaskList().add(newTask);
+            projectRepository.save(taskParentProject);
+        } else {
+            taskParentTask.getTaskTaskList().add(newTask);
+            taskRepository.save(taskParentTask);
+        }
 
         if (dto.taskTaskList != null) {
             List<Task> newTaskList = new ArrayList<>();
 
             for (TaskInputDto taskTaskInputDto : dto.taskTaskList) {
-                taskTaskInputDto.parentTaskId = parentTask.getTaskId();
+                taskTaskInputDto.parentTaskId = newTask.getTaskId();
                 newTaskList.add(saveTask(taskTaskInputDto));
             }
 
 
-
-            parentTask.setTaskTaskList(newTaskList);
+            newTask.setTaskTaskList(newTaskList);
         }
 
-        return parentTask;
+        return newTask;
     }
 
     public void updateTask(Long id, Task task) {
@@ -92,6 +109,35 @@ public class TaskService {
             throw new RecordNotFoundException("Task does not exist");
         }
     }
+//
+//    public void updateTask(Long id, TaskInputDto taskInputDto) {
+//        Task newTask = taskInputDto.toTask();
+//        Optional<Task> optionalTask = taskRepository.findById(id);
+//
+//        if (taskInputDto.parentTaskId != null && taskInputDto.parentProjectId == null) {
+//            Optional<Task> optionalParentTask = taskRepository.findById(taskInputDto.parentTaskId);
+//            optionalParentTask.ifPresent(newTask::setParentTask);
+//        } else if (taskInputDto.parentTaskId == null && taskInputDto.parentProjectId != null) {
+//            Optional<Project> optionalParentProject = projectRepository.findById(taskInputDto.parentProjectId);
+//            optionalParentProject.ifPresent(newTask::setParentProject);
+//        }
+//
+//        if (optionalTask.isPresent()) {
+//            Task loadedTask = optionalTask.get();
+//            if (!newTask.equals(loadedTask) && newTask.getTaskTaskList().equals(loadedTask.getTaskTaskList())) {
+//                Task updatedTask = taskRepository.save(newTask);
+//            } else if (!newTask.equals(loadedTask) && !newTask.getTaskTaskList().equals(loadedTask.getTaskTaskList())) {
+//                if (taskInputDto.taskTaskList != null) {
+//                    taskInputDto.taskTaskList.forEach(p -> updateTask(p.taskId, p));
+//                }
+//            }
+//        } else {
+//            saveTask(taskInputDto);
+//        }
+//    }
+
+
+
 //
 //    public void updateTask(Long id, TaskInputDto taskInputDto) {
 //        Optional<Task> optionalTask = taskRepository.findById(id);

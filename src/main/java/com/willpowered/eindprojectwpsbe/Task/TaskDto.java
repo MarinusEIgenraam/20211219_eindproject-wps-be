@@ -27,6 +27,7 @@ public class TaskDto {
     public ParentProjectDto parentProject;
     @Nullable
     public ParentTaskDto parentTask;
+    @Nullable
     public List<TaskDto> taskTaskList;
 
     public static TaskDto fromTask(Task task) {
@@ -45,7 +46,10 @@ public class TaskDto {
         }
         dto.isRunning = task.getIsRunning();
         dto.taskOwner = UserDto.fromUser(task.getTaskOwner());
-        dto.taskTaskList = task.getTaskTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
+        if (task.getTaskTaskList() != null) {
+            dto.taskTaskList = task.getTaskTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
+        }
+
         return dto;
     }
 }
