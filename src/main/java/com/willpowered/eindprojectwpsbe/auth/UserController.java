@@ -23,8 +23,10 @@ public class UserController {
 
 
     @GetMapping(value = "/{username}")
-    public ResponseEntity<Object> getUser(@PathVariable("username") String username) {
-        return ResponseEntity.ok().body(userService.getUser(username));
+    public UserDto getUser(@PathVariable("username") String username) {
+        var user = userService.getUser(username);
+        UserDto dto = UserDto.fromUser(user);
+        return dto;
     }
 
     @PostMapping(value = "")

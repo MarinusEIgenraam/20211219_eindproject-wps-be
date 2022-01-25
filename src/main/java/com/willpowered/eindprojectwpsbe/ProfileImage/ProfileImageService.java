@@ -1,6 +1,7 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.exception.FileStorageException;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,24 @@ public class ProfileImageService {
         }
         else {
             throw new RecordNotFoundException();
+        }
+    }
+
+    public ProfileImageDto getFileByPortal(Portal portal) {
+        Optional<ProfileImage> optionalImage = profileImageRepository.findByPortal(portal);
+
+        if (optionalImage.isPresent()) {
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                    .buildAndExpand("download").toUri();
+
+            ProfileImageDto profileImageDto = new ProfileImageDto();
+            profileImageDto.fromProfileImage(optionalImage.get());
+            profileImageDto.downloadUri = uri.toString();
+
+            return profileImageDto;
+        }
+        else {
+            throw new RecordNotFoundException("This image does not exist in our files");
         }
     }
 

@@ -21,6 +21,7 @@ public class PortalController {
         return PortalDto.fromPortal(portal);
     }
 
+
     @PostMapping
     public PortalDto savePortal(@RequestBody PortalInputDto Dto) {
         var portal = portalService.savePortal(Dto.toPortal());

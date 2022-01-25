@@ -1,10 +1,7 @@
 package com.willpowered.eindprojectwpsbe.auth;
 
 
-import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
-import com.willpowered.eindprojectwpsbe.exception.InvalidPasswordException;
-import com.willpowered.eindprojectwpsbe.exception.NotAuthorizedException;
-import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
+import com.willpowered.eindprojectwpsbe.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +33,13 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public Optional<User> getUser(String username) {
-        return userRepository.findById(username);
+    public User getUser(String username) {
+        Optional<User> user = userRepository.findById(username);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new RecordNotFoundException("User does not exist");
+        }
     }
 
     public List<User> getUsersByRole(String authority, Pageable pageable) {
