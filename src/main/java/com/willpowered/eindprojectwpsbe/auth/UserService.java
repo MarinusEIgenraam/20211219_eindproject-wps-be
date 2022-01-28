@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,6 +24,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     private String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,7 +46,15 @@ public class UserService {
     }
 
     public List<User> getUsersByRole(String authority, Pageable pageable) {
-        return userRepository.getAllByAuthority(authority, pageable);
+        List<Authority> authoritiesList = authorityRepository.findAllByAuthority(authority, pageable);
+        ArrayList<User> users = new ArrayList<User>();
+        for (Authority auth : authoritiesList) {
+            Optional<User> user = userRepository.findByUsername(auth.getUsername());
+            if (user.isPresent()) {
+                users.add(user.get());
+            }
+        }
+        return users;
     }
 
     public boolean userExists(String username) {

@@ -44,7 +44,7 @@ public class UserController {
                     @RequestParam(value = "authority", required = false) String authority,
                     @RequestParam(value = "page", defaultValue = "0") int page,
                     @RequestParam(value = "size", defaultValue = "10") int size,
-                    @RequestParam(value = "sort", defaultValue = "authorities,username") String[] sort
+                    @RequestParam(value = "sort", defaultValue = "authority,username") String[] sort
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         List<User> users;

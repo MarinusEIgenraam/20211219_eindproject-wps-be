@@ -54,9 +54,8 @@ public class BlogService {
     }
 
     public void updateBlog(Long id, Blog blog) {
-        Optional<Blog> optionalBlog = blogRepository.findById(id);
+        Optional<Blog> optionalBlog = blogRepository.findById(blog.getBlogId());
         if (optionalBlog.isPresent()) {
-            blogRepository.deleteById(id);
             blogRepository.save(blog);
         } else {
             throw new RecordNotFoundException("Blog does not exist");

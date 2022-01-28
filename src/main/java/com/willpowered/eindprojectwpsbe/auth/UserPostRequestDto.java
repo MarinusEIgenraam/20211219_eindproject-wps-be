@@ -1,6 +1,9 @@
 package com.willpowered.eindprojectwpsbe.auth;
 
+import lombok.var;
+
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserPostRequestDto {
 
@@ -39,5 +42,17 @@ public class UserPostRequestDto {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public User toUser() {
+        var user = new User();
+
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+//        user.setAuthorities(authorities.stream().map(a-> Authority));
+//        dto.collaborators = project.getCollaborators().stream().map(p -> UserDto.fromUser(p)).collect(Collectors.toList());
+
+        return user;
     }
 }

@@ -83,6 +83,4 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "username"))
     private List<User> collaborators;
 
-    public Project(String projectName, String description) {
-    }
 }

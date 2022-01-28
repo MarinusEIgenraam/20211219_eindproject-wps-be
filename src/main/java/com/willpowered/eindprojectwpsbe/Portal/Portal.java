@@ -34,7 +34,5 @@ public class Portal {
     @OneToOne(fetch = LAZY)
     private User user;
 
-    @OneToOne(fetch = LAZY)
-    private SettingSchema settingsSchema;
 
 }

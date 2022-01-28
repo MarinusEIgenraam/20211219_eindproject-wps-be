@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -76,8 +77,8 @@ public class ProfileImageController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Object> uploadFile(ProfileImageInputDto profileImageInputDto) {
-        long newId = profileImageService.uploadFile(profileImageInputDto);
+    public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) {
+        long newId = profileImageService.uploadFile(new ProfileImageInputDto("some title", document));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();

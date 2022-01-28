@@ -73,7 +73,13 @@ public class TaskService {
 
         Task newTask = taskRepository.save(task);
         if (newTask.getParentProject() != null && newTask.getParentTask() == null) {
-            taskParentProject.getProjectTaskList().add(newTask);
+            if(taskParentProject.getProjectTaskList() ==  null) {
+                List<Task> newTaskList = new ArrayList();
+                newTaskList.add(newTask);
+                taskParentProject.setProjectTaskList(newTaskList);
+            } else {
+                taskParentProject.getProjectTaskList().add(newTask);
+            }
             projectRepository.save(taskParentProject);
         } else {
             taskParentTask.getTaskTaskList().add(newTask);

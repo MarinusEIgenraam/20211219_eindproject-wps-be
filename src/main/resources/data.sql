@@ -750,11 +750,11 @@ VALUES
     (2,false, false),
     (3,true, false),
     (4,true, false);
-INSERT INTO portals ( user_username,settings_schema_id)
+INSERT INTO portals ( user_username)
 VALUES
-    ('user', 1),
-    ('superuser', 2),
-    ('admin', 3);
+    ('user'),
+    ('superuser'),
+    ('admin');
 INSERT INTO alerts ("text", title, portal_id)
 VALUES
        ('something happend', 'you have got mail', 1),

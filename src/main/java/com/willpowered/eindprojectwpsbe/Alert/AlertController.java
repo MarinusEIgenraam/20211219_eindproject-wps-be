@@ -35,16 +35,6 @@ public class AlertController {
         return dtos;
     }
 
-    @GetMapping("/portal/{id}")
-    public List<AlertDto> getAllAlertsForPortal(@PathVariable("id")Long id) {
-        var dtos = new ArrayList<AlertDto>();
-        var alerts = alertService.getAlertsForPortal(id);
-
-        for (Alert alert : alerts) {
-            dtos.add(AlertDto.fromAlert(alert));
-        }
-        return dtos;
-    }
 
     @PostMapping
     public AlertDto saveAlert(@RequestBody AlertInputDto Dto) {

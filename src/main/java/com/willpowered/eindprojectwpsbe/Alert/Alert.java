@@ -23,4 +23,9 @@ public class Alert {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("portal_alerts")
     private Portal portal;
+
+    public Alert(String title, String text) {
+        this.title = title;
+        this.text = text;
+    }
 }

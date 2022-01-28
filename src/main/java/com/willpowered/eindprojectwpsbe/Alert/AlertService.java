@@ -1,10 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
-import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
-import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
 import com.willpowered.eindprojectwpsbe.auth.UserRepository;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
@@ -19,14 +16,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AlertService {
 
-    private static String PROJECT_URL = "";
-
-    @Autowired
-    private ProjectRepository projectRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private UserAuthenticateService userAuthenticateService;
     @Autowired
     private AlertRepository alertRepository;
     @Autowired
@@ -54,16 +45,6 @@ public class AlertService {
             } else {
                 throw new RecordNotFoundException("This user has no portal");
             }
-        } else {
-            throw new RecordNotFoundException("This portal has no open alerts");
-        }
-    }
-
-    public List<Alert> getAlertsForPortal(Long id) {
-        var optionalPortal = portalRepository.findById(id);
-        if (optionalPortal.isPresent()) {
-            Portal portal = optionalPortal.get();
-            return alertRepository.findAllByPortal(portal);
         } else {
             throw new RecordNotFoundException("This portal has no open alerts");
         }

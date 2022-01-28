@@ -8,14 +8,14 @@ public class PortalDto {
 
     public Long id;
     public UserDto user;
-    public SettingSchemaDto settingsSchema;
+//    public SettingSchemaDto settingsSchema;
 
     public static PortalDto fromPortal(Portal portal) {
         var dto = new PortalDto();
 
         dto.id= portal.getId();
         dto.user= UserDto.fromUser(portal.getUser());
-        dto.settingsSchema= SettingSchemaDto.fromSettingSchema(portal.getSettingsSchema());
+//        dto.settingsSchema= SettingSchemaDto.fromSettingSchema(portal.getSettingsSchema());
 
         return dto;
     }
