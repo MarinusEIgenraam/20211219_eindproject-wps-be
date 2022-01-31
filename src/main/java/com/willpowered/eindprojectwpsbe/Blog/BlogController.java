@@ -1,9 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
+import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,6 +19,9 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    @Autowired
+    private BlogRepository blogRepository;
+
     @GetMapping("/{id}")
     public BlogDto getBlog(@PathVariable("id") Long id) {
         var blog = blogService.getBlog(id);
@@ -24,35 +29,29 @@ public class BlogController {
     }
 
     @GetMapping
-    public List<BlogDto> getBlogsFor(
+    public Page<BlogDto> getBlogsFor(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "blogId") String[] sort,
             @RequestParam(value = "blogOwner", required = false) String blogOwner
     ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         var dtos = new ArrayList<BlogDto>();
 
-        List<Blog> blogs;
+        Page<Blog> blogs;
         if (blogOwner != null) {
-            blogs = blogService.getBlogsForBlogOwner(blogOwner);
+            blogs = blogService.getBlogsForBlogOwner(blogOwner, pageable);
         } else {
-            throw new BadRequestException();
+            blogs = blogRepository.findAll(pageable);
         }
 
         for (Blog blog : blogs) {
             dtos.add(BlogDto.fromBlog(blog));
         }
 
-        return dtos;
-    }
+        Page<BlogDto> pageOfBlogs = new PageImpl<>(dtos);
 
-    @GetMapping("/all")
-    public List<BlogDto> getAllBlogs() {
-        var dtos = new ArrayList<BlogDto>();
-        List<Blog> blogs;
-
-        blogs = blogService.getBlogs();
-        for (Blog blog : blogs) {
-            dtos.add(BlogDto.fromBlog(blog));
-        }
-        return dtos;
+        return pageOfBlogs;
     }
 
     @PostMapping

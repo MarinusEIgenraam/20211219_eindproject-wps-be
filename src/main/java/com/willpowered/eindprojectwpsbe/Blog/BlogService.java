@@ -8,6 +8,8 @@ import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,19 +26,16 @@ public class BlogService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
 
-    public List<Blog> getBlogs() {
-        return blogRepository.findAll();
-    }
-
-    public List<Blog> getBlogsForBlogOwner(String blogOwner) {
+    public Page<Blog> getBlogsForBlogOwner(String blogOwner, Pageable pageable) {
         var optionalUser = userRepository.findById(blogOwner);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return blogRepository.findAllByBlogOwner(user);
+            return blogRepository.findAllByBlogOwner(user, pageable);
         } else {
             throw new RecordNotFoundException("No user found");
         }
     }
+
 
     public Blog getBlog(Long blogId) {
         Optional<Blog> blog = blogRepository.findById(blogId);

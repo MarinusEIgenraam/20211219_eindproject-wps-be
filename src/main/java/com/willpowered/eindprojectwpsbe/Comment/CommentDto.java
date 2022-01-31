@@ -1,7 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
 
+import com.willpowered.eindprojectwpsbe.Blog.BlogDto;
+import com.willpowered.eindprojectwpsbe.Project.ParentProjectDto;
 import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
+import com.willpowered.eindprojectwpsbe.Task.ParentTaskDto;
+import com.willpowered.eindprojectwpsbe.Task.TaskDto;
 import com.willpowered.eindprojectwpsbe.auth.UserDto;
 import lombok.var;
 import org.springframework.lang.Nullable;
@@ -20,15 +24,17 @@ public class CommentDto {
 
 
     public static CommentDto fromComment(Comment comment) {
-        var Dto = new CommentDto();
+        var dto = new CommentDto();
 
-        Dto.id = comment.getId();
-        Dto.text = comment.getText();
-        Dto.startTime = comment.getStartTime();
-        Dto.user = UserDto.fromUser(comment.getUser());
-        Dto.commentList = comment.getCommentList().stream().map(c -> CommentDto.fromComment(c)).collect(Collectors.toList());
+        dto.id = comment.getId();
+        dto.text = comment.getText();
+        dto.startTime = comment.getStartTime();
+        dto.user = UserDto.fromUser(comment.getUser());
+        if (comment.getCommentList() != null) {
+            dto.commentList = comment.getCommentList().stream().map(c -> CommentDto.fromComment(c)).collect(Collectors.toList());
+        }
 
-        return Dto;
+        return dto;
     }
 
 

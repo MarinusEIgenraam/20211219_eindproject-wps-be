@@ -57,6 +57,7 @@ public class ProjectController {
             @RequestParam(value = "collaborator", required = false) String collaborator,
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "number", defaultValue = "0") int number,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,projectName") String[] sort
     ) {

@@ -151,7 +151,6 @@ VALUES ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. E
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
                laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate

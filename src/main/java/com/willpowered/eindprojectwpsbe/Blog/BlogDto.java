@@ -2,16 +2,22 @@ package com.willpowered.eindprojectwpsbe.Blog;
 
 import com.willpowered.eindprojectwpsbe.auth.UserDto;
 import lombok.var;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Lob;
 import java.time.Instant;
 
 public class BlogDto {
 
     public Long blogId;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String blogName;
     public String url;
-    public String imageUrl;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String description;
+    public String imageUrl;
     public Instant startTime;
     public UserDto blogOwner;
 

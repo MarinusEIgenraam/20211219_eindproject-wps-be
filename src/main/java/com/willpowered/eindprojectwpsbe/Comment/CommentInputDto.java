@@ -10,8 +10,8 @@ public class CommentInputDto {
 
     public Long id;
     public String text;
-    public Long projectId;
-    public String username;
+    public Long parentProjectId;
+    public Long parentBlogId;
     public Long parentCommentId;
 
     public Comment toComment() {

@@ -37,12 +37,12 @@ public class Comment {
     @Nullable
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "projectId", referencedColumnName = "projectId")
-    private Project project;
+    private Project parentProject;
 
     @Nullable
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "blogId", referencedColumnName = "blogId")
-    private Blog blog;
+    private Blog parentBlog;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "comment_owner", referencedColumnName = "username")

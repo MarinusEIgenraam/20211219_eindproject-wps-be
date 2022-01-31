@@ -1,11 +1,13 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
 
+import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,20 +29,27 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<CommentDto> getComments(
-            @RequestParam(value = "projectId", required = false) Long projectId,
+    public Page<CommentDto> getComments(
+            @RequestParam(value = "parentProjectId", required = false) Long parentProjectId,
+            @RequestParam(value = "parentBlogId", required = false) Long parentBlogId,
             @RequestParam(value = "parentCommentId", required = false) Long parentCommentId,
-            @RequestParam(value = "username", required = false) String username
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "id,startTime") String[] sort
     ) {
         var dtos = new ArrayList<CommentDto>();
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 
         List<Comment> comments;
-        if (projectId != null && parentCommentId == null && username == null) {
-            comments = commentService.getCommentsForProject(projectId);
-        } else if  (projectId == null && parentCommentId != null && username == null) {
-            comments = commentService.getCommentsForParentComment(parentCommentId);
-        } else if (projectId == null && parentCommentId == null && username != null) {
-            comments = commentService.getCommentsForUser(username);
+        if (parentProjectId != null && parentCommentId == null && parentBlogId == null && username == null) {
+            comments = commentService.getCommentsForParentProject(parentProjectId, pageable);
+        } else if  (parentProjectId == null && parentCommentId != null && parentBlogId == null && username == null) {
+            comments = commentService.getCommentsForParentComment(parentCommentId, pageable);
+        } else if (parentProjectId == null && parentCommentId == null && parentBlogId != null && username == null) {
+            comments = commentService.getCommentsForParentBlog(parentBlogId, pageable);
+        }else if (parentProjectId == null && parentCommentId == null && parentBlogId == null && username != null) {
+            comments = commentService.getCommentsForUser(username, pageable);
         } else {
             throw new BadRequestException();
         }
@@ -49,13 +58,14 @@ public class CommentController {
             dtos.add(CommentDto.fromComment(comment));
         }
 
-        return dtos;
+        Page<CommentDto> pageOfComments = new PageImpl<>(dtos);
+
+        return pageOfComments;
     }
 
     @PostMapping
     public CommentDto saveComment(@RequestBody CommentInputDto dto) {
-        var comment = commentService.saveComment(dto.projectId, dto.parentCommentId, dto.username, dto.text);
-        return CommentDto.fromComment(comment);
+        return CommentDto.fromComment(commentService.saveComment(dto));
     }
 
     @PutMapping("/{id}")
