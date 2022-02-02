@@ -2,6 +2,9 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
+import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
+import com.willpowered.eindprojectwpsbe.auth.User;
+import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
 import com.willpowered.eindprojectwpsbe.exception.FileStorageException;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,10 @@ public class ProfileImageService {
 
     @Autowired
     private ProfileImageRepository profileImageRepository;
+    @Autowired
+    private PortalRepository portalRepository;
+    @Autowired
+    private UserAuthenticateService userAuthenticateService;
 
     public void init() {
         try {
@@ -44,23 +51,28 @@ public class ProfileImageService {
         return profileImageRepository.findAll();
     }
 
-    public long uploadFile(ProfileImageInputDto profileImageInputDto) {
+    public long uploadFile(MultipartFile document) {
 
-        MultipartFile file = profileImageInputDto.file;
+        User currentUser = userAuthenticateService.getCurrentUser();
+        Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
 
-        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-        Path copyLocation = this.uploads.resolve(file.getOriginalFilename());
+        String originalFilename = StringUtils.cleanPath(document.getOriginalFilename());
+        Path copyLocation = this.uploads.resolve(document.getOriginalFilename());
 
         try {
-            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(document.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!");
         }
 
         ProfileImage newProfileImage = new ProfileImage();
-        newProfileImage.setFileName(originalFilename);
+        newProfileImage.setFileName(currentUser.getUsername()+"_profileImage");
         newProfileImage.setLocation(copyLocation.toString());
-        newProfileImage.setTitle(profileImageInputDto.title);
+        newProfileImage.setTitle("profileImage");
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            newProfileImage.setPortal(portal);
+        }
 
         ProfileImage saved = profileImageRepository.save(newProfileImage);
 

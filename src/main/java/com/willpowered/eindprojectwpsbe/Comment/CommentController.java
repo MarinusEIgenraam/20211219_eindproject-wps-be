@@ -36,10 +36,10 @@ public class CommentController {
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "id,startTime") String[] sort
+            @RequestParam(value = "sort", defaultValue = "startTime") String[] sort
     ) {
         var dtos = new ArrayList<CommentDto>();
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
         List<Comment> comments;
         if (parentProjectId != null && parentCommentId == null && parentBlogId == null && username == null) {

@@ -2,15 +2,18 @@ package com.willpowered.eindprojectwpsbe.Blog;
 
 
 import lombok.var;
+import org.hibernate.annotations.Type;
 
 import java.time.Instant;
 
 public class BlogInputDto {
 
     public Long blogId;
+    @Type(type = "org.hibernate.type.TextType")
     public String blogName;
     public String url;
     public String imageUrl;
+    @Type(type = "org.hibernate.type.TextType")
     public String description;
     public Instant startTime;
 

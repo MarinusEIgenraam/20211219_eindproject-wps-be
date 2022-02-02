@@ -5,9 +5,13 @@ import com.willpowered.eindprojectwpsbe.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserAuthenticateService userAuthenticateService;
 
     private String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -142,26 +150,23 @@ public class UserService {
         return validPassword;
     }
 
-    public void setPassword(String username, String password) {
-        if (username.equals(getCurrentUserName())) {
-            if (isValidPassword(password)) {
-                Optional<User> userOptional = userRepository.findById(username);
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    user.setPassword(passwordEncoder.encode(password));
-                    userRepository.save(user);
-                }
-                else {
-                    throw new UserNotFoundException(username);
-                }
-            }
-            else {
-                throw new InvalidPasswordException();
-            }
+    public void updatePassword(PasswordInputDto passwordInputDto) {
+        User user = userAuthenticateService.getCurrentUser();
+
+        String username = user.getUsername();
+        String password = passwordInputDto.oldPassword;
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            user.setPassword(passwordEncoder.encode(passwordInputDto.newPassword));
+            userRepository.save(user);
         }
-        else {
-            throw new NotAuthorizedException();
+        catch (BadCredentialsException ex) {
+            throw new UsernameNotFoundException("Incorrect username or password");
         }
+
     }
 
     public void updateUser(String username, User newUser) {

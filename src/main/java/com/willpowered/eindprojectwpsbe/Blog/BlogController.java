@@ -32,10 +32,10 @@ public class BlogController {
     public Page<BlogDto> getBlogsFor(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "blogId") String[] sort,
+            @RequestParam(value = "sort", defaultValue = "startTime") String[] sort,
             @RequestParam(value = "blogOwner", required = false) String blogOwner
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         var dtos = new ArrayList<BlogDto>();
 
         Page<Blog> blogs;

@@ -78,7 +78,7 @@ public class ProfileImageController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) {
-        long newId = profileImageService.uploadFile(new ProfileImageInputDto("some title", document));
+        long newId = profileImageService.uploadFile(document);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();

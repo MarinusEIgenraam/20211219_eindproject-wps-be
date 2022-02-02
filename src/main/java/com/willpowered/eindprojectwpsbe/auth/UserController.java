@@ -71,6 +71,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/password")
+    public ResponseEntity<Object> updatePassword(@RequestBody PasswordInputDto passwordInputDto) {
+        userService.updatePassword(passwordInputDto);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
