@@ -76,10 +76,7 @@ public class ProfileImageController {
                 .body(resource);
     }
 
-    @PostMapping(value = "",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+    @PostMapping(value = "")
     public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) throws IOException {
         long newId = profileImageService.uploadFile(document);
 

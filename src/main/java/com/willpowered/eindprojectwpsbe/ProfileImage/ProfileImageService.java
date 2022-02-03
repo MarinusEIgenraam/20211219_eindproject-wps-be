@@ -49,14 +49,16 @@ public class ProfileImageService {
     public long uploadFile(MultipartFile multipartFile) throws IOException {
         User currentUser = userAuthenticateService.getCurrentUser();
         Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
-        Path uploadDir = Paths.get("uploads/"+currentUser.getUsername());
 
+        Path uploadDir = Paths.get("uploads/"+currentUser.getUsername());
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
+        // Create directory
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }
+
         try (InputStream inputStream = multipartFile.getInputStream()) {
             Path filePath = uploadDir.resolve(originalFilename);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
