@@ -15,10 +15,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -77,7 +80,7 @@ public class ProfileImageController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) {
+    public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) throws IOException {
         long newId = profileImageService.uploadFile(document);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -85,6 +88,21 @@ public class ProfileImageController {
 
         return ResponseEntity.created(location).body(location);
     }
+
+//    @PostMapping("/save")
+//    public RedirectView saveUser(@RequestParam("image") MultipartFile multipartFile) throws IOException {
+//
+//        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//        user.setPhotos(fileName);
+//
+//        User savedUser = repo.save(user);
+//
+//        String uploadDir = "user-photos/" + savedUser.getId();
+//
+//        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+//
+//        return new RedirectView("/users", true);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteFile(@PathVariable long id) {

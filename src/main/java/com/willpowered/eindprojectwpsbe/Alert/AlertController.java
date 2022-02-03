@@ -1,9 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
+import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,15 +26,24 @@ public class AlertController {
         return AlertDto.fromAlert(alert);
     }
 
-    @GetMapping("/{username}")
-    public List<AlertDto> getAllAlertsForUser(@PathVariable("username")String username) {
+    @GetMapping("")
+    public Page<AlertDto> getAllAlertsForUser(
+            @RequestParam(value = "username")String username,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "number", defaultValue = "0") int number,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "createdAt") String[] sort
+    ) {
         var dtos = new ArrayList<AlertDto>();
-        var alerts = alertService.getAlertsForUser(username);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        var alerts = alertService.getAlertsForUser(username, pageable);
+
 
         for (Alert alert : alerts) {
             dtos.add(AlertDto.fromAlert(alert));
         }
-        return dtos;
+
+        return new PageImpl<>(dtos);
     }
 
 

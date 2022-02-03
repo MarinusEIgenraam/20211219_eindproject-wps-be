@@ -99,16 +99,19 @@ public class CommentService {
             Optional<Blog> optionalBlog = blogRepository.findById(dto.parentBlogId);
             if (optionalBlog.isPresent()) {
                 newComment.setParentBlog(optionalBlog.get());
+                alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
             }    
         } else if (dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null ) {
             Optional<Project> optionalProject = projectRepository.findById(dto.parentProjectId);
             if (optionalProject.isPresent()) {
                 newComment.setParentProject(optionalProject.get());
+                alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
             }
         } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null )  {
             Optional<Comment> optionalComment = commentRepository.findById(dto.parentCommentId);
             if (optionalComment.isPresent()) {
                 newComment.setParentComment(optionalComment.get());
+                alertService.addAlert("Comment on comment", optionalComment.get().getUser());
                 Comment savedComment = commentRepository.save(newComment);
                 Comment parentComment = optionalComment.get();
                 parentComment.getCommentList().add(savedComment);
@@ -118,7 +121,6 @@ public class CommentService {
         } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId == null ) {
             throw new RecordNotFoundException("Missing comment parent");
         }
-
             return commentRepository.save(newComment);
     }
 

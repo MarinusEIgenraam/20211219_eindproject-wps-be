@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
+import com.willpowered.eindprojectwpsbe.Alert.AlertService;
 import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Category.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.Comment.CommentRepository;
@@ -62,8 +63,6 @@ public class ProjectService {
         }
     }
 
-    // TODO need to find out how i can give special abilities to loged in users
-
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
         Project project = new Project();
@@ -102,14 +101,14 @@ public class ProjectService {
         Project newProject = projectRepository.save(project);
 
         for (TaskInputDto dto : projectInputDto.projectTaskList) {
-            if (dto.taskOwnerName == null) {
-                dto.taskOwnerName = userAuthenticateService.getCurrentUser().getUsername();
+            if (dto.taskOwner == null) {
+                dto.taskOwner = userAuthenticateService.getCurrentUser().getUsername();
             }
             dto.parentProjectId = newProject.getProjectId();
             newTaskList.add(taskService.saveTask(dto));
         }
         newProject.setProjectTaskList(newTaskList);
-        return newProject;
+        return projectRepository.save(newProject);
     }
 
     public void updateProject(Long id, Project project) {

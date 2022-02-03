@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
+import com.willpowered.eindprojectwpsbe.Alert.AlertService;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.auth.User;
@@ -36,6 +37,8 @@ public class TaskService {
     private ProjectRepository projectRepository;
     @Autowired
     private UserAuthenticateService userAuthenticateService;
+    @Autowired
+    private AlertService alertService;
 
 
     public Task saveTask(TaskInputDto dto) {
@@ -64,8 +67,12 @@ public class TaskService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 
-        if (dto.taskOwnerName != null) {
-            task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());
+        if (dto.taskOwner != null) {
+            Optional<User> optionalTaskOwner = userRepository.findByUsername(dto.taskOwner);
+            if (optionalTaskOwner.isPresent()) {
+                User taskOwner = optionalTaskOwner.get();
+                task.setTaskOwner(taskOwner);
+            }
         } else {
             User currentUser = userAuthenticateService.getCurrentUser();
             task.setTaskOwner(currentUser);
@@ -97,6 +104,7 @@ public class TaskService {
 
             newTask.setTaskTaskList(newTaskList);
         }
+        alertService.addAlert("Task invitation", newTask.getTaskOwner());
 
         return newTask;
     }
@@ -171,6 +179,12 @@ public class TaskService {
     public Task saveTaskData(TaskInputDto taskInputdto) {
         Task task = new Task();
 
+        if (taskInputdto.taskOwner != null) {
+            Optional<User> optionalUser = userRepository.findById(taskInputdto.taskOwner);
+            if (optionalUser.isPresent()) {
+                task.setTaskOwner(optionalUser.get());
+            }
+        }
         task.setDescription(taskInputdto.description);
         task.setTaskName(taskInputdto.taskName);
         task.setEndTime(taskInputdto.endTime);

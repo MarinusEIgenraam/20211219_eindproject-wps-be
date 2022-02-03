@@ -2,6 +2,7 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class ProfileImage {
 
     private String mediaType;
 
+    @Nullable
     private String location;
 
     private Date uploadedTimestamp;
@@ -34,4 +36,10 @@ public class ProfileImage {
     private Portal portal;
 
     private String uploadedBy;
+
+    @Transient
+    public String getPhotosImagePath() {
+        return "/uploads/" + id + "/" + location;
+
+    }
 }

@@ -17,12 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,35 +41,32 @@ public class ProfileImageService {
     @Autowired
     private UserAuthenticateService userAuthenticateService;
 
-    public void init() {
-        try {
-            Files.createDirectory(uploads);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload!");
-        }
-    }
-
     public Iterable<ProfileImage> getFiles() {
         return profileImageRepository.findAll();
     }
 
-    public long uploadFile(MultipartFile document) {
 
+    public long uploadFile(MultipartFile multipartFile) throws IOException {
         User currentUser = userAuthenticateService.getCurrentUser();
         Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
+        Path uploadDir = Paths.get("uploads/"+currentUser.getUsername());
 
-        String originalFilename = StringUtils.cleanPath(document.getOriginalFilename());
-        Path copyLocation = this.uploads.resolve(document.getOriginalFilename());
 
-        try {
-            Files.copy(document.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!");
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Path filePath = uploadDir.resolve(originalFilename);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {
+            throw new IOException("Could not save image file: " + originalFilename, ioe);
         }
 
         ProfileImage newProfileImage = new ProfileImage();
         newProfileImage.setFileName(currentUser.getUsername()+"_profileImage");
-        newProfileImage.setLocation(copyLocation.toString());
+        newProfileImage.setLocation(originalFilename);
         newProfileImage.setTitle("profileImage");
         if (optionalPortal.isPresent()) {
             Portal portal = optionalPortal.get();
@@ -78,6 +77,7 @@ public class ProfileImageService {
 
         return saved.getId();
     }
+
 
     public void deleteFile(long id) {
         Optional<ProfileImage> stored = profileImageRepository.findById(id);

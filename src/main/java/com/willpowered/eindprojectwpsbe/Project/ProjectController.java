@@ -61,7 +61,7 @@ public class ProjectController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,startTime") String[] sort
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         List<Project> projects;
         var dtos = new ArrayList<ProjectDto>();
 

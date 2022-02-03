@@ -15,8 +15,7 @@ public class TaskInputDto {
     @Nullable
     public LocalDate editedTime;
     public LocalDate endTime;
-//    public boolean isRunning;
-    public String taskOwnerName;
+    public String taskOwner;
     @Nullable
     public Long parentTaskId;
     @Nullable
