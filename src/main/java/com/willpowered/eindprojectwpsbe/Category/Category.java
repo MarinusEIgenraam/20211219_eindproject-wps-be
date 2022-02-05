@@ -28,7 +28,7 @@ public class Category {
     @NotBlank(message = "Description is required")
     private String description;
 
-    @OneToMany(fetch = LAZY)
+    @OneToMany(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "category_projects",
             joinColumns = @JoinColumn(name = "category_id"),

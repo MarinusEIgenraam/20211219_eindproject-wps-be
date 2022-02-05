@@ -55,7 +55,7 @@ public class ProjectController {
     public Page<ProjectDto> getProjects(
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "collaborator", required = false) String collaborator,
-            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "projectOwner", required = false) String projectOwner,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "number", defaultValue = "0") int number,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -65,13 +65,13 @@ public class ProjectController {
         List<Project> projects;
         var dtos = new ArrayList<ProjectDto>();
 
-        if (categoryId == null && username == null && collaborator == null) {
+        if (categoryId == null && projectOwner == null && collaborator == null) {
             projects = projectService.getAllProjects(pageable);
-        } else if (categoryId != null && username == null && collaborator == null) {
+        } else if (categoryId != null && projectOwner == null && collaborator == null) {
             projects = projectService.getProjectsForCategory(categoryId, pageable);
-        } else if (categoryId == null && username != null && collaborator == null) {
-            projects = projectService.getProjectsForProjectOwner(username, pageable);
-        } else if (categoryId == null && username == null && collaborator != null) {
+        } else if (categoryId == null && projectOwner != null && collaborator == null) {
+            projects = projectService.getProjectsForProjectOwner(projectOwner, pageable);
+        } else if (categoryId == null && projectOwner == null && collaborator != null) {
             projects = projectService.getProjectsForProjectCollaborator(collaborator, pageable);
         } else {
             throw new BadRequestException();

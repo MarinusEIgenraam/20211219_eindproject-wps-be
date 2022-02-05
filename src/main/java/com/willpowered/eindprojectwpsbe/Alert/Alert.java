@@ -22,7 +22,7 @@ public class Alert {
     private String text;
     private LocalDate createdAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonBackReference("portal_alerts")
     private Portal portal;
 

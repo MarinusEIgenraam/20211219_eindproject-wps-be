@@ -849,11 +849,6 @@ VALUES (1, 'user', 1),
        (1, 'user', 20),
        (1, 'superuser', 20),
        (1, 'admin', 20);
-INSERT INTO setting_schemas (id, comment_alert, task_alert)
-VALUES (1, false, true),
-       (2, false, false),
-       (3, true, false),
-       (4, true, false);
 INSERT INTO portals (user_username)
 VALUES ('user'),
        ('superuser'),

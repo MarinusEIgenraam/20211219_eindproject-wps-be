@@ -32,9 +32,9 @@ public class ProfileImageController {
     @Autowired
     ProfileImageService profileImageService;
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
-    PortalRepository portalRepository;
+    PortalService portalService;
 
     @GetMapping("/all")
     public ResponseEntity<Object> getFiles() {
@@ -51,24 +51,14 @@ public class ProfileImageController {
 
     @GetMapping("/profiles/{username}")
     public ProfileImageDto getProfileImage(@PathVariable("username") String username) {
-        var optionalUser = userRepository.findById(username);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            var optionalPortal = portalRepository.findByUser(user);
-            if (optionalPortal.isPresent()) {
-                Portal portal = optionalPortal.get();
-                return profileImageService.getFileByPortal(portal);
-            } else {
-                throw new RecordNotFoundException("This user doesnt have a portal yet");
-            }
-        } else {
-            throw new RecordNotFoundException("I cant find the requested  user");
-        }
+        User user = userService.getUser(username);
+        Portal portal = portalService.getUserPortal(user);
+        return profileImageService.getFileByPortal(portal);
     }
 
-    @GetMapping("/{id}/download")
-    public ResponseEntity downloadFile(@PathVariable long id) {
-        Resource resource = profileImageService.downloadFile(id);
+    @GetMapping("/{username}/download")
+    public ResponseEntity downloadFile(@PathVariable String username) {
+        Resource resource = profileImageService.downloadFile(username);
         String mediaType = "application/octet-stream";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(mediaType))
@@ -86,20 +76,6 @@ public class ProfileImageController {
         return ResponseEntity.created(location).body(location);
     }
 
-//    @PostMapping("/save")
-//    public RedirectView saveUser(@RequestParam("image") MultipartFile multipartFile) throws IOException {
-//
-//        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//        user.setPhotos(fileName);
-//
-//        User savedUser = repo.save(user);
-//
-//        String uploadDir = "user-photos/" + savedUser.getId();
-//
-//        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-//
-//        return new RedirectView("/users", true);
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteFile(@PathVariable long id) {

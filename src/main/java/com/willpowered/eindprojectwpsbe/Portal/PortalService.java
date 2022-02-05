@@ -1,6 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.willpowered.eindprojectwpsbe.auth.User;
+import com.willpowered.eindprojectwpsbe.auth.UserService;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ public class PortalService {
     @Autowired
     private PortalRepository portalRepository;
 
+    @Autowired
+    UserService userService;
+
     public List<Portal> getPortals() {
         return portalRepository.findAll();
     }
@@ -34,11 +38,19 @@ public class PortalService {
         }
     }
 
-    public Optional<Portal> getUserPortal(User user) {
-        return portalRepository.findByUser(user);
+    public Portal getUserPortal(User user) {
+        Optional<Portal> optionalPortal = portalRepository.findByUser(user);
+        if (optionalPortal.isPresent()) {
+            return optionalPortal.get();
+        } else {
+            throw new RecordNotFoundException("Portal does not exist");
+        }
     }
 
-    public Portal savePortal(Portal portal) {
+    public Portal savePortal(PortalInputDto dto) {
+        User user = userService.getUser(dto.username);
+        Portal portal = dto.toPortal();
+        portal.setUser(user);
         return portalRepository.save(portal);
     }
 

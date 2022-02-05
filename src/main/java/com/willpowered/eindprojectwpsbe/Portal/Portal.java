@@ -1,8 +1,8 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
-import com.willpowered.eindprojectwpsbe.SettingSchema.SettingSchema;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.*;
 
@@ -28,7 +28,7 @@ public class Portal {
             name = "portal_alerts",
             joinColumns = @JoinColumn(name = "portal_id"),
             inverseJoinColumns = @JoinColumn(name = "alert_id"))
-    @JsonBackReference("portal_alerts")
+    @JsonManagedReference("portal_alerts")
     private List<Alert> alertList;
 
     @OneToOne(fetch = LAZY)

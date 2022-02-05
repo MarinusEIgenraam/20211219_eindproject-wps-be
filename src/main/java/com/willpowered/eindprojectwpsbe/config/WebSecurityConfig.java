@@ -67,21 +67,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers(POST,"/authenticate/**").permitAll()
+
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/portal/**").hasRole("USER")
-                .antMatchers(POST,"/comments/**").hasRole("USER")
-                .antMatchers(POST,"/votes").hasRole("USER")
+
                 .antMatchers(PATCH,"/users/{^[\\w]$}/password").authenticated()
                 .antMatchers(POST,"/users/**").hasRole("ADMIN")
+                .antMatchers(DELETE,"/users/**").hasRole("ADMIN")
                 .antMatchers(PUT,"/users/password").hasRole("USER")
+                .antMatchers(PUT,"/users/**").hasRole("USER")
                 .antMatchers(GET,"/users/**").permitAll()
-                .antMatchers(GET,"/alerts").hasRole("USER")
                 .antMatchers(GET,"/users").permitAll()
+
+                .antMatchers(POST,"/comments/**").hasRole("USER")
+                .antMatchers(PUT,"/comments/**").hasRole("USER")
+                .antMatchers(DELETE,"/comments/**").hasRole("USER")
+
+                .antMatchers(POST,"/votes").hasRole("USER")
+
+                .antMatchers("/portals/**").hasRole("USER")
+
+                .antMatchers(GET,"/alerts").hasRole("USER")
+                .antMatchers(POST,"/alerts").hasRole("ADMIN")
+                .antMatchers(PUT,"/alerts").hasRole("ADMIN")
+                .antMatchers(DELETE,"/alerts/**").hasRole("USER")
+
                 .antMatchers(POST,"/blogs/**").hasRole("ADMIN")
+                .antMatchers(PUT,"/blogs/**").hasRole("ADMIN")
+                .antMatchers(DELETE,"/blogs/**").hasRole("ADMIN")
+
                 .antMatchers(POST,"/projects").hasRole("SUPER_USER")
+                .antMatchers(PUT,"/projects/**").hasRole("SUPER_USER")
+                .antMatchers(DELETE,"/projects/**").hasRole("SUPER_USER")
+
                 .antMatchers("/tasks/**").hasRole("USER")
-                .antMatchers(POST,"/files").hasAnyRole("USER", "SUPER_USER", "ADMIN")
-                .antMatchers(POST,"/authenticate/**").permitAll()
+                .antMatchers(POST,"/tasks").hasRole("USER")
+                .antMatchers(PUT,"/tasks").hasRole("USER")
+
+                .antMatchers(POST,"/files").hasRole("USER")
                 .antMatchers(GET,"/**/**/**").permitAll()
                 .anyRequest().denyAll()
                 .and()

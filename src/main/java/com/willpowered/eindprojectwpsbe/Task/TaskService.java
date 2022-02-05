@@ -34,7 +34,7 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ProjectRepository projectRepository;
+    ProjectRepository projectRepository;
     @Autowired
     private UserAuthenticateService userAuthenticateService;
     @Autowired
@@ -43,22 +43,16 @@ public class TaskService {
 
     public Task saveTask(TaskInputDto dto) {
         Task task = saveTaskData(dto);
-        Optional<Task> optionalParentTask = null;
-        Optional<Project> optionalParentProject = null;
-        Task taskParentTask = new Task();
-        Project taskParentProject = new Project();
 
         if (dto.parentTaskId == null && dto.parentProjectId != null) {
-            optionalParentProject = projectRepository.findById(dto.parentProjectId);
-            if (optionalParentProject.isPresent()) {
-                taskParentProject = optionalParentProject.get();
-                task.setParentProject(taskParentProject);
+            var projectOptional = projectRepository.findById(dto.parentProjectId);
+            if (projectOptional.isPresent()) {
+                task.setParentProject(projectOptional.get());
             }
         } else if (dto.parentTaskId != null && dto.parentProjectId == null) {
-            optionalParentTask = taskRepository.findById(dto.parentTaskId);
-            if (optionalParentTask.isPresent()) {
-                taskParentTask = optionalParentTask.get();
-                task.setParentTask(taskParentTask);
+            var taskOptional = taskRepository.findById(dto.parentTaskId);
+            if (taskOptional.isPresent()) {
+                task.setParentTask(taskOptional.get());
             }
         } else {
             throw new RecordNotFoundException("No parent was found");
@@ -68,7 +62,7 @@ public class TaskService {
 
 
         if (dto.taskOwner != null) {
-            Optional<User> optionalTaskOwner = userRepository.findByUsername(dto.taskOwner);
+            Optional<User> optionalTaskOwner = userRepository.findById(dto.taskOwner);
             if (optionalTaskOwner.isPresent()) {
                 User taskOwner = optionalTaskOwner.get();
                 task.setTaskOwner(taskOwner);
@@ -79,19 +73,6 @@ public class TaskService {
         }
 
         Task newTask = taskRepository.save(task);
-        if (newTask.getParentProject() != null && newTask.getParentTask() == null) {
-            if(taskParentProject.getProjectTaskList() ==  null) {
-                List<Task> newTaskList = new ArrayList();
-                newTaskList.add(newTask);
-                taskParentProject.setProjectTaskList(newTaskList);
-            } else {
-                taskParentProject.getProjectTaskList().add(newTask);
-            }
-            projectRepository.save(taskParentProject);
-        } else {
-            taskParentTask.getTaskTaskList().add(newTask);
-            taskRepository.save(taskParentTask);
-        }
 
         if (dto.taskTaskList != null) {
             List<Task> newTaskList = new ArrayList<>();
@@ -101,12 +82,11 @@ public class TaskService {
                 newTaskList.add(saveTask(taskTaskInputDto));
             }
 
-
             newTask.setTaskTaskList(newTaskList);
         }
         alertService.addAlert("Task invitation", newTask.getTaskOwner());
 
-        return newTask;
+        return taskRepository.save(newTask);
     }
 
     public void updateTask(Long id, Task task) {

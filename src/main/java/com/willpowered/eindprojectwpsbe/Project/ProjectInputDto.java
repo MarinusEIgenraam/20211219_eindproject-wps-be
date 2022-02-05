@@ -4,6 +4,7 @@ import com.willpowered.eindprojectwpsbe.Task.TaskInputDto;
 import lombok.var;
 import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class ProjectInputDto {
     public LocalDate editedTime;
     public LocalDate endTime;
     public boolean publiclyVisible;
+    @Size(max = 30, min = 1)
     public List<TaskInputDto> projectTaskList;
     public List<String> collaborators;
 

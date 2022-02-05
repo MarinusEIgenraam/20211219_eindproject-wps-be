@@ -48,8 +48,8 @@ public class AlertController {
 
 
     @PostMapping
-    public AlertDto saveAlert(@RequestBody AlertInputDto Dto) {
-        var alert = alertService.saveAlert(Dto.toAlert());
+    public AlertDto saveAlert(@RequestBody AlertInputDto dto) {
+        Alert alert = alertService.saveAlert(dto);
         return AlertDto.fromAlert(alert);
     }
 

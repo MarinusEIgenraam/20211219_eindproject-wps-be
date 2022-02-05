@@ -50,8 +50,7 @@ public class UserPostRequestDto {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-//        user.setAuthorities(authorities.stream().map(a-> Authority));
-//        dto.collaborators = project.getCollaborators().stream().map(p -> UserDto.fromUser(p)).collect(Collectors.toList());
+//        user.setAuthorities(authorities);
 
         return user;
     }

@@ -61,9 +61,9 @@ public class BlogController {
     }
 
     @PutMapping("/{id}")
-    public BlogDto updateBlog(@PathVariable Long id, @RequestBody BlogInputDto dto) {
-        blogService.updateBlog(id, dto.toBlog());
-        return BlogDto.fromBlog(dto.toBlog());
+    public BlogDto updateBlog(@PathVariable Long id, @RequestBody Blog blog) {
+        blogService.updateBlog(id, blog);
+        return BlogDto.fromBlog(blog);
     }
 
     @DeleteMapping("/{id}")

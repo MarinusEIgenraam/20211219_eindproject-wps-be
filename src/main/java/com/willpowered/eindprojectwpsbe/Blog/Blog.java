@@ -40,7 +40,7 @@ public class Blog {
 
     private Instant startTime;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "blog_owner", referencedColumnName = "username")
     private User blogOwner;
 

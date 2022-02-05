@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
@@ -55,7 +56,13 @@ private UserAuthenticateService userAuthenticateService;
         }
     }
 
-    public Alert saveAlert(Alert alert) {
+    public Alert saveAlert(AlertInputDto dto) {
+        Optional<Portal> optionalPortal = portalRepository.findById(dto.portalId);
+        Alert alert = dto.toAlert();
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            alert.setPortal(portal);
+        }
         return alertRepository.save(alert);
     }
 

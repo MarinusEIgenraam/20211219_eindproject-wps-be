@@ -3,12 +3,13 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
+import com.willpowered.eindprojectwpsbe.Portal.PortalService;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.exception.FileStorageException;
+import com.willpowered.eindprojectwpsbe.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.auth.UserService;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,7 @@ import java.util.Optional;
 @Service
 public class ProfileImageService {
 
-    @Value("${app.upload.dir:${user.home}}")
-    private String uploadDirectory;  // relative to root
-    private final Path uploads = Paths.get("uploads");
+    private final Path uploadDir = Paths.get("uploads/");
 
     @Autowired
     private ProfileImageRepository profileImageRepository;
@@ -40,6 +39,12 @@ public class ProfileImageService {
     private PortalRepository portalRepository;
     @Autowired
     private UserAuthenticateService userAuthenticateService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PortalService portalService;
+    @Autowired
+    UserService userService;
 
     public Iterable<ProfileImage> getFiles() {
         return profileImageRepository.findAll();
@@ -50,11 +55,8 @@ public class ProfileImageService {
         User currentUser = userAuthenticateService.getCurrentUser();
         Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
 
-        Path uploadDir = Paths.get("uploads/"+currentUser.getUsername());
-
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
-        // Create directory
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }
@@ -67,7 +69,7 @@ public class ProfileImageService {
         }
 
         ProfileImage newProfileImage = new ProfileImage();
-        newProfileImage.setFileName(currentUser.getUsername()+"_profileImage");
+        newProfileImage.setFileName(originalFilename);
         newProfileImage.setLocation(originalFilename);
         newProfileImage.setTitle("profileImage");
         if (optionalPortal.isPresent()) {
@@ -86,17 +88,15 @@ public class ProfileImageService {
 
         if (stored.isPresent()) {
             String filename = stored.get().getFileName();
-            Path location = this.uploads.resolve(filename);
+            Path location = uploadDir.resolve(filename);
             try {
                 Files.deleteIfExists(location);
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException("File not found");
             }
 
             profileImageRepository.deleteById(id);
-        }
-        else {
+        } else {
             throw new RecordNotFoundException();
         }
     }
@@ -113,10 +113,30 @@ public class ProfileImageService {
             profileImageDto.downloadUri = uri.toString();
 
             return profileImageDto;
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("This image does not exist in our files");
         }
+    }
+
+    public Resource downloadFile(String username) {
+        Optional<ProfileImage> optionalImage = profileImageRepository.findByPortal(portalService.getUserPortal(userService.getUser(username)));
+
+        if (optionalImage.isPresent()) {
+            String filename = optionalImage.get().getFileName();
+            Path fileLocation = uploadDir.resolve(filename);
+
+            Resource resource = null;
+            try {
+                resource = new UrlResource(fileLocation.toUri());
+                return resource;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new RecordNotFoundException();
+        }
+
+        return null;
     }
 
     public ProfileImageDto getFileById(long id) {
@@ -131,36 +151,13 @@ public class ProfileImageService {
             profileImageDto.downloadUri = uri.toString();
 
             return profileImageDto;
-        }
-        else {
+        } else {
             throw new RecordNotFoundException("This image does not exist in our files");
         }
     }
 
     public boolean fileExistsById(long id) {
         return profileImageRepository.existsById(id);
-    }
-
-    public Resource downloadFile(long id) {
-        Optional<ProfileImage> optionalImage = profileImageRepository.findById(id);
-
-        if (optionalImage.isPresent()) {
-            String filename = optionalImage.get().getFileName();
-            Path path = this.uploads.resolve(filename);
-
-            Resource resource = null;
-            try {
-                resource = new UrlResource(path.toUri());
-                return resource;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            throw new RecordNotFoundException();
-        }
-
-        return null;
     }
 
 }

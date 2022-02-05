@@ -21,6 +21,7 @@ public class AlertInputDto {
         alert.setText(text);
         alert.setCreatedAt(createdAt);
 
+
         return alert;
     }
 }
