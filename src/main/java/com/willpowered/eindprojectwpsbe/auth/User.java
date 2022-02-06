@@ -1,7 +1,10 @@
 package com.willpowered.eindprojectwpsbe.auth;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.willpowered.eindprojectwpsbe.Project.Project;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -35,12 +38,22 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    @Nullable
     @ManyToMany(cascade = {CascadeType.ALL})
+    @JsonIgnore
     @JoinTable(
             name = "project_collaborators",
             joinColumns = @JoinColumn(name = "projectId"),
             inverseJoinColumns = @JoinColumn(name = "username"))
     Set<Project> projects = new HashSet<>();
+
+    public User(String username, String password, Boolean enabled, String email, Set<Authority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.email = email;
+        this.authorities = authorities;
+    }
 
     public Set<Authority> getAuthorities() {
         return authorities;

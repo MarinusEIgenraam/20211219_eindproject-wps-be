@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -88,7 +86,7 @@ public class ProjectService {
 
         List<Task> newTaskList = new ArrayList<>();
 
-        List<User> optionalCollaborators = new ArrayList<>();
+        Set<User> optionalCollaborators = new HashSet<>();
         if (projectInputDto.collaborators != null) {
 
             for (String username : projectInputDto.collaborators) {
