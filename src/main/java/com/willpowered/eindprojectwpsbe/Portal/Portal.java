@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,15 +25,12 @@ public class Portal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "portal_alerts",
-            joinColumns = @JoinColumn(name = "portal_id"),
-            inverseJoinColumns = @JoinColumn(name = "alert_id"))
+    @OneToMany
     @JsonManagedReference("portal_alerts")
     private List<Alert> alertList;
 
     @OneToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
 

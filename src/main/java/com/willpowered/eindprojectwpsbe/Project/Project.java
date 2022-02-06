@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
@@ -61,26 +63,18 @@ public class Project {
 
     private Boolean isRunning = true;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "project_owner", referencedColumnName = "username")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User projectOwner;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parentProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Size(max = 30, min = 1)
-    @JoinTable(
-            name = "project_tasks",
-            joinColumns = @JoinColumn(name = "parent_project_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonManagedReference("project_tasks")
     private List<Task> projectTaskList;
 
-    @ManyToMany
-    @JoinTable(
-            name = "project_collaborators",
-            joinColumns = @JoinColumn(name = "projectId"),
-            inverseJoinColumns = @JoinColumn(name = "username"))
-    private List<User> collaborators;
+    @ManyToMany(mappedBy = "projects")
+    private Set<User> collaborators = new HashSet<>();
+
 
 }

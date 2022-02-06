@@ -7,6 +7,8 @@ import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -45,19 +47,20 @@ public class Comment {
     private Blog parentBlog;
 
     @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "comment_owner", referencedColumnName = "username")
     private User user;
 
     @Nullable
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinTable(
+            name = "comment_comments",
+            joinColumns = @JoinColumn(name = "parent_comment"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id"))
     @JsonBackReference("comment_comments")
     private Comment parentComment;
 
-    @OneToMany(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "comment_comments",
-            joinColumns = @JoinColumn(name = "parent_comment_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id"))
+    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("comments_comments")
     private List<Comment> commentList;
 }

@@ -9,12 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -41,24 +44,28 @@ public class Task {
 
     private Boolean isRunning = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User taskOwner;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinTable(
+            name = "task_tasks",
+            joinColumns = @JoinColumn(name = "parent_task"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonBackReference("task_tasks")
     private Task parentTask;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_project_id")
+    @ManyToOne
+    @JoinTable(
+            name = "project_tasks",
+            joinColumns = @JoinColumn(name = "parent_project"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
     @JsonBackReference("project_tasks")
     private Project parentProject;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "task_tasks",
-            joinColumns = @JoinColumn(name = "parent_task_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    @OneToMany(mappedBy = "parentTask", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("task_tasks")
     private List<Task> taskTaskList;
 }

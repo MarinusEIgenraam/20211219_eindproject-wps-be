@@ -3,6 +3,8 @@ package com.willpowered.eindprojectwpsbe.Alert;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,8 +24,13 @@ public class Alert {
     private String text;
     private LocalDate createdAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne
+    @JoinTable(
+            name = "portal_alerts",
+            joinColumns = @JoinColumn(name = "portal"),
+            inverseJoinColumns = @JoinColumn(name = "alert_id"))
     @JsonBackReference("portal_alerts")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Portal portal;
 
     public Alert(String title, String text) {

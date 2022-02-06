@@ -2,6 +2,8 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -33,6 +35,7 @@ public class ProfileImage {
     private Date uploadedTimestamp;
 
     @OneToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Portal portal;
 
     private String uploadedBy;

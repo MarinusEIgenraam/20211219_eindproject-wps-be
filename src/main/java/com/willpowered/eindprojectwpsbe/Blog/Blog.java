@@ -4,6 +4,8 @@ package com.willpowered.eindprojectwpsbe.Blog;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.auth.User;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -40,7 +42,8 @@ public class Blog {
 
     private Instant startTime;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "blog_owner", referencedColumnName = "username")
     private User blogOwner;
 

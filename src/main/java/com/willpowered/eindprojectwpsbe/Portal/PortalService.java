@@ -57,8 +57,9 @@ public class PortalService {
     public void updatePortal(Long id, Portal portal) {
         Optional<Portal> optionalPortal = portalRepository.findById(id);
         if (optionalPortal.isPresent()) {
-            portalRepository.deleteById(id);
-            portalRepository.save(portal);
+            Portal newPortal = portal;
+            newPortal.setId(id);
+            portalRepository.save(newPortal);
         } else {
             throw new RecordNotFoundException("Portal does not exist");
         }
