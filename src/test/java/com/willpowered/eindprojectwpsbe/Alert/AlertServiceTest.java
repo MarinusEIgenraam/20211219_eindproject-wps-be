@@ -11,12 +11,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,18 +49,24 @@ class AlertServiceTest {
     private Portal firstPortal;
     private Portal secondPortal;
     private Portal thirdPortal;
+    private Authentication authentication;
     private List<Alert> firstAlertList;
+    private org.springframework.data.domain.Pageable pageable;
 
     @BeforeEach
     void setUp() {
         Set<Authority> authorities = new HashSet<>();
         this.firstAlertList = new ArrayList<>();
+        this.authentication = Mockito.mock(Authentication.class);
         this.firstUser = new User("firstUser", "password", true, "user@user.nl", authorities);
         this.secondUser = new User("secondUser", "password", true, "user@user.nl", authorities);
         this.thirdUser = new User("thirdUser", "password", true, "user@user.nl", authorities);
-//        this.firstAlert = new Alert(1L, "First alert", "Better check alerts", 1/1/321, firstPortal);
-//        this.secondAlert = new Alert(2L,"Second alert", "Better check alerts", '1/1/1', firstPortal);
-//        this.thirdAlert = new Alert(3L,"Third alert", "Better check alerts", , firstPortal);
+        this.firstPortal = new Portal(1L, firstAlertList, firstUser);
+        this.secondPortal = new Portal(1L, firstAlertList, secondUser);
+        this.thirdPortal = new Portal(1L, firstAlertList, thirdUser);
+        this.firstAlert = new Alert(1L, "First alert", "Better check alerts", LocalDate.parse("2019-05-01"), firstPortal);
+        this.secondAlert = new Alert(2L, "Second alert", "Better check alerts", LocalDate.parse("2021-10-01"), firstPortal);
+        this.thirdAlert = new Alert(3L, "Third alert", "Better check alerts", LocalDate.parse("2021-11-02"), firstPortal);
         firstAlert.setId(1L);
         firstAlertList.add(firstAlert);
         firstAlertList.add(secondAlert);
@@ -81,12 +87,46 @@ class AlertServiceTest {
         alertService.getAlert(1L);
     }
 
+    @Test
+    void getAlertsForUser() {
+        when(userRepository.findById(firstUser.getUsername())).thenReturn(Optional.ofNullable(firstUser));
+
+        when(portalRepository.findByUser(firstUser)).thenReturn((Optional.ofNullable(firstPortal)));
+
+        when(alertRepository.findAllByPortal(firstPortal, pageable)).thenReturn(firstAlertList);
+
+        List<Alert> alerts = alertService.getAlertsForUser(firstUser.getUsername(), pageable);
+        verify(userRepository, times(1)).findById(firstUser.getUsername());
+        verify(portalRepository, times(1)).findByUser(firstUser);
+        verify(portalRepository, times(1)).findByUser(firstUser);
+
+        assertThat(alerts.get(1).getId()).isEqualTo(firstAlertList.get(1).getId());
+
+    }
+
+
 //    @Test
-//    void getAlertsForUser() {
+//    void addAlert() {
+//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
+//                getContext().getAuthentication().getPrincipal();
+//        User user = new User();
+//        user.setUsername("firstUser");
+//        String title = "Comment on comment";
 //        when(portalRepository.findByUser(firstUser)).thenReturn(Optional.ofNullable(firstPortal));
-//        when(alertRepository.findAllByPortal(firstPortal)).thenReturn(firstAlertList);
-//        when(userRepository.findById(firstUser.getUsername())).thenReturn(Optional.ofNullable(firstUser));
-//        alertService.getAlertsForUser("firstUser");
+//        when(alertRepository.save(firstAlert)).thenReturn(firstAlert);
+//        when(userAuthenticateService.getCurrentUser()).thenReturn(firstUser);
+//        when(userRepository.findByUsername(principal.getUsername())).thenReturn(Optional.ofNullable(secondUser));
+//
+//
+//        Alert newAlert = alertService.addAlert(title, user);
+//        verify(alertRepository, times(1)).save(alertArgumentCaptor.capture());
+//        verify(userAuthenticateService, times(1)).getCurrentUser();
+//        Alert captured = alertArgumentCaptor.getValue();
+//
+//        assertThat(captured.getId()).isEqualTo(1);
+//        assertThat(captured.getTitle()).isEqualTo("Comment on comment");
+//
+//
 //    }
 
     @Test
@@ -100,19 +140,6 @@ class AlertServiceTest {
         assertThat(alertFirst.getText()).isEqualTo("Better check alerts");
     }
 
-//    @Test
-//    void addAlert() {
-//        String title = "Comment on comment";
-//        when(portalRepository.findByUser(firstUser)).thenReturn(Optional.ofNullable(firstPortal));
-//        when(userRepository.findByUsername(principal.getUsername()).thenReturn(secondUser));
-//
-//        alertService.addAlert(title, firstUser);
-//        verify(alertRepository, times(1)).save(alertArgumentCaptor.capture());
-//        var alertFirst = alertArgumentCaptor.getValue();
-//
-//        assertThat(alertFirst.getTitle()).isEqualTo("This is a test");
-//        assertThat(alertFirst.getText()).isEqualTo("This is not a test");
-//    }
 
     @Test
     void updateAlert() {

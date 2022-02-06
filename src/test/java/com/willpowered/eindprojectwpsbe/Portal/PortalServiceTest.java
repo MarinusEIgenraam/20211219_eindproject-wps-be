@@ -61,6 +61,7 @@ class PortalServiceTest {
     @Test
     void deletePortal() {
         portalRepository.delete(firstPortal);
+
         portalService.deletePortal(1L);
         verify(portalRepository, times(1)).delete(firstPortal);
     }
