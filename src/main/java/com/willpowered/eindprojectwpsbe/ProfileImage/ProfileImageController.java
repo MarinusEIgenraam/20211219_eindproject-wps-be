@@ -2,24 +2,17 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import com.willpowered.eindprojectwpsbe.Portal.PortalDto;
-import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.auth.UserService;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import lombok.var;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.net.URI;

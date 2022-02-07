@@ -2,9 +2,9 @@ package com.willpowered.eindprojectwpsbe.Vote;
 
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.exception.WillpoweredException;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.Exception.WillpoweredException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +24,17 @@ public class VoteService {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private UserService userService;
 
+
+    //////////////////////////////
+    //// Create
 
     public void vote(VoteInputDto voteInputDto) {
 
         Project project = projectRepository.findById(voteInputDto.getProjectId())
                 .orElseThrow(() -> new RecordNotFoundException("No project with ID - " + voteInputDto.getProjectId() + " was found"));
-        Optional<Vote> voteByProjectAndUser = voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project, userAuthenticateService.getCurrentUser());
+        Optional<Vote> voteByProjectAndUser = voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project, userService.getCurrentUser());
 
         if (voteByProjectAndUser.isPresent() && voteByProjectAndUser.get().getVoteType().equals(voteInputDto.getVoteType())) {
             throw new WillpoweredException("You have already " + voteInputDto.getVoteType() + "'d this project");
@@ -52,7 +55,7 @@ public class VoteService {
 
         vote.setVoteType(voteInputDto.getVoteType());
         vote.setProject(project);
-        vote.setUser(userAuthenticateService.getCurrentUser());
+        vote.setUser(userService.getCurrentUser());
 
         return voteRepository.save(vote);
     }
@@ -60,6 +63,9 @@ public class VoteService {
     public Vote saveVote(Vote vote) {
         return voteRepository.save(vote);
     }
+
+    //////////////////////////////
+    //// Update
 
     public void updateVote(Long id, Vote vote) {
         Optional<Vote> optionalVote = voteRepository.findById(id);
@@ -70,6 +76,9 @@ public class VoteService {
             throw new RecordNotFoundException("vote does not exist");
         }
     }
+
+    //////////////////////////////
+    //// Delete
 
     public void deleteVote(Long id) {
         voteRepository.deleteById(id);

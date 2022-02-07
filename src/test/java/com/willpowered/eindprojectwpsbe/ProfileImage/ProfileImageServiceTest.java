@@ -1,26 +1,21 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
-import com.willpowered.eindprojectwpsbe.Blog.Blog;
-import com.willpowered.eindprojectwpsbe.Blog.BlogRepository;
-import com.willpowered.eindprojectwpsbe.Blog.BlogService;
+import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
-import com.willpowered.eindprojectwpsbe.auth.*;
+import com.willpowered.eindprojectwpsbe.Authentication.User;
+import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
+import com.willpowered.eindprojectwpsbe.Authentication.UserService;
+import com.willpowered.eindprojectwpsbe.Authentication.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +35,7 @@ class ProfileImageServiceTest {
     @InjectMocks
     private UserService userService;
     @InjectMocks
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
     @Mock
     ProfileImageRepository profileImageRepository;
     @Mock
@@ -100,7 +95,7 @@ class ProfileImageServiceTest {
 //        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) securityContext.getAuthentication().getPrincipal();
 //        when(securityContext.getAuthentication()).thenReturn(authentication);
 //        SecurityContextHolder.setContext(securityContext);
-//        when(userAuthenticateService.getCurrentUser()).thenReturn(firstUser);
+//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
 //        when(userRepository.findByUsername(principal.getUsername())).thenReturn(java.util.Optional.ofNullable(secondUser));
 //
 //    }

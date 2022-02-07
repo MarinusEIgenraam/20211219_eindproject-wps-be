@@ -1,11 +1,9 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Category.CategoryDto;
-import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskDto;
-import com.willpowered.eindprojectwpsbe.auth.UserDto;
+import com.willpowered.eindprojectwpsbe.User.UserDto;
 import lombok.var;
 import org.modelmapper.ModelMapper;
 

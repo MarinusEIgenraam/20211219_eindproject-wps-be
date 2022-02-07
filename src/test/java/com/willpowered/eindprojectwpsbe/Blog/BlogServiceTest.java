@@ -1,10 +1,10 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import com.willpowered.eindprojectwpsbe.auth.Authority;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Authentication.User;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class BlogServiceTest {
     @InjectMocks
     private BlogService blogService;
     @InjectMocks
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
     @Mock
     BlogRepository blogRepository;
     @Mock
@@ -104,12 +104,12 @@ class BlogServiceTest {
 //
 //        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
 //
-//        when(userAuthenticateService.getCurrentUser()).thenReturn(firstUser);
+//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
 //        when(blogRepository.save(firstBlog)).thenReturn(firstBlog);
 //
 //        when(userRepository.findByUsername(firstUser.getUsername())).thenReturn(java.util.Optional.ofNullable(firstUser));
 //        Blog newBlog = blogService.saveBlog(firstBlog);
-//        verify(userAuthenticateService, times(1)).getCurrentUser();
+//        verify(authenticationService, times(1)).getCurrentUser();
 //        verify(blogRepository, times(1)).save(firstBlog);
 //
 //        assertThat(newBlog.getBlogId()).isEqualTo(firstBlog.getBlogId());

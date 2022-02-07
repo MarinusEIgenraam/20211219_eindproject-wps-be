@@ -2,12 +2,11 @@ package com.willpowered.eindprojectwpsbe.Task;
 
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Project.ParentProjectDto;
-import com.willpowered.eindprojectwpsbe.auth.UserDto;
+import com.willpowered.eindprojectwpsbe.User.UserDto;
 import lombok.var;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ParentTaskDto {
     public Long taskId;

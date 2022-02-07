@@ -1,6 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Category;
 
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,18 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    
+
+
+    //////////////////////////////
+    //// Create
+
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    //////////////////////////////
+    //// Read
+
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
@@ -29,9 +40,8 @@ public class CategoryService {
         }
     }
 
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
-    }
+    //////////////////////////////
+    //// Update
 
     public void updateCategory(Long id, Category category) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
@@ -42,6 +52,9 @@ public class CategoryService {
             throw new RecordNotFoundException("Category does not exist");
         }
     }
+
+    //////////////////////////////
+    //// Delete
 
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);

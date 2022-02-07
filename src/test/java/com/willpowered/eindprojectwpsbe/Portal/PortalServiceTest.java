@@ -1,11 +1,9 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
-import com.willpowered.eindprojectwpsbe.auth.Authority;
-import com.willpowered.eindprojectwpsbe.auth.User;
+import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Authentication.User;
 import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
-import lombok.var;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

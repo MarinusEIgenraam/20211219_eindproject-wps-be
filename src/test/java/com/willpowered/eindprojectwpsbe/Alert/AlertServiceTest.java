@@ -2,10 +2,10 @@ package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
-import com.willpowered.eindprojectwpsbe.auth.Authority;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Authentication.User;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
 import lombok.var;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -35,7 +34,7 @@ class AlertServiceTest {
     @InjectMocks
     private AlertService alertService;
     @InjectMocks
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
 
     @Captor
     ArgumentCaptor<Alert> alertArgumentCaptor;
@@ -114,13 +113,13 @@ class AlertServiceTest {
 //        String title = "Comment on comment";
 //        when(portalRepository.findByUser(firstUser)).thenReturn(Optional.ofNullable(firstPortal));
 //        when(alertRepository.save(firstAlert)).thenReturn(firstAlert);
-//        when(userAuthenticateService.getCurrentUser()).thenReturn(firstUser);
+//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
 //        when(userRepository.findByUsername(principal.getUsername())).thenReturn(Optional.ofNullable(secondUser));
 //
 //
 //        Alert newAlert = alertService.addAlert(title, user);
 //        verify(alertRepository, times(1)).save(alertArgumentCaptor.capture());
-//        verify(userAuthenticateService, times(1)).getCurrentUser();
+//        verify(authenticationService, times(1)).getCurrentUser();
 //        Alert captured = alertArgumentCaptor.getValue();
 //
 //        assertThat(captured.getId()).isEqualTo(1);

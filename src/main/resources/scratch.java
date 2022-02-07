@@ -8,7 +8,7 @@ public Task saveTask(TaskInputDto dto){
         }else{
         throw new RecordNotFoundException("No parent found");
         }
-        User currentUser=userAuthenticateService.getCurrentUser();
+        User currentUser=userService.getCurrentUser();
 
         if(dto.taskOwnerName!=null){
         task.setTaskOwner(userRepository.findByUsername(dto.taskOwnerName).get());

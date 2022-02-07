@@ -1,8 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
 
-import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
-import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
+import com.willpowered.eindprojectwpsbe.Exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;

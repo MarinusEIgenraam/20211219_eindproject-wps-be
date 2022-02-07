@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
 
-import com.willpowered.eindprojectwpsbe.auth.User;
+import com.willpowered.eindprojectwpsbe.User.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +15,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query(
             "SELECT p FROM Project p WHERE p.publiclyVisible = true OR p.projectOwner = :user OR :user MEMBER OF p.collaborators")
-    List<Project> findAllViewableProjects(@Param("user")User user, Pageable pageable);
+    List<Project> findAllViewableProjects(@Param("user") User user, Pageable pageable);
 
     @Query("SELECT p FROM Project p WHERE :user = p.projectOwner AND (p.publiclyVisible = true OR p.projectOwner = :user OR :user MEMBER OF p.collaborators)")
     List<Project> findAllByProjectOwner(@Param("user") User user, Pageable pageable);

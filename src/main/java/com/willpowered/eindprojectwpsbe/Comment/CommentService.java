@@ -2,21 +2,21 @@ package com.willpowered.eindprojectwpsbe.Comment;
 
 
 import com.willpowered.eindprojectwpsbe.Alert.AlertService;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Blog.BlogRepository;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +34,50 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
     @Autowired
     private AlertService alertService;
+    @Autowired
+    UserService userService;
 
+    //////////////////////////////
+    //// Create
+
+    public Comment saveComment(CommentInputDto dto) {
+        Comment newComment = dto.toComment();
+        newComment.setUser(userService.getCurrentUser());
+
+        if (dto.parentBlogId != null && dto.parentProjectId == null && dto.parentCommentId == null) {
+            Optional<Blog> optionalBlog = blogRepository.findById(dto.parentBlogId);
+            if (optionalBlog.isPresent()) {
+                newComment.setParentBlog(optionalBlog.get());
+                alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
+            }
+        } else if (dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null) {
+            Optional<Project> optionalProject = projectRepository.findById(dto.parentProjectId);
+            if (optionalProject.isPresent()) {
+                newComment.setParentProject(optionalProject.get());
+                alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
+            }
+        } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null) {
+            Optional<Comment> optionalComment = commentRepository.findById(dto.parentCommentId);
+            if (optionalComment.isPresent()) {
+                newComment.setParentComment(optionalComment.get());
+                alertService.addAlert("Comment on comment", optionalComment.get().getUser());
+                Comment savedComment = commentRepository.save(newComment);
+                Comment parentComment = optionalComment.get();
+                parentComment.getCommentList().add(savedComment);
+                commentRepository.save(parentComment);
+                newComment = savedComment;
+            }
+        } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId == null) {
+            throw new RecordNotFoundException("Missing comment parent");
+        }
+        return commentRepository.save(newComment);
+    }
+
+    //////////////////////////////
+    //// Read
 
     public Comment getComment(Long commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
@@ -91,38 +131,8 @@ public class CommentService {
         }
     }
 
-    public Comment saveComment(CommentInputDto dto) {
-        Comment newComment = dto.toComment();
-        newComment.setUser(userAuthenticateService.getCurrentUser());
-
-        if (dto.parentBlogId != null && dto.parentProjectId == null && dto.parentCommentId == null ) {
-            Optional<Blog> optionalBlog = blogRepository.findById(dto.parentBlogId);
-            if (optionalBlog.isPresent()) {
-                newComment.setParentBlog(optionalBlog.get());
-                alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
-            }    
-        } else if (dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null ) {
-            Optional<Project> optionalProject = projectRepository.findById(dto.parentProjectId);
-            if (optionalProject.isPresent()) {
-                newComment.setParentProject(optionalProject.get());
-                alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
-            }
-        } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null )  {
-            Optional<Comment> optionalComment = commentRepository.findById(dto.parentCommentId);
-            if (optionalComment.isPresent()) {
-                newComment.setParentComment(optionalComment.get());
-                alertService.addAlert("Comment on comment", optionalComment.get().getUser());
-                Comment savedComment = commentRepository.save(newComment);
-                Comment parentComment = optionalComment.get();
-                parentComment.getCommentList().add(savedComment);
-                commentRepository.save(parentComment);
-                newComment = savedComment;
-            }
-        } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId == null ) {
-            throw new RecordNotFoundException("Missing comment parent");
-        }
-            return commentRepository.save(newComment);
-    }
+    //////////////////////////////
+    //// Update
 
     public void updateComment(Long id, Comment comment) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
@@ -134,9 +144,15 @@ public class CommentService {
         }
     }
 
+    //////////////////////////////
+    //// Delete
+
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
     }
+
+    //////////////////////////////
+    //// Helpers
 
     public Integer calculateComments(Project project) {
         return commentRepository.findAllByParentProject(project).size();

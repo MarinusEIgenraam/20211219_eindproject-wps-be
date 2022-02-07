@@ -1,6 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
-import com.willpowered.eindprojectwpsbe.Alert.AlertService;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Category.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.Comment.CommentRepository;
@@ -8,15 +8,14 @@ import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.Task.TaskRepository;
 import com.willpowered.eindprojectwpsbe.Task.TaskService;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,28 +37,18 @@ public class ProjectService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
     private TaskService taskService;
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private UserService userService;
 
-    public List<Project> getAllProjects(Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = null;
-
-
-        if (!userAuthenticateService.isLoggedIn()) {
-            return projectRepository.findAllViewableProjects(user, pageable);
-        } else if (userAuthenticateService.isLoggedIn() && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            return projectRepository.findAll();
-        } else {
-            user = userAuthenticateService.getCurrentUser();
-            return projectRepository.findAllViewableProjects(user, pageable);
-        }
-    }
+    //////////////////////////////
+    //// Create
 
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
@@ -71,7 +60,7 @@ public class ProjectService {
         Category category = optionalCategory.get();
 
         project.setPubliclyVisible(projectInputDto.publiclyVisible);
-        project.setProjectOwner(userAuthenticateService.getCurrentUser());
+        project.setProjectOwner(userService.getCurrentUser());
         project.setUrl(projectInputDto.url);
         project.setProjectName(projectInputDto.projectName);
         project.setDescription(projectInputDto.description);
@@ -100,7 +89,7 @@ public class ProjectService {
 
         for (TaskInputDto dto : projectInputDto.projectTaskList) {
             if (dto.taskOwner == null) {
-                dto.taskOwner = userAuthenticateService.getCurrentUser().getUsername();
+                dto.taskOwner = userService.getCurrentUser().getUsername();
             }
             dto.parentProjectId = newProject.getProjectId();
             newTaskList.add(taskService.saveTask(dto));
@@ -108,6 +97,81 @@ public class ProjectService {
         newProject.setProjectTaskList(newTaskList);
         return projectRepository.save(newProject);
     }
+
+    //////////////////////////////
+    //// Read
+
+    public List<Project> getAllProjects(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+
+
+        if (!authenticationService.isLoggedIn()) {
+            return projectRepository.findAllViewableProjects(user, pageable);
+        } else if (authenticationService.isLoggedIn() && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            return projectRepository.findAll();
+        } else {
+            user = userService.getCurrentUser();
+            return projectRepository.findAllViewableProjects(user, pageable);
+        }
+    }
+
+    public Project getProject(Long projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        if (project.isPresent()) {
+            return project.get();
+        } else {
+            throw new RecordNotFoundException("Project does not exist");
+        }
+    }
+
+    public List<Project> getProjectsForCategory(Long categoryId, Pageable pageable) {
+        var optionalCategory = categoryRepository.findById(categoryId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userService.getCurrentUser();
+            }
+            return projectRepository.findAllByCategory(categoryId, currentUser, pageable);
+        } else {
+            throw new RecordNotFoundException("Category does not exist");
+        }
+    }
+
+    public List<Project> getProjectsForProjectOwner(String username, Pageable pageable) {
+        var optionalUser = userRepository.findById(username);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            return projectRepository.findAllByProjectOwner(user, pageable);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
+    public List<Project> getProjectsForProjectCollaborator(String username, Pageable pageable) {
+        var optionalUser = userRepository.findById(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (optionalUser.isPresent()) {
+            User collaborator = optionalUser.get();
+            User currentUser = null;
+            if (authentication != null){
+                currentUser = userService.getCurrentUser();
+            }
+            return projectRepository.findAllByCollaborators(collaborator, currentUser,pageable);
+        } else {
+            throw new RecordNotFoundException("No user found");
+        }
+    }
+
+    //////////////////////////////
+    //// Update
 
     public void updateProject(Long id, Project project) {
         Optional<Project> optionalProject = projectRepository.findById(id);
@@ -139,59 +203,8 @@ public class ProjectService {
         }
     }
 
-    public Project getProject(Long projectId) {
-        Optional<Project> project = projectRepository.findById(projectId);
-
-        if (project.isPresent()) {
-            return project.get();
-        } else {
-            throw new RecordNotFoundException("Project does not exist");
-        }
-    }
-
-    public List<Project> getProjectsForCategory(Long categoryId, Pageable pageable) {
-        var optionalCategory = categoryRepository.findById(categoryId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (optionalCategory.isPresent()) {
-            Category category = optionalCategory.get();
-            User currentUser = null;
-            if (authentication != null){
-                currentUser = userAuthenticateService.getCurrentUser();
-            }
-            return projectRepository.findAllByCategory(categoryId, currentUser, pageable);
-        } else {
-            throw new RecordNotFoundException("Category does not exist");
-        }
-    }
-
-    public List<Project> getProjectsForProjectOwner(String username, Pageable pageable) {
-        var optionalUser = userRepository.findById(username);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            return projectRepository.findAllByProjectOwner(user, pageable);
-        } else {
-            throw new RecordNotFoundException("No user found");
-        }
-    }
-
-    public List<Project> getProjectsForProjectCollaborator(String username, Pageable pageable) {
-        var optionalUser = userRepository.findById(username);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (optionalUser.isPresent()) {
-            User collaborator = optionalUser.get();
-            User currentUser = null;
-            if (authentication != null){
-                currentUser = userAuthenticateService.getCurrentUser();
-            }
-            return projectRepository.findAllByCollaborators(collaborator, currentUser,pageable);
-        } else {
-            throw new RecordNotFoundException("No user found");
-        }
-    }
+    //////////////////////////////
+    //// Delete
 
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);

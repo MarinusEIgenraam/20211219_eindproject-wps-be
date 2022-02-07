@@ -1,14 +1,14 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.auth.UserService;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -38,7 +38,7 @@ public class ProfileImageService {
     @Autowired
     private PortalRepository portalRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -46,13 +46,11 @@ public class ProfileImageService {
     @Autowired
     UserService userService;
 
-    public Iterable<ProfileImage> getFiles() {
-        return profileImageRepository.findAll();
-    }
-
+    //////////////////////////////
+    //// Create
 
     public long uploadFile(MultipartFile multipartFile) throws IOException {
-        User currentUser = userAuthenticateService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
@@ -82,23 +80,11 @@ public class ProfileImageService {
         return saved.getId();
     }
 
+    //////////////////////////////
+    //// Read
 
-    public void deleteFile(long id) {
-        Optional<ProfileImage> stored = profileImageRepository.findById(id);
-
-        if (stored.isPresent()) {
-            String filename = stored.get().getFileName();
-            Path location = uploadDir.resolve(filename);
-            try {
-                Files.deleteIfExists(location);
-            } catch (IOException ex) {
-                throw new RuntimeException("File not found");
-            }
-
-            profileImageRepository.deleteById(id);
-        } else {
-            throw new RecordNotFoundException();
-        }
+    public Iterable<ProfileImage> getFiles() {
+        return profileImageRepository.findAll();
     }
 
     public ProfileImageDto getFileByPortal(Portal portal) {
@@ -139,6 +125,7 @@ public class ProfileImageService {
         return null;
     }
 
+
     public ProfileImageDto getFileById(long id) {
         Optional<ProfileImage> optionalImage = profileImageRepository.findById(id);
 
@@ -158,6 +145,31 @@ public class ProfileImageService {
 
     public boolean fileExistsById(long id) {
         return profileImageRepository.existsById(id);
+    }
+
+
+    //////////////////////////////
+    //// Update
+
+    //////////////////////////////
+    //// Delete
+
+    public void deleteFile(long id) {
+        Optional<ProfileImage> stored = profileImageRepository.findById(id);
+
+        if (stored.isPresent()) {
+            String filename = stored.get().getFileName();
+            Path location = uploadDir.resolve(filename);
+            try {
+                Files.deleteIfExists(location);
+            } catch (IOException ex) {
+                throw new RuntimeException("File not found");
+            }
+
+            profileImageRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException();
+        }
     }
 
 }

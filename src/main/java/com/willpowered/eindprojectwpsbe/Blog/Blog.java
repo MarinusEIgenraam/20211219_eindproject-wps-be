@@ -2,8 +2,11 @@ package com.willpowered.eindprojectwpsbe.Blog;
 
 
 import com.sun.istack.Nullable;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import lombok.*;
+import com.willpowered.eindprojectwpsbe.User.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;

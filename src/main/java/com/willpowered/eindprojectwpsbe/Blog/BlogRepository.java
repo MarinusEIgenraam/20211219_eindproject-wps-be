@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
-import com.willpowered.eindprojectwpsbe.auth.User;
-import org.jetbrains.annotations.NotNull;
+import com.willpowered.eindprojectwpsbe.User.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

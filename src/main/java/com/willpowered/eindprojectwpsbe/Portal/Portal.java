@@ -1,10 +1,12 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import lombok.*;
+import com.willpowered.eindprojectwpsbe.User.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

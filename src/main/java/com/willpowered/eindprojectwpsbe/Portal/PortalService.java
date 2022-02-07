@@ -1,8 +1,8 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserService;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,19 @@ public class PortalService {
 
     @Autowired
     UserService userService;
+
+    //////////////////////////////
+    //// Create
+
+    public Portal savePortal(PortalInputDto dto) {
+        User user = userService.getUser(dto.username);
+        Portal portal = dto.toPortal();
+        portal.setUser(user);
+        return portalRepository.save(portal);
+    }
+
+    //////////////////////////////
+    //// Read
 
     public List<Portal> getPortals() {
         return portalRepository.findAll();
@@ -47,12 +60,8 @@ public class PortalService {
         }
     }
 
-    public Portal savePortal(PortalInputDto dto) {
-        User user = userService.getUser(dto.username);
-        Portal portal = dto.toPortal();
-        portal.setUser(user);
-        return portalRepository.save(portal);
-    }
+    //////////////////////////////
+    //// Update
 
     public void updatePortal(Long id, Portal portal) {
         Optional<Portal> optionalPortal = portalRepository.findById(id);
@@ -64,6 +73,9 @@ public class PortalService {
             throw new RecordNotFoundException("Portal does not exist");
         }
     }
+
+    //////////////////////////////
+    //// Delete
 
     public void deletePortal(Long id) {
         portalRepository.deleteById(id);

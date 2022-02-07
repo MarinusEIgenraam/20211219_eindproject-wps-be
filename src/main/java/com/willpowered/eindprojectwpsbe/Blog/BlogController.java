@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
-import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
-import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +7,6 @@ import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/blogs")

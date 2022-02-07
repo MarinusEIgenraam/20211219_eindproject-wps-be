@@ -2,9 +2,9 @@ package com.willpowered.eindprojectwpsbe.Task;
 
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
+import com.willpowered.eindprojectwpsbe.Authentication.User;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class TaskServiceTest {
     private TaskService taskService;
 
     @InjectMocks
-    private UserAuthenticateService userAuthenticateService;
+    private AuthenticationService authenticationService;
 
     @Captor
     ArgumentCaptor<Project> projectCaptor;

@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
 import com.willpowered.eindprojectwpsbe.Comment.CommentService;
-import com.willpowered.eindprojectwpsbe.exception.BadRequestException;
+import com.willpowered.eindprojectwpsbe.Exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;

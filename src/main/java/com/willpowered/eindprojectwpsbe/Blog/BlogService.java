@@ -1,10 +1,10 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
 
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,10 +23,21 @@ public class BlogService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserAuthenticateService userAuthenticateService;
+    private UserService userService;
 
-    public Page<Blog> getBlogsForBlogOwner(String blogOwner, Pageable pageable) {
-        var optionalUser = userRepository.findById(blogOwner);
+    //////////////////////////////
+    //// Create
+
+    public Blog saveBlog(Blog blog) {
+        blog.setBlogOwner(userService.getCurrentUser());
+        return blogRepository.save(blog);
+    }
+
+    //////////////////////////////
+    //// Read
+
+    public Page<Blog> getBlogsForBlogOwner(String username, Pageable pageable) {
+        var optionalUser = userRepository.findById(username);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return blogRepository.findAllByBlogOwner(user, pageable);
@@ -47,10 +57,8 @@ public class BlogService {
         }
     }
 
-    public Blog saveBlog(Blog blog) {
-        blog.setBlogOwner(userAuthenticateService.getCurrentUser());
-        return blogRepository.save(blog);
-    }
+    //////////////////////////////
+    //// Update
 
     public void updateBlog(Long id, Blog blog) {
         Optional<Blog> optionalBlog = blogRepository.findById(blog.getBlogId());
@@ -60,6 +68,9 @@ public class BlogService {
             throw new RecordNotFoundException("Blog does not exist");
         }
     }
+
+    //////////////////////////////
+    //// Delete
 
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);

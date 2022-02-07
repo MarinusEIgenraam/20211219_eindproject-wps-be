@@ -2,10 +2,11 @@ package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
-import com.willpowered.eindprojectwpsbe.auth.User;
-import com.willpowered.eindprojectwpsbe.auth.UserAuthenticateService;
-import com.willpowered.eindprojectwpsbe.auth.UserRepository;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,31 @@ public class AlertService {
     private AlertRepository alertRepository;
     @Autowired
     private PortalRepository portalRepository;
-@Autowired
-private UserAuthenticateService userAuthenticateService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    //////////////////////////////
+    //// Create
+
+    public Alert saveAlert(AlertInputDto dto) {
+        Optional<Portal> optionalPortal = portalRepository.findById(dto.portalId);
+        Alert alert = dto.toAlert();
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            alert.setPortal(portal);
+        }
+        return alertRepository.save(alert);
+    }
+
+    //////////////////////////////
+    //// Read
 
     public Alert getAlert(Long id) {
         Optional<Alert> alert = alertRepository.findById(id);
 
-        if(alert.isPresent()) {
+        if (alert.isPresent()) {
             return alert.get();
         } else {
             throw new RecordNotFoundException("Alert does not exist");
@@ -56,26 +75,16 @@ private UserAuthenticateService userAuthenticateService;
         }
     }
 
-    public Alert saveAlert(AlertInputDto dto) {
-        Optional<Portal> optionalPortal = portalRepository.findById(dto.portalId);
-        Alert alert = dto.toAlert();
-        if (optionalPortal.isPresent()) {
-            Portal portal = optionalPortal.get();
-            alert.setPortal(portal);
-        }
-        return alertRepository.save(alert);
-    }
-
     public Alert addAlert(String title, User user) {
         var optionalPortal = portalRepository.findByUser(user);
         var portal = optionalPortal.get();
-        String currentUserName = userAuthenticateService.getCurrentUser().getUsername();
+        String currentUserName = userService.getCurrentUser().getUsername();
 
         var alert = new Alert();
         alert.setPortal(portal);
         alert.setCreatedAt(LocalDate.now());
         if (Objects.equals(title, "Comment on comment")) {
-         alert.setText(currentUserName+ " has commented on your comment");
+            alert.setText(currentUserName + " has commented on your comment");
         } else if (Objects.equals(title, "Comment on project")) {
             alert.setText(currentUserName + " commented on your project ");
         } else if (Objects.equals(title, "Comment on blog")) {
@@ -89,6 +98,10 @@ private UserAuthenticateService userAuthenticateService;
         return alertRepository.save(alert);
     }
 
+
+    //////////////////////////////
+    //// Update
+
     public void updateAlert(Long id, Alert alert) {
         Optional<Alert> optionalAlert = alertRepository.findById(id);
         if (optionalAlert.isPresent()) {
@@ -98,6 +111,9 @@ private UserAuthenticateService userAuthenticateService;
             throw new RecordNotFoundException("Alert does not exist");
         }
     }
+
+    //////////////////////////////
+    //// Delete
 
     public void deleteAlert(Long id) {
         alertRepository.deleteById(id);

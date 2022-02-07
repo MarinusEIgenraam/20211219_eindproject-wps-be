@@ -1,14 +1,8 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
 
-import com.willpowered.eindprojectwpsbe.Blog.BlogDto;
-import com.willpowered.eindprojectwpsbe.Project.ParentProjectDto;
-import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
-import com.willpowered.eindprojectwpsbe.Task.ParentTaskDto;
-import com.willpowered.eindprojectwpsbe.Task.TaskDto;
-import com.willpowered.eindprojectwpsbe.auth.UserDto;
+import com.willpowered.eindprojectwpsbe.User.UserDto;
 import lombok.var;
-import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.List;
