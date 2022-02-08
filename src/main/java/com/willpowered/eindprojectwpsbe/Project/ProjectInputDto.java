@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
 import com.willpowered.eindprojectwpsbe.Task.TaskInputDto;
-import lombok.var;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Size;

@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import lombok.var;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;

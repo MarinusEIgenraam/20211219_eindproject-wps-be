@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
-import lombok.var;
-
 public class PortalInputDto {
 
     public Long id;

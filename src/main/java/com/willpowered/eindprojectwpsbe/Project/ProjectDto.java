@@ -4,7 +4,6 @@ import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Category.CategoryDto;
 import com.willpowered.eindprojectwpsbe.Task.TaskDto;
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import lombok.var;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;

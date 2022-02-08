@@ -1,16 +1,13 @@
 package com.willpowered.eindprojectwpsbe.Vote;
 
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.Exception.WillpoweredException;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
-import com.willpowered.eindprojectwpsbe.Exception.WillpoweredException;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 import static com.willpowered.eindprojectwpsbe.Vote.VoteType.UPVOTE;
 
@@ -34,7 +31,7 @@ public class VoteService {
 
         Project project = projectRepository.findById(voteInputDto.getProjectId())
                 .orElseThrow(() -> new RecordNotFoundException("No project with ID - " + voteInputDto.getProjectId() + " was found"));
-        Optional<Vote> voteByProjectAndUser = voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project, userService.getCurrentUser());
+        var voteByProjectAndUser = voteRepository.findTopByProjectAndUserOrderByVoteIdDesc(project, userService.getCurrentUser());
 
         if (voteByProjectAndUser.isPresent() && voteByProjectAndUser.get().getVoteType().equals(voteInputDto.getVoteType())) {
             throw new WillpoweredException("You have already " + voteInputDto.getVoteType() + "'d this project");
@@ -68,7 +65,7 @@ public class VoteService {
     //// Update
 
     public void updateVote(Long id, Vote vote) {
-        Optional<Vote> optionalVote = voteRepository.findById(id);
+        var optionalVote = voteRepository.findById(id);
         if (optionalVote.isPresent()) {
             voteRepository.deleteById(id);
             voteRepository.save(vote);

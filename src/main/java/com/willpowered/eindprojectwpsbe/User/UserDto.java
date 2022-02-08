@@ -2,7 +2,6 @@ package com.willpowered.eindprojectwpsbe.User;
 
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Project.Project;
-import lombok.var;
 
 import java.util.Set;
 

@@ -1,8 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Category;
 
 
-import lombok.var;
-
 public class CategoryDto {
     public Long id;
     public String name;

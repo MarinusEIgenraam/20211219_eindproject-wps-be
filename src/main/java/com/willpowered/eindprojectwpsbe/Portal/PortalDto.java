@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import lombok.var;
 
 public class PortalDto {
 

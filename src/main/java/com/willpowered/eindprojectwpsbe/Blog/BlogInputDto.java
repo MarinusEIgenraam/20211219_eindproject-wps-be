@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
 
-import lombok.var;
 import org.hibernate.annotations.Type;
 
 import java.time.Instant;

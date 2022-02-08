@@ -5,20 +5,18 @@ import com.willpowered.eindprojectwpsbe.Alert.AlertService;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Blog.BlogRepository;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -48,19 +46,19 @@ public class CommentService {
         newComment.setUser(userService.getCurrentUser());
 
         if (dto.parentBlogId != null && dto.parentProjectId == null && dto.parentCommentId == null) {
-            Optional<Blog> optionalBlog = blogRepository.findById(dto.parentBlogId);
+            var optionalBlog = blogRepository.findById(dto.parentBlogId);
             if (optionalBlog.isPresent()) {
                 newComment.setParentBlog(optionalBlog.get());
                 alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
             }
         } else if (dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null) {
-            Optional<Project> optionalProject = projectRepository.findById(dto.parentProjectId);
+            var optionalProject = projectRepository.findById(dto.parentProjectId);
             if (optionalProject.isPresent()) {
                 newComment.setParentProject(optionalProject.get());
                 alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
             }
         } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null) {
-            Optional<Comment> optionalComment = commentRepository.findById(dto.parentCommentId);
+            var optionalComment = commentRepository.findById(dto.parentCommentId);
             if (optionalComment.isPresent()) {
                 newComment.setParentComment(optionalComment.get());
                 alertService.addAlert("Comment on comment", optionalComment.get().getUser());
@@ -80,7 +78,7 @@ public class CommentService {
     //// Read
 
     public Comment getComment(Long commentId) {
-        Optional<Comment> comment = commentRepository.findById(commentId);
+        var comment = commentRepository.findById(commentId);
 
         if (comment.isPresent()) {
             return comment.get();
@@ -135,7 +133,7 @@ public class CommentService {
     //// Update
 
     public void updateComment(Long id, Comment comment) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
+        var optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
             commentRepository.deleteById(id);
             commentRepository.save(comment);

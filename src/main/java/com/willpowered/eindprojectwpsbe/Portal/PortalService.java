@@ -1,8 +1,8 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -42,7 +41,7 @@ public class PortalService {
     }
 
     public Portal getPortal(Long id) {
-        Optional<Portal> portal = portalRepository.findById(id);
+        var portal = portalRepository.findById(id);
 
         if(portal.isPresent()) {
             return portal.get();
@@ -52,7 +51,7 @@ public class PortalService {
     }
 
     public Portal getUserPortal(User user) {
-        Optional<Portal> optionalPortal = portalRepository.findByUser(user);
+        var optionalPortal = portalRepository.findByUser(user);
         if (optionalPortal.isPresent()) {
             return optionalPortal.get();
         } else {
@@ -64,7 +63,7 @@ public class PortalService {
     //// Update
 
     public void updatePortal(Long id, Portal portal) {
-        Optional<Portal> optionalPortal = portalRepository.findById(id);
+        var optionalPortal = portalRepository.findById(id);
         if (optionalPortal.isPresent()) {
             Portal newPortal = portal;
             newPortal.setId(id);

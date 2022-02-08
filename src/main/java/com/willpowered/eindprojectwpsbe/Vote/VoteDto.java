@@ -2,7 +2,6 @@ package com.willpowered.eindprojectwpsbe.Vote;
 
 import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import lombok.var;
 
 public class VoteDto {
 

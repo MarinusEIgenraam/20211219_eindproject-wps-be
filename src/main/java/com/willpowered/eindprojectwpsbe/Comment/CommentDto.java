@@ -2,7 +2,6 @@ package com.willpowered.eindprojectwpsbe.Comment;
 
 
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import lombok.var;
 
 import java.time.LocalDateTime;
 import java.util.List;

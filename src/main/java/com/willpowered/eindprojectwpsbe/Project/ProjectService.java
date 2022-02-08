@@ -4,6 +4,7 @@ import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Category.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.Comment.CommentRepository;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskInputDto;
 import com.willpowered.eindprojectwpsbe.Task.TaskRepository;
@@ -11,9 +12,7 @@ import com.willpowered.eindprojectwpsbe.Task.TaskService;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -117,7 +119,7 @@ public class ProjectService {
     }
 
     public Project getProject(Long projectId) {
-        Optional<Project> project = projectRepository.findById(projectId);
+        var project = projectRepository.findById(projectId);
 
         if (project.isPresent()) {
             return project.get();
@@ -174,7 +176,7 @@ public class ProjectService {
     //// Update
 
     public void updateProject(Long id, Project project) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
+        var optionalProject = projectRepository.findById(id);
 
         if (optionalProject.isPresent()) {
             Project newProject = optionalProject.get();

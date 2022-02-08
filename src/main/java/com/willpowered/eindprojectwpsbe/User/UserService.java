@@ -7,14 +7,12 @@ import com.willpowered.eindprojectwpsbe.Exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,8 +24,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -68,14 +64,14 @@ public class UserService {
         List<Authority> authoritiesList = authorityRepository.findAllByAuthority(authority, pageable);
         ArrayList<User> users = new ArrayList<User>();
         for (Authority auth : authoritiesList) {
-            Optional<User> user = userRepository.findByUsername(auth.getUsername());
+            var user = userRepository.findByUsername(auth.getUsername());
             user.ifPresent(users::add);
         }
         return users;
     }
 
     public User getUser(String username) {
-        Optional<User> user = userRepository.findById(username);
+        var user = userRepository.findById(username);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -113,7 +109,7 @@ public class UserService {
 
         if (username.equals(authenticationService.getCurrentUserName())) {
             if (isValidPassword(password)) {
-                Optional<User> userOptional = userRepository.findById(username);
+                var userOptional = userRepository.findById(username);
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
                     user.setPassword(passwordEncoder.encode(password));

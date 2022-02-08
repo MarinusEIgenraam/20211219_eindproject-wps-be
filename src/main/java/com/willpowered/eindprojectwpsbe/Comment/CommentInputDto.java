@@ -1,11 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
 
-import com.sun.istack.Nullable;
-import lombok.var;
-
-import java.time.Instant;
-
 public class CommentInputDto {
 
     public Long id;

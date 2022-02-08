@@ -2,13 +2,13 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -26,7 +26,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ProfileImageService {
@@ -51,7 +50,7 @@ public class ProfileImageService {
 
     public long uploadFile(MultipartFile multipartFile) throws IOException {
         User currentUser = userService.getCurrentUser();
-        Optional<Portal> optionalPortal = portalRepository.findByUser(currentUser);
+        var optionalPortal = portalRepository.findByUser(currentUser);
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
@@ -88,7 +87,7 @@ public class ProfileImageService {
     }
 
     public ProfileImageDto getFileByPortal(Portal portal) {
-        Optional<ProfileImage> optionalImage = profileImageRepository.findByPortal(portal);
+        var optionalImage = profileImageRepository.findByPortal(portal);
 
         if (optionalImage.isPresent()) {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -105,7 +104,7 @@ public class ProfileImageService {
     }
 
     public Resource downloadFile(String username) {
-        Optional<ProfileImage> optionalImage = profileImageRepository.findByPortal(portalService.getUserPortal(userService.getUser(username)));
+        var optionalImage = profileImageRepository.findByPortal(portalService.getUserPortal(userService.getUser(username)));
 
         if (optionalImage.isPresent()) {
             String filename = optionalImage.get().getFileName();
@@ -127,7 +126,7 @@ public class ProfileImageService {
 
 
     public ProfileImageDto getFileById(long id) {
-        Optional<ProfileImage> optionalImage = profileImageRepository.findById(id);
+        var optionalImage = profileImageRepository.findById(id);
 
         if (optionalImage.isPresent()) {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -155,7 +154,7 @@ public class ProfileImageService {
     //// Delete
 
     public void deleteFile(long id) {
-        Optional<ProfileImage> stored = profileImageRepository.findById(id);
+        var stored = profileImageRepository.findById(id);
 
         if (stored.isPresent()) {
             String filename = stored.get().getFileName();

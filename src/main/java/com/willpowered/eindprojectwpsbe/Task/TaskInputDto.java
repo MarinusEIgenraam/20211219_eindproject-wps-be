@@ -1,6 +1,5 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
-import lombok.var;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;

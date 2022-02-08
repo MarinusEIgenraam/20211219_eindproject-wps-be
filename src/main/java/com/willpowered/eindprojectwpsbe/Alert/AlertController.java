@@ -1,15 +1,12 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
-import com.willpowered.eindprojectwpsbe.Project.ProjectDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/alerts")

@@ -1,8 +1,8 @@
 package com.willpowered.eindprojectwpsbe.Authority;
 
+import com.willpowered.eindprojectwpsbe.Exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
-import com.willpowered.eindprojectwpsbe.Exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

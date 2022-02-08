@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
-import lombok.var;
-
 public class ProfileImageDto {
 
     public String title;

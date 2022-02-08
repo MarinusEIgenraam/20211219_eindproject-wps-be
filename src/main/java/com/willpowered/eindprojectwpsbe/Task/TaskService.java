@@ -1,16 +1,15 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
 import com.willpowered.eindprojectwpsbe.Alert.AlertService;
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
-import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -66,7 +64,7 @@ public class TaskService {
 
 
         if (dto.taskOwner != null) {
-            Optional<User> optionalTaskOwner = userRepository.findById(dto.taskOwner);
+            var optionalTaskOwner = userRepository.findById(dto.taskOwner);
             if (optionalTaskOwner.isPresent()) {
                 User taskOwner = optionalTaskOwner.get();
                 task.setTaskOwner(taskOwner);
@@ -94,7 +92,7 @@ public class TaskService {
     }
 
     public void updateTask(Long id, Task task) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
+        var optionalTask = taskRepository.findById(id);
 
         if (optionalTask.isPresent()) {
             Task newTask = optionalTask.get();
@@ -112,7 +110,7 @@ public class TaskService {
         Task task = new Task();
 
         if (taskInputdto.taskOwner != null) {
-            Optional<User> optionalUser = userRepository.findById(taskInputdto.taskOwner);
+            var optionalUser = userRepository.findById(taskInputdto.taskOwner);
             if (optionalUser.isPresent()) {
                 task.setTaskOwner(optionalUser.get());
             }
@@ -135,7 +133,7 @@ public class TaskService {
     //// Read
 
     public TaskDto getTask(Long taskId) {
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        var optionalTask = taskRepository.findById(taskId);
 
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();

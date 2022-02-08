@@ -1,12 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
 
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +47,7 @@ public class BlogService {
 
 
     public Blog getBlog(Long blogId) {
-        Optional<Blog> blog = blogRepository.findById(blogId);
+        var blog = blogRepository.findById(blogId);
 
         if (blog.isPresent()) {
             return blog.get();
@@ -61,7 +60,7 @@ public class BlogService {
     //// Update
 
     public void updateBlog(Long id, Blog blog) {
-        Optional<Blog> optionalBlog = blogRepository.findById(blog.getBlogId());
+        var optionalBlog = blogRepository.findById(blog.getBlogId());
         if (optionalBlog.isPresent()) {
             blogRepository.save(blog);
         } else {

@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
-import lombok.var;
-
 import java.time.LocalDate;
 
 public class AlertInputDto {

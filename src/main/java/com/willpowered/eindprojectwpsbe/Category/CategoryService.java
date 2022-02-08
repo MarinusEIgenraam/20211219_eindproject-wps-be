@@ -31,7 +31,7 @@ public class CategoryService {
     }
 
     public Category getCategory(Long categoryId) {
-        Optional<Category> category = categoryRepository.findById(categoryId);
+        var category = categoryRepository.findById(categoryId);
 
         if (category.isPresent()) {
             return category.get();
@@ -44,7 +44,7 @@ public class CategoryService {
     //// Update
 
     public void updateCategory(Long id, Category category) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        var optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isPresent()) {
             categoryRepository.deleteById(id);
             categoryRepository.save(category);

@@ -1,14 +1,13 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
-import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +35,7 @@ public class AlertService {
     //// Create
 
     public Alert saveAlert(AlertInputDto dto) {
-        Optional<Portal> optionalPortal = portalRepository.findById(dto.portalId);
+        var optionalPortal = portalRepository.findById(dto.portalId);
         Alert alert = dto.toAlert();
         if (optionalPortal.isPresent()) {
             Portal portal = optionalPortal.get();
@@ -50,7 +48,7 @@ public class AlertService {
     //// Read
 
     public Alert getAlert(Long id) {
-        Optional<Alert> alert = alertRepository.findById(id);
+        var alert = alertRepository.findById(id);
 
         if (alert.isPresent()) {
             return alert.get();
@@ -103,7 +101,7 @@ public class AlertService {
     //// Update
 
     public void updateAlert(Long id, Alert alert) {
-        Optional<Alert> optionalAlert = alertRepository.findById(id);
+        var optionalAlert = alertRepository.findById(id);
         if (optionalAlert.isPresent()) {
             alertRepository.deleteById(id);
             alertRepository.save(alert);

@@ -1,12 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
-import com.willpowered.eindprojectwpsbe.Authentication.User;
-import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
-import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
-import lombok.var;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,30 +102,6 @@ class AlertServiceTest {
 
     }
 
-
-//    @Test
-//    void addAlert() {
-//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
-//                getContext().getAuthentication().getPrincipal();
-//        User user = new User();
-//        user.setUsername("firstUser");
-//        String title = "Comment on comment";
-//        when(portalRepository.findByUser(firstUser)).thenReturn(Optional.ofNullable(firstPortal));
-//        when(alertRepository.save(firstAlert)).thenReturn(firstAlert);
-//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
-//        when(userRepository.findByUsername(principal.getUsername())).thenReturn(Optional.ofNullable(secondUser));
-//
-//
-//        Alert newAlert = alertService.addAlert(title, user);
-//        verify(alertRepository, times(1)).save(alertArgumentCaptor.capture());
-//        verify(authenticationService, times(1)).getCurrentUser();
-//        Alert captured = alertArgumentCaptor.getValue();
-//
-//        assertThat(captured.getId()).isEqualTo(1);
-//        assertThat(captured.getTitle()).isEqualTo("Comment on comment");
-//
-//
-//    }
 
     @Test
     void saveAlert() {

@@ -1,7 +1,5 @@
 package com.willpowered.eindprojectwpsbe.User;
 
-import lombok.var;
-
 import java.util.Set;
 
 public class UserInputDto {
