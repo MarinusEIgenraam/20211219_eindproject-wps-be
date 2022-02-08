@@ -89,7 +89,7 @@ public class UserService {
 
     public User getCurrentUser() {
         String currentUsername = authenticationService.getCurrentUserName();
-        return userRepository.findByUsername(currentUsername)
+        return userRepository.findById(currentUsername)
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + currentUsername));
     }
 

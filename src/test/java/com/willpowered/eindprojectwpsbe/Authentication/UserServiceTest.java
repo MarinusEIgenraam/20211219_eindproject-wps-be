@@ -1,7 +1,10 @@
 package com.willpowered.eindprojectwpsbe.Authentication;
 
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
-import com.willpowered.eindprojectwpsbe.exception.UserNotFoundException;
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserInputDto;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +36,7 @@ class UserServiceTest {
     ArgumentCaptor<User> userArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<UserPostRequestDto> userDtoCaptor;
+    ArgumentCaptor<User> userDtoCaptor;
 
     @Captor
     ArgumentCaptor<Authority> authorityArgumentCaptor;
@@ -115,13 +118,12 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        UserPostRequestDto dto = new UserPostRequestDto();
-        dto.setPassword("password");
-        dto.setUsername("firstUser");
-        dto.setEmail("user@user.nl");
-        Set<String> newAuthorities = Stream.of("ADMIN")
-                .collect(Collectors.toCollection(HashSet::new));
-        dto.setAuthorities(newAuthorities);
+        UserInputDto dto = UserInputDto.builder()
+                .password("password")
+                .email("user@user.nl")
+                .authorities(Stream.of("ADMIN")
+                        .collect(Collectors.toCollection(HashSet::new)))
+                .build();
 
         when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(firstUser);
 

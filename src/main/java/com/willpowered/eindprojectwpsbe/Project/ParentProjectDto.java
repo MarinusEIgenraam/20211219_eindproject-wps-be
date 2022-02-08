@@ -3,7 +3,6 @@ package com.willpowered.eindprojectwpsbe.Project;
 import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Category.CategoryDto;
 import com.willpowered.eindprojectwpsbe.User.UserDto;
-import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
 
@@ -28,8 +27,6 @@ public class ParentProjectDto {
     public Integer commentCount;
 
     public static ParentProjectDto fromParentProject(Project project) {
-
-        ModelMapper modelMapper = new ModelMapper();
 
         var dto = new ParentProjectDto();
         dto.projectId = project.getProjectId();

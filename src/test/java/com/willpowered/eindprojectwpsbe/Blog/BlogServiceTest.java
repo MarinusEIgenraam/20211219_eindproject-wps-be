@@ -1,16 +1,14 @@
 package com.willpowered.eindprojectwpsbe.Blog;
 
-import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
-import com.willpowered.eindprojectwpsbe.Authentication.User;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
-import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,10 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -34,53 +29,84 @@ class BlogServiceTest {
 
     @InjectMocks
     private BlogService blogService;
-    @InjectMocks
+    @Mock
     private AuthenticationService authenticationService;
     @Mock
     BlogRepository blogRepository;
     @Mock
     UserRepository userRepository;
 
+    @Captor
+    ArgumentCaptor<Blog> blogCaptor;
+
+    private User targetUser;
+    private User currentUser;
+    
     private Blog firstBlog;
     private Blog secondBlog;
     private Blog thirdBlog;
-    private User firstUser;
-    private User secondUser;
-    private User thirdUser;
+    
     private Portal firstPortal;
     private Portal secondPortal;
     private Portal thirdPortal;
+    
     private Pageable pageable;
-    private List<Blog> firstBlogList;
     private Page<Blog> page;
+
+    private List<Blog> firstBlogList = Arrays.asList(firstBlog, secondBlog, thirdBlog);
 
     @BeforeEach
     void setUp() {
         Set<Authority> authorities = new HashSet<>();
-        this.firstUser = new User("firstUser", "password", true, "user@user.nl", authorities);
-        this.secondUser = new User("secondUser", "password", true, "user@user.nl", authorities);
-        this.thirdUser = new User("thirdUser", "password", true, "user@user.nl", authorities);
-        this.firstBlog = new Blog(1L, "Bla", "Bla", "bla", "bla", Instant.now(), firstUser);
-        this.secondBlog = new Blog(1L, "Bla", "Bla", "bla", "bla", Instant.now(), firstUser);
-        this.thirdBlog = new Blog(1L, "Bla", "Bla", "bla", "bla", Instant.now(), firstUser);
+        targetUser = User.builder()
+                .username("targetUser")
+                .password("password")
+                .email("email@targetuser.nl")
+                .build();
+        currentUser = User.builder()
+                .username("currentUser")
+                .password("password")
+                .email("email@currentuser.nl")
+                .build();
+        firstBlog = Blog.builder()
+                .blogId(1L)
+                .blogName("Best blog ever")
+                .url("www.thebest.nl")
+                .imageUrl("www.prettyimage.nl")
+                .description("This is the best of the best")
+                .build();
+        secondBlog = Blog.builder()
+                .blogId(2L)
+                .blogName("Second best blog ever")
+                .url("www.thesecondbest.nl")
+                .imageUrl("www.mediocreimage.nl")
+                .description("This is the second best of the best")
+                .build();
+        thirdBlog = Blog.builder()
+                .blogId(3L)
+                .blogName("Third best blog ever")
+                .url("www.thethirdbest.nl")
+                .imageUrl("www.uglyimage.nl")
+                .description("This is the third best of the best")
+                .build();
 
     }
+
+
+    //////////////////////////////
+    //// Create
 
     @Test
-    void getBlogsForBlogOwner() {
-        List<Blog> blogs = new ArrayList<>();
-        blogs.add(firstBlog);
-        blogs.add(secondBlog);
-        blogs.add(thirdBlog);
-        PageImpl pagedResponse = new PageImpl(blogs);
+    void saveBlog() {
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Authentication authentication = Mockito.mock(Authentication.class);
+        SecurityContextHolder.setContext(securityContext);
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
 
-        when(blogRepository.findAllByBlogOwner(firstUser, pageable)).thenReturn(pagedResponse);
-        when(userRepository.findById(firstUser.getUsername())).thenReturn(java.util.Optional.ofNullable(firstUser));
-        Page actualResponse = blogService.getBlogsForBlogOwner(firstUser.getUsername(), pageable);
-        verify(blogRepository, times(1)).findAllByBlogOwner(firstUser, pageable);
-
-        assertThat(pagedResponse).isEqualTo(actualResponse);
     }
+
+    //////////////////////////////
+    //// Read
 
     @Test
     void getBlog() {
@@ -94,50 +120,45 @@ class BlogServiceTest {
     }
 
     @Test
-    @WithUserDetails("customUsername")
-    void saveBlog() {
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Authentication authentication = Mockito.mock(Authentication.class);
-        SecurityContextHolder.setContext(securityContext);
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+    void getBlogsForBlogOwner() {
+        PageImpl pagedResponse = new PageImpl(firstBlogList);
+        when(blogRepository.findAllByBlogOwner(targetUser, pageable)).thenReturn(pagedResponse);
+        when(userRepository.findById(targetUser.getUsername())).thenReturn(java.util.Optional.ofNullable(targetUser));
 
-//
-//        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-//
-//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
-//        when(blogRepository.save(firstBlog)).thenReturn(firstBlog);
-//
-//        when(userRepository.findByUsername(firstUser.getUsername())).thenReturn(java.util.Optional.ofNullable(firstUser));
-//        Blog newBlog = blogService.saveBlog(firstBlog);
-//        verify(authenticationService, times(1)).getCurrentUser();
-//        verify(blogRepository, times(1)).save(firstBlog);
-//
-//        assertThat(newBlog.getBlogId()).isEqualTo(firstBlog.getBlogId());
+        Page actualResponse = blogService.getBlogsForBlogOwner(targetUser.getUsername(), pageable);
 
-
+        verify(blogRepository, times(1)).findAllByBlogOwner(targetUser, pageable);
+        assertThat(pagedResponse).isEqualTo(actualResponse);
     }
+
+
+    //////////////////////////////
+    //// Update
 
     @Test
     void updateBlog() {
-
         when(blogRepository.findById(firstBlog.getBlogId())).thenReturn(java.util.Optional.ofNullable(firstBlog));
         when(blogRepository.save(firstBlog)).thenReturn(firstBlog);
+
         blogService.updateBlog(1L, firstBlog);
+
         verify(blogRepository, times(1)).findById(firstBlog.getBlogId());
-        verify(blogRepository, times(1)).save(firstBlog);
+        verify(blogRepository, times(1)).save(blogCaptor.capture());
+        var capturedBlog = blogCaptor.getValue();
 
-
+        assertThat(capturedBlog.getBlogId()).isEqualTo(firstBlog.getBlogId());
     }
+
+    //////////////////////////////
+    //// Delete
 
     @Test
     void deleteBlog() {
-        Blog blog = new Blog();
-        blog.setBlogName("Testi");
-
-        blogRepository.delete(blog);
-
+        blogRepository.delete(firstBlog);
         blogRepository.deleteById(1L);
 
-        verify(blogRepository, times(1)).delete(blog);
+        verify(blogRepository, times(1)).delete(firstBlog);
     }
+
+
 }

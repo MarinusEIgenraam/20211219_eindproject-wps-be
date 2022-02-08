@@ -1,9 +1,9 @@
 package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
-import com.willpowered.eindprojectwpsbe.Authentication.User;
-import com.willpowered.eindprojectwpsbe.exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
+import com.willpowered.eindprojectwpsbe.User.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

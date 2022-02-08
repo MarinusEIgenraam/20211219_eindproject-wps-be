@@ -1,7 +1,10 @@
 package com.willpowered.eindprojectwpsbe.User;
 
+import lombok.Builder;
+
 import java.util.Set;
 
+@Builder
 public class UserInputDto {
 
     public String username;

@@ -34,6 +34,29 @@ public class AlertService {
     //////////////////////////////
     //// Create
 
+    public Alert addAlert(String title, User user) {
+        var optionalPortal = portalRepository.findByUser(user);
+        var portal = optionalPortal.get();
+        String currentUserName = authenticationService.getCurrentUserName();
+
+        var alert = new Alert();
+        alert.setPortal(portal);
+        alert.setCreatedAt(LocalDate.now());
+        if (Objects.equals(title, "Comment on comment")) {
+            alert.setText(currentUserName + " has commented on your comment");
+        } else if (Objects.equals(title, "Comment on project")) {
+            alert.setText(currentUserName + " commented on your project ");
+        } else if (Objects.equals(title, "Comment on blog")) {
+            alert.setText(currentUserName + " has commented on your blog");
+        } else if (Objects.equals(title, "Task invitation")) {
+            alert.setText(currentUserName + " has invited you to work on a task");
+        } else if (Objects.equals(title, "Project invitation")) {
+            alert.setText(currentUserName + " has invited you to work on a project");
+        }
+        alert.setTitle(title);
+        return alertRepository.save(alert);
+    }
+
     public Alert saveAlert(AlertInputDto dto) {
         var optionalPortal = portalRepository.findById(dto.portalId);
         Alert alert = dto.toAlert();
@@ -73,29 +96,6 @@ public class AlertService {
         }
     }
 
-    public Alert addAlert(String title, User user) {
-        var optionalPortal = portalRepository.findByUser(user);
-        var portal = optionalPortal.get();
-        String currentUserName = userService.getCurrentUser().getUsername();
-
-        var alert = new Alert();
-        alert.setPortal(portal);
-        alert.setCreatedAt(LocalDate.now());
-        if (Objects.equals(title, "Comment on comment")) {
-            alert.setText(currentUserName + " has commented on your comment");
-        } else if (Objects.equals(title, "Comment on project")) {
-            alert.setText(currentUserName + " commented on your project ");
-        } else if (Objects.equals(title, "Comment on blog")) {
-            alert.setText(currentUserName + " has commented on your blog");
-        } else if (Objects.equals(title, "Task invitation")) {
-            alert.setText(currentUserName + " has invited you to work on a task");
-        } else if (Objects.equals(title, "Project invitation")) {
-            alert.setText(currentUserName + " has invited you to work on a project");
-        }
-        alert.setTitle(title);
-        return alertRepository.save(alert);
-    }
-
 
     //////////////////////////////
     //// Update
@@ -103,7 +103,6 @@ public class AlertService {
     public void updateAlert(Long id, Alert alert) {
         var optionalAlert = alertRepository.findById(id);
         if (optionalAlert.isPresent()) {
-            alertRepository.deleteById(id);
             alertRepository.save(alert);
         } else {
             throw new RecordNotFoundException("Alert does not exist");

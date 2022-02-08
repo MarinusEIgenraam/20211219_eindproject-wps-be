@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Authentication;
 
-import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -64,7 +64,7 @@ public class AuthenticationService {
     }
 
     public String getCurrentUserName() {
-        Authentication authentication = getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ((UserDetails) authentication.getPrincipal()).getUsername();
     }
 

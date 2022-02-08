@@ -2,10 +2,7 @@ package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "alerts")
+@Builder
 public class Alert {
 
     @Id

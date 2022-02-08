@@ -4,10 +4,7 @@ package com.willpowered.eindprojectwpsbe.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Project.Project;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -19,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User {
 

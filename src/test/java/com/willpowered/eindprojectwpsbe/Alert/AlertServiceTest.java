@@ -1,21 +1,27 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
-import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -30,110 +36,161 @@ class AlertServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    private AuthenticationService authenticationService;
+    @Mock
+    Pageable pageable;
+
     @InjectMocks
     private AlertService alertService;
-    @InjectMocks
-    private AuthenticationService authenticationService;
 
     @Captor
-    ArgumentCaptor<Alert> alertArgumentCaptor;
+    ArgumentCaptor<Alert> alertCaptor;
 
+
+    private User targetUser;
+    private User currentUser;
+    private Portal portalTarget;
+    private Portal portalCurrent;
     private Alert firstAlert;
     private Alert secondAlert;
-    private Alert thirdAlert;
-    private User firstUser;
-    private User secondUser;
-    private User thirdUser;
-    private Portal firstPortal;
-    private Portal secondPortal;
-    private Portal thirdPortal;
-    private Authentication authentication;
-    private List<Alert> firstAlertList;
-    private org.springframework.data.domain.Pageable pageable;
+    private List<Alert> alertList;
+
 
     @BeforeEach
     void setUp() {
-        Set<Authority> authorities = new HashSet<>();
-        this.firstAlertList = new ArrayList<>();
-        this.authentication = Mockito.mock(Authentication.class);
-        this.firstUser = new User("firstUser", "password", true, "user@user.nl", authorities);
-        this.secondUser = new User("secondUser", "password", true, "user@user.nl", authorities);
-        this.thirdUser = new User("thirdUser", "password", true, "user@user.nl", authorities);
-        this.firstPortal = new Portal(1L, firstAlertList, firstUser);
-        this.secondPortal = new Portal(1L, firstAlertList, secondUser);
-        this.thirdPortal = new Portal(1L, firstAlertList, thirdUser);
-        this.firstAlert = new Alert(1L, "First alert", "Better check alerts", LocalDate.parse("2019-05-01"), firstPortal);
-        this.secondAlert = new Alert(2L, "Second alert", "Better check alerts", LocalDate.parse("2021-10-01"), firstPortal);
-        this.thirdAlert = new Alert(3L, "Third alert", "Better check alerts", LocalDate.parse("2021-11-02"), firstPortal);
-        firstAlert.setId(1L);
-        firstAlertList.add(firstAlert);
-        firstAlertList.add(secondAlert);
-        firstAlertList.add(thirdAlert);
-        this.firstPortal = new Portal(1L, firstAlertList, firstUser);
+        targetUser = User.builder()
+                .username("targetUser")
+                .password("password")
+                .build();
+        currentUser = User.builder()
+                .username("currentUser")
+                .password("password")
+                .build();
+
+        portalTarget = Portal.builder()
+                .id(1L)
+                .user(targetUser)
+                .build();
+        portalCurrent = Portal.builder()
+                .id(2L)
+                .user(currentUser)
+                .build();
+
+        firstAlert = Alert.builder()
+                .id(1L)
+                .title("Task invitation")
+                .text("")
+                .createdAt(LocalDate.parse("2022-02-08"))
+                .portal(portalTarget)
+                .build();
+        secondAlert = Alert.builder()
+                .id(1L)
+                .title("Task invitation")
+                .text("currentUser has invited you to work on a task")
+                .createdAt(LocalDate.parse("2022-02-08"))
+                .portal(portalTarget)
+                .build();
+
+
+
+        alertList = Arrays.asList(firstAlert, secondAlert);
     }
 
     @AfterEach
     void after() {
         alertRepository.deleteAll();
+        portalRepository.deleteAll();
+        alertRepository.deleteAll();
     }
 
+    //////////////////////////////
+    //// Create
+
+    @Test
+    void addAlert() {
+        when(portalRepository.findByUser(targetUser)).thenReturn((Optional.ofNullable(portalTarget)));
+        when(authenticationService.getCurrentUserName()).thenReturn(currentUser.getUsername());
+        when(alertRepository.save(any())).thenReturn(secondAlert);
+
+        Alert alert = alertService.addAlert(firstAlert.getTitle(), targetUser);
+
+        verify(alertRepository, times(1)).save(alertCaptor.capture());
+        Alert addedAlert = alertCaptor.getValue();
+
+        assertThat(alert.getText()).isEqualTo(addedAlert.getText());
+    }
+
+    @Test
+    void saveAlert() {
+        AlertInputDto dto = AlertInputDto.builder()
+                .id(1L)
+                .title("Task invitation")
+                .text("")
+                .createdAt(LocalDate.parse("2022-02-08"))
+                .portalId(1L)
+                .build();
+
+        alertService.saveAlert(dto);
+        verify(alertRepository, times(1)).save(alertCaptor.capture());
+        var alertFirst = alertCaptor.getValue();
+
+        assertThat(alertFirst.getId()).isEqualTo(dto.id);
+        assertThat(alertFirst.getTitle()).isEqualTo(dto.title);
+        assertThat(alertFirst.getText()).isEqualTo(dto.text);
+    }
+
+    //////////////////////////////
+    //// Read
 
     @Test
     void getAlert() {
-        when(alertRepository.findById(1L)).thenReturn(Optional.of(firstAlert));
+        when(alertRepository.findById(1L)).thenReturn(Optional.ofNullable(firstAlert));
 
-        alertService.getAlert(1L);
+        Alert newAllert = alertService.getAlert(1L);
+
+        verify(alertRepository, times(1)).findById(1L);
+        assertThat(newAllert).isEqualTo(firstAlert);
+
     }
 
     @Test
     void getAlertsForUser() {
-        when(userRepository.findById(firstUser.getUsername())).thenReturn(Optional.ofNullable(firstUser));
+        when(userRepository.findById(targetUser.getUsername())).thenReturn(Optional.ofNullable(targetUser));
+        when(portalRepository.findByUser(targetUser)).thenReturn(Optional.ofNullable(portalTarget));
+        when(alertRepository.findAllByPortal(portalTarget, pageable)).thenReturn(Arrays.asList(firstAlert, secondAlert));
 
-        when(portalRepository.findByUser(firstUser)).thenReturn((Optional.ofNullable(firstPortal)));
+        List<Alert> alerts = alertService.getAlertsForUser(targetUser.getUsername(), pageable);
 
-        when(alertRepository.findAllByPortal(firstPortal, pageable)).thenReturn(firstAlertList);
-
-        List<Alert> alerts = alertService.getAlertsForUser(firstUser.getUsername(), pageable);
-        verify(userRepository, times(1)).findById(firstUser.getUsername());
-        verify(portalRepository, times(1)).findByUser(firstUser);
-        verify(portalRepository, times(1)).findByUser(firstUser);
-
-        assertThat(alerts.get(1).getId()).isEqualTo(firstAlertList.get(1).getId());
-
+        verify(userRepository, times(1)).findById(targetUser.getUsername());
+        verify(portalRepository, times(1)).findByUser(targetUser);
+        verify(alertRepository, times(1)).findAllByPortal(portalTarget, pageable);
+        assertThat(alerts.get(1).getId()).isEqualTo(alertList.get(1).getId());
+        assertThat(alerts.get(1).getTitle()).isEqualTo("Task invitation");
     }
 
-
-    @Test
-    void saveAlert() {
-        alertRepository.save(firstAlert);
-        verify(alertRepository, times(1)).save(alertArgumentCaptor.capture());
-        var alertFirst = alertArgumentCaptor.getValue();
-
-        assertThat(alertFirst.getId()).isEqualTo(1);
-        assertThat(alertFirst.getTitle()).isEqualTo("First alert");
-        assertThat(alertFirst.getText()).isEqualTo("Better check alerts");
-    }
-
+    //////////////////////////////
+    //// Update
 
     @Test
     void updateAlert() {
         when(alertRepository.findById(1L)).thenReturn(Optional.ofNullable(firstAlert));
+        secondAlert.setId(1L);
 
-        firstAlert.setTitle("A new alert title");
-        firstAlert.setText("A new alert text");
-        alertService.updateAlert(1L, firstAlert);
-        verify(alertRepository).save(firstAlert);
+        alertService.updateAlert(1L, secondAlert);
 
-        Optional<Alert> optionalAlert = alertRepository.findById(1L);
-        Alert updatedAlert = optionalAlert.get();
-
-        assertThat(updatedAlert.getId()).isEqualTo(1);
-        assertThat(updatedAlert.getTitle()).isEqualTo("A new alert title");
-        assertThat(updatedAlert.getText()).isEqualTo("A new alert text");
+        verify(alertRepository, times(1)).save(alertCaptor.capture());
+        var alertSaved = alertCaptor.getValue();
+        assertThat(alertSaved.getId()).isEqualTo(1);
+        assertThat(alertSaved.getTitle()).isEqualTo(secondAlert.getTitle());
     }
+
+    //////////////////////////////
+    //// Update
 
     @Test
     void deleteAlert() {
+
         alertRepository.delete(firstAlert);
         alertService.deleteAlert(1L);
 

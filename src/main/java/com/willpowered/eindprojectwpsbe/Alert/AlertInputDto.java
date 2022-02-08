@@ -1,7 +1,10 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
+import lombok.Builder;
+
 import java.time.LocalDate;
 
+@Builder
 public class AlertInputDto {
 
     public Long id;
