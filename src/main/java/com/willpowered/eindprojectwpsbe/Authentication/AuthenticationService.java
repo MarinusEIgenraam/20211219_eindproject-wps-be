@@ -8,11 +8,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 public class AuthenticationService {
@@ -53,8 +56,10 @@ public class AuthenticationService {
         return new AuthenticationDto(jwt);
     }
 
-    public Authentication getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public static Authentication getCurrentUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             return authentication;
         }
@@ -63,10 +68,17 @@ public class AuthenticationService {
         }
     }
 
-    public String getCurrentUserName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ((UserDetails) authentication.getPrincipal()).getUsername();
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        }
+        if (principal instanceof Principal) {
+            return ((Principal) principal).getName();
+        }
+        return String.valueOf(principal);
     }
+
 
     public boolean isLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

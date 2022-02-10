@@ -1,12 +1,12 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
-import com.willpowered.eindprojectwpsbe.Authentication.User;
-import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
-import com.willpowered.eindprojectwpsbe.Authentication.UserService;
 import com.willpowered.eindprojectwpsbe.Authentication.*;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

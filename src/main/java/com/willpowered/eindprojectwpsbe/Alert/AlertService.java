@@ -37,7 +37,7 @@ public class AlertService {
     public Alert addAlert(String title, User user) {
         var optionalPortal = portalRepository.findByUser(user);
         var portal = optionalPortal.get();
-        String currentUserName = authenticationService.getCurrentUserName();
+        String currentUserName = authenticationService.getCurrentUsername();
 
         var alert = new Alert();
         alert.setPortal(portal);

@@ -1,15 +1,15 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
+import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Category.CategoryRepository;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskRepository;
-import com.willpowered.eindprojectwpsbe.Authentication.Authority.Authority;
-import com.willpowered.eindprojectwpsbe.Authentication.User;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
-import com.willpowered.eindprojectwpsbe.Authentication.UserRepository;
+import com.willpowered.eindprojectwpsbe.User.User;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

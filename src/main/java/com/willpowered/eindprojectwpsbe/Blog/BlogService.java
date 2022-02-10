@@ -70,6 +70,11 @@ public class BlogService {
     //// Delete
 
     public void deleteBlog(Long id) {
-        blogRepository.deleteById(id);
+        var optionalBlog = blogRepository.findById(1L);
+        if (optionalBlog.isPresent()) {
+            blogRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Blog does not exist");
+        }
     }
 }

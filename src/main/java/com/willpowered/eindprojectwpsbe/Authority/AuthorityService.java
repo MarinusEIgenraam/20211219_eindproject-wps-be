@@ -14,11 +14,8 @@ public class AuthorityService {
     @Autowired
     UserRepository userRepository;
 
-    public Set<Authority> getAuthorities(String username) {
-        if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
-        User user = userRepository.findById(username).get();
-        return user.getAuthorities();
-    }
+    //////////////////////////////
+    //// Create
 
     public void addAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
@@ -26,6 +23,18 @@ public class AuthorityService {
         user.addAuthority(new Authority(username, authority));
         userRepository.save(user);
     }
+
+    //////////////////////////////
+    //// Read
+
+    public Set<Authority> getAuthorities(String username) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        return user.getAuthorities();
+    }
+
+    //////////////////////////////
+    //// Delete
 
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UserNotFoundException(username);

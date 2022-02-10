@@ -110,7 +110,7 @@ class AlertServiceTest {
     @Test
     void addAlert() {
         when(portalRepository.findByUser(targetUser)).thenReturn((Optional.ofNullable(portalTarget)));
-        when(authenticationService.getCurrentUserName()).thenReturn(currentUser.getUsername());
+        when(authenticationService.getCurrentUsername()).thenReturn(currentUser.getUsername());
         when(alertRepository.save(any())).thenReturn(secondAlert);
 
         Alert alert = alertService.addAlert(firstAlert.getTitle(), targetUser);

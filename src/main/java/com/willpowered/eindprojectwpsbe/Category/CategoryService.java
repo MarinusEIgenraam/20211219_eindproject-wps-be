@@ -46,7 +46,6 @@ public class CategoryService {
     public void updateCategory(Long id, Category category) {
         var optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isPresent()) {
-            categoryRepository.deleteById(id);
             categoryRepository.save(category);
         } else {
             throw new RecordNotFoundException("Category does not exist");
@@ -57,6 +56,11 @@ public class CategoryService {
     //// Delete
 
     public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+        var optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isPresent()) {
+            categoryRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Category does not exist");
+        }
     }
 }

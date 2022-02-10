@@ -32,8 +32,6 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
     private AlertService alertService;
     @Autowired
     UserService userService;
@@ -45,33 +43,49 @@ public class CommentService {
         Comment newComment = dto.toComment();
         newComment.setUser(userService.getCurrentUser());
 
-        if (dto.parentBlogId != null && dto.parentProjectId == null && dto.parentCommentId == null) {
-            var optionalBlog = blogRepository.findById(dto.parentBlogId);
-            if (optionalBlog.isPresent()) {
-                newComment.setParentBlog(optionalBlog.get());
-                alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
-            }
-        } else if (dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null) {
-            var optionalProject = projectRepository.findById(dto.parentProjectId);
-            if (optionalProject.isPresent()) {
-                newComment.setParentProject(optionalProject.get());
-                alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
-            }
-        } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null) {
-            var optionalComment = commentRepository.findById(dto.parentCommentId);
-            if (optionalComment.isPresent()) {
-                newComment.setParentComment(optionalComment.get());
-                alertService.addAlert("Comment on comment", optionalComment.get().getUser());
-                Comment savedComment = commentRepository.save(newComment);
-                Comment parentComment = optionalComment.get();
-                parentComment.getCommentList().add(savedComment);
-                commentRepository.save(parentComment);
-                newComment = savedComment;
-            }
+        boolean hasParentBlog = dto.parentBlogId != null && dto.parentProjectId == null && dto.parentCommentId == null;
+        boolean hasParentProject = dto.parentBlogId == null && dto.parentProjectId != null && dto.parentCommentId == null;
+        boolean hasParentComment = dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId != null;
+        if (hasParentBlog) {
+            setParentBlog(dto, newComment);
+        } else if (hasParentProject) {
+            setParentProject(dto, newComment);
+        } else if (hasParentComment) {
+            newComment = saveNewComment(dto, newComment);
         } else if (dto.parentBlogId == null && dto.parentProjectId == null && dto.parentCommentId == null) {
             throw new RecordNotFoundException("Missing comment parent");
         }
         return commentRepository.save(newComment);
+    }
+
+    public void setParentBlog(CommentInputDto dto, Comment newComment) {
+        var optionalBlog = blogRepository.findById(dto.parentBlogId);
+        if (optionalBlog.isPresent()) {
+            newComment.setParentBlog(optionalBlog.get());
+            alertService.addAlert("Comment on blog", optionalBlog.get().getBlogOwner());
+        }
+    }
+
+    public void setParentProject(CommentInputDto dto, Comment newComment) {
+        var optionalProject = projectRepository.findById(dto.parentProjectId);
+        if (optionalProject.isPresent()) {
+            newComment.setParentProject(optionalProject.get());
+            alertService.addAlert("Comment on project", optionalProject.get().getProjectOwner());
+        }
+    }
+
+    public Comment saveNewComment(CommentInputDto dto, Comment newComment) {
+        var optionalComment = commentRepository.findById(dto.parentCommentId);
+        if (optionalComment.isPresent()) {
+            newComment.setParentComment(optionalComment.get());
+            alertService.addAlert("Comment on comment", optionalComment.get().getUser());
+            Comment savedComment = commentRepository.save(newComment);
+            Comment parentComment = optionalComment.get();
+            parentComment.getCommentList().add(savedComment);
+            commentRepository.save(parentComment);
+            newComment = savedComment;
+        }
+        return newComment;
     }
 
     //////////////////////////////

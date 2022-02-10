@@ -1,6 +1,8 @@
-package com.willpowered.eindprojectwpsbe.Authentication;
+package com.willpowered.eindprojectwpsbe.User;
 
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationInputDto;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Exception.UserNotFoundException;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserInputDto;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
@@ -15,7 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,15 +36,6 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
-
-    @Captor
-    ArgumentCaptor<User> userArgumentCaptor;
-
-    @Captor
-    ArgumentCaptor<User> userDtoCaptor;
-
-    @Captor
-    ArgumentCaptor<Authority> authorityArgumentCaptor;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -137,7 +133,7 @@ class UserServiceTest {
 
     @Test
     void registerUser() {
-        AuthenticationRequestDto dto = new AuthenticationRequestDto();
+        AuthenticationInputDto dto = new AuthenticationInputDto();
         dto.setPassword("password");
         dto.setUsername("firstUser");
         dto.setEmail("user@user.nl");

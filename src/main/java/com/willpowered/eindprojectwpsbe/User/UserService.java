@@ -1,5 +1,6 @@
 package com.willpowered.eindprojectwpsbe.User;
 
+import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationInputDto;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Authority.AuthorityRepository;
@@ -57,6 +58,26 @@ public class UserService {
 
     }
 
+    public String registerUser(AuthenticationInputDto dto) {
+        try {
+            String encryptedPassword = passwordEncoder.encode(dto.getPassword());
+
+            User user = new User();
+            user.setUsername(dto.getUsername());
+            user.setPassword(encryptedPassword);
+            user.setEmail(dto.getEmail());
+            user.setEnabled(true);
+            user.addAuthority("ROLE_USER");
+
+            User newUser = userRepository.save(user);
+            return newUser.getUsername();
+        }
+        catch (Exception ex) {
+            throw new BadRequestException("Cannot create user.");
+        }
+
+    }
+
     //////////////////////////////
     //// Read
 
@@ -88,7 +109,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        String currentUsername = authenticationService.getCurrentUserName();
+        String currentUsername = authenticationService.getCurrentUsername();
         return userRepository.findById(currentUsername)
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + currentUsername));
     }
@@ -107,7 +128,7 @@ public class UserService {
         String username = passwordInputDto.userName;
         String password = passwordInputDto.newPassword;
 
-        if (username.equals(authenticationService.getCurrentUserName())) {
+        if (username.equals(authenticationService.getCurrentUsername())) {
             if (isValidPassword(password)) {
                 var userOptional = userRepository.findById(username);
                 if (userOptional.isPresent()) {

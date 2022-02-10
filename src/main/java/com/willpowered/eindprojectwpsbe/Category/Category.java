@@ -2,10 +2,7 @@ package com.willpowered.eindprojectwpsbe.Category;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Project.Project;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +16,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "categories")
 public class Category {
     @Id
