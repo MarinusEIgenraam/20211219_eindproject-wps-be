@@ -149,7 +149,6 @@ public class CommentService {
     public void updateComment(Long id, Comment comment) {
         var optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
-            commentRepository.deleteById(id);
             commentRepository.save(comment);
         } else {
             throw new RecordNotFoundException("comment does not exist");
@@ -160,7 +159,12 @@ public class CommentService {
     //// Delete
 
     public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
+        var optionalComment = commentRepository.findById(1L);
+        if (optionalComment.isPresent()) {
+            commentRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Blog does not exist");
+        }
     }
 
     //////////////////////////////
