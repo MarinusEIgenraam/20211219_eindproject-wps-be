@@ -2,24 +2,39 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
+import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
 import com.willpowered.eindprojectwpsbe.Portal.PortalService;
 import com.willpowered.eindprojectwpsbe.Authentication.*;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,82 +45,86 @@ class ProfileImageServiceTest {
 
     @InjectMocks
     private ProfileImageService profileImageService;
-    @InjectMocks
-    private PortalService portalService;
-    @InjectMocks
-    private UserService userService;
-    @InjectMocks
-    private AuthenticationService authenticationService;
+
     @Mock
     ProfileImageRepository profileImageRepository;
     @Mock
+    PortalRepository portalRepository;
+    @Mock
+    private UserService userService;
+    @Mock
     UserRepository userRepository;
 
-    private ProfileImage firstProfileImage;
+    @Mock
+    User user;
+    @Mock
+    Portal portal;
+    @Mock
+    Files files;
+    @Mock
+    MultipartFile multipartFile;
+    @Mock
+    InputStream inputStream;
+
+    private InputStream is;
+    private MockMvc mockMvc;
+
+    private ProfileImage profileImage;
     private ProfileImage secondProfileImage;
-    private ProfileImage thirdProfileImage;
-    private User firstUser;
-    private User secondUser;
-    private User thirdUser;
-    private Portal firstPortal;
-    private Portal secondPortal;
-    private Portal thirdPortal;
-    private Pageable pageable;
     private List<ProfileImage> firstProfileImageList;
     private Page<ProfileImage> page;
 
+
     @BeforeEach
     void setUp() {
-        Set<Authority> authorities = new HashSet<>();
-        this.firstUser = new User("firstUser", "password", true, "user@user.nl", authorities);
-        this.secondUser = new User("secondUser", "password", true, "user@user.nl", authorities);
-        this.thirdUser = new User("thirdUser", "password", true, "user@user.nl", authorities);
-        this.firstProfileImage = new ProfileImage();
-        firstProfileImage.setTitle("first");
-        this.secondProfileImage = new ProfileImage();
-        this.firstPortal = new Portal();
-        secondProfileImage.setTitle("second");
-        this.thirdProfileImage = new ProfileImage();
-        thirdProfileImage.setTitle("third");
-        ProfileImage[] newList = new ProfileImage[]{firstProfileImage, secondProfileImage, thirdProfileImage};
-        firstProfileImageList = Arrays.asList(newList);
+
+        profileImage = ProfileImage.builder()
+                .id(1L)
+                .fileName("Pretty image")
+                .location("uploads/prettyImage")
+                .mediaType("jpg")
+                .uploadedTimestamp(new Date(System.currentTimeMillis()))
+                .uploadedBy("user")
+                .build();
+
+
+    }
+
+    @Test
+    void uploadFile() throws Exception {
+//        when(userService.getCurrentUser()).thenReturn(user);
+//        when(portalRepository.findByUser(user)).thenReturn(java.util.Optional.ofNullable(portal));
+//
+//
+//        when(profileImageRepository.save(profileImage)).thenReturn(profileImage);
+//
+//
+//
+//        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "excel.xlsx", "multipart/form-data", is);
+//        profileImageService.uploadFile(mockMultipartFile);
 
 
     }
 
     @Test
     void getFiles() {
-
-        when(profileImageRepository.findAll()).thenReturn(firstProfileImageList);
-        Iterable<ProfileImage> madeList = profileImageService.getFiles();
-
-        verify(profileImageRepository, times(1)).findAll();
-
-        assertThat(madeList.toString()).isEqualTo(firstProfileImageList.toString());
-
+//
+//        when(profileImageRepository.findAll()).thenReturn(firstProfileImageList);
+//        Iterable<ProfileImage> madeList = profileImageService.getFiles();
+//
+//        verify(profileImageRepository, times(1)).findAll();
+//
+//        assertThat(madeList.toString()).isEqualTo(firstProfileImageList.toString());
+//
 
     }
-//
-//    @Test
-//    void uploadFile() {
-//        MultipartFile multiPartFile = mock(MultipartFile.class);
-//        Authentication authentication = mock(Authentication.class);
-//// Mockito.whens() for your authorization object
-//        SecurityContext securityContext = mock(SecurityContext.class);
-//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) securityContext.getAuthentication().getPrincipal();
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//        when(authenticationService.getCurrentUser()).thenReturn(firstUser);
-//        when(userRepository.findByUsername(principal.getUsername())).thenReturn(java.util.Optional.ofNullable(secondUser));
-//
-//    }
 
     @Test
     void deleteFile() {
 
-        profileImageRepository.delete(firstProfileImage);
+        profileImageRepository.delete(profileImage);
         profileImageRepository.deleteById(1L);
-        verify(profileImageRepository, times(1)).delete(firstProfileImage);
+        verify(profileImageRepository, times(1)).delete(profileImage);
 
     }
 
@@ -126,9 +145,9 @@ class ProfileImageServiceTest {
 
     @Test
     void getFileById() {
-        when(profileImageRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(firstProfileImage));
-        profileImageService.getFileById(1L);
-        verify(profileImageRepository, times(1)).findById(1L);
+//        when(profileImageRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(profileImage));
+//        profileImageService.getFileById(1L);
+//        verify(profileImageRepository, times(1)).findById(1L);
     }
 
     @Test

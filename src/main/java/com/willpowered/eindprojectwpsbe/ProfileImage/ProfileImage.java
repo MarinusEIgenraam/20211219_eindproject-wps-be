@@ -1,10 +1,7 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
@@ -19,6 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "profile_images")
 public class ProfileImage {
 

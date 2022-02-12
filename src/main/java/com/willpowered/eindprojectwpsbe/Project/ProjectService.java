@@ -54,20 +54,15 @@ public class ProjectService {
 
     public Project saveProject(@NotNull ProjectInputDto projectInputDto) {
         var optionalCategory = categoryRepository.findById(projectInputDto.categoryId);
-        Project project = new Project();
+        Project project = projectInputDto.toProject();
 
         if (!optionalCategory.isPresent()) {
             throw new RecordNotFoundException("This category does not exist");
         }
         Category category = optionalCategory.get();
-
-        project.setPubliclyVisible(projectInputDto.publiclyVisible);
-        project.setProjectOwner(userService.getCurrentUser());
-        project.setUrl(projectInputDto.url);
-        project.setProjectName(projectInputDto.projectName);
-        project.setDescription(projectInputDto.description);
         project.setCategory(category);
-        project.setEndTime(projectInputDto.endTime);
+        project.setProjectOwner(userService.getCurrentUser());
+
         if (projectInputDto.startTime == null) {
             project.setStartTime(LocalDate.now());
         } else {
@@ -104,7 +99,7 @@ public class ProjectService {
     //// Read
 
     public List<Project> getAllProjects(Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
         User user = null;
 
 
@@ -130,7 +125,7 @@ public class ProjectService {
 
     public List<Project> getProjectsForCategory(Long categoryId, Pageable pageable) {
         var optionalCategory = categoryRepository.findById(categoryId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
 
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
@@ -158,7 +153,7 @@ public class ProjectService {
 
     public List<Project> getProjectsForProjectCollaborator(String username, Pageable pageable) {
         var optionalUser = userRepository.findById(username);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
 
         if (optionalUser.isPresent()) {
             User collaborator = optionalUser.get();
@@ -181,17 +176,13 @@ public class ProjectService {
         if (optionalProject.isPresent()) {
             Project newProject = optionalProject.get();
             if (newProject.getProjectTaskList().equals(project.getProjectTaskList())) {
-                projectRepository.deleteById(id);
                 projectRepository.save(project);
             } else {
-                projectRepository.deleteById(id);
-
                 Project updatedProject = projectRepository.save(project);
                 List newTaskList = new ArrayList<>();
 
                 for (Task task : project.getProjectTaskList()) {
                     if (taskRepository.findById(task.getTaskId()).isPresent()) {
-                        taskRepository.deleteById(task.getTaskId());
 
                         newTaskList.add(taskRepository.save(task));
                     }

@@ -34,6 +34,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
+    @InjectMocks
+    CommentService commentService;
+    @Captor
+    ArgumentCaptor<Comment> commentCaptor;
+
     @Mock
     ProjectRepository projectRepository;
     @Mock
@@ -46,11 +51,6 @@ class CommentServiceTest {
     UserService userService;
     @Mock
     AlertService alertService;
-    @InjectMocks
-    CommentService commentService;
-
-    @Captor
-    ArgumentCaptor<Comment> commentCaptor;
 
     @Mock
     User user;

@@ -53,6 +53,7 @@ class TaskServiceTest {
     @BeforeEach
     void setUp() {
         this.firstTask = new Task();
+        this.secondTask = new Task();
         firstTask.setTaskId(1L);
         firstTask.setTaskName("firstTask");
         firstTask.setDescription("firstDescription");

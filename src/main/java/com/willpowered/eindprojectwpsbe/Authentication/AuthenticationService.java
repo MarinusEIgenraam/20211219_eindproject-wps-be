@@ -56,7 +56,7 @@ public class AuthenticationService {
         return new AuthenticationDto(jwt);
     }
 
-    public static Authentication getCurrentUser() {
+    public Authentication getCurrentUser() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
 

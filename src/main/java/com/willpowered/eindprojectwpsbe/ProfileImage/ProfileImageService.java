@@ -69,6 +69,7 @@ public class ProfileImageService {
         newProfileImage.setFileName(originalFilename);
         newProfileImage.setLocation(originalFilename);
         newProfileImage.setTitle("profileImage");
+
         if (optionalPortal.isPresent()) {
             Portal portal = optionalPortal.get();
             newProfileImage.setPortal(portal);
