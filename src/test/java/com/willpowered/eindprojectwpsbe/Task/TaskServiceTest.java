@@ -173,11 +173,11 @@ class TaskServiceTest {
 //    @Test
 //    void getTask() {
 //        when(taskRepository.findById(firstTask.getTaskId())).thenReturn(Optional.ofNullable(firstTask));
-//        when(TaskDto.fromTask(firstTask)).thenReturn(taskDto);
+//        TaskDto taskDto = TaskDto.fromTask(firstTask);
 //
-//        taskService.getTask(1L);
+//        TaskDto foundTaskDto = taskService.getTask(firstTask.getTaskId());
 //
-//        verify(taskRepository, times(1)).findById(any());
+//        verify(taskRepository, times(1)).findById(firstTask.getTaskId());
 //        assertThrows(RecordNotFoundException.class, () ->
 //                taskRepository.findById(80L));
 //    }
