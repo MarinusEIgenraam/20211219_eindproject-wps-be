@@ -159,7 +159,7 @@ public class CommentService {
     //// Delete
 
     public void deleteComment(Long id) {
-        var optionalComment = commentRepository.findById(1L);
+        var optionalComment = commentRepository.findById(id);
         if (optionalComment.isPresent()) {
             commentRepository.deleteById(id);
         } else {

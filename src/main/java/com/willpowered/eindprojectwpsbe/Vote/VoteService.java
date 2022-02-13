@@ -47,10 +47,9 @@ public class VoteService {
         projectRepository.save(project);
     }
 
-    private Vote saveToVote(VoteInputDto voteInputDto, Project project) {
-        var vote = new Vote();
+    public Vote saveToVote(VoteInputDto voteInputDto, Project project) {
+        Vote vote = voteInputDto.toVote();
 
-        vote.setVoteType(voteInputDto.getVoteType());
         vote.setProject(project);
         vote.setUser(userService.getCurrentUser());
 
@@ -67,7 +66,6 @@ public class VoteService {
     public void updateVote(Long id, Vote vote) {
         var optionalVote = voteRepository.findById(id);
         if (optionalVote.isPresent()) {
-            voteRepository.deleteById(id);
             voteRepository.save(vote);
         } else {
             throw new RecordNotFoundException("vote does not exist");
@@ -78,7 +76,11 @@ public class VoteService {
     //// Delete
 
     public void deleteVote(Long id) {
-        voteRepository.deleteById(id);
+        var optionalVote = voteRepository.findById(id);
+        if (optionalVote.isPresent()) {
+            voteRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Vote does not exist");
+        }
     }
-
 }

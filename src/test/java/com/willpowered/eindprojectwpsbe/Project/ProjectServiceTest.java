@@ -162,7 +162,7 @@ class ProjectServiceTest {
         List<Project> foundList = projectService.getProjectsForCategory(1L, pageable);
 
         verify(projectRepository, times(1)).findAllByCategory(1L, user, pageable);
-        assertThat(foundList.get(0).getProjectName()).isEqualTo(projectList.get(0).getProjectName());
+        assertThat(foundList).isEqualTo(projectList);
     }
 
     @Test
@@ -221,9 +221,38 @@ class ProjectServiceTest {
     //// Update
 
     @Test
-    void updateProject() {
+    void updateProjectWithSameTaskList() {
         when(projectRepository.findById(1L)).thenReturn(Optional.ofNullable(project));
+        when(projectRepository.save(project)).thenReturn(project);
 
+        projectService.updateProject(1L, project);
+
+        verify(projectRepository, times(1)).save(projectCaptor.capture());
+        var capturedProject = projectCaptor.getValue();
+        assertEquals(project, capturedProject);
+    }
+
+    @Test
+    void updateProjectWithNewTaskList() {
+        List<Task> newTaskList = List.of(task, task, task);
+        Project newProject = Project.builder()
+                .projectId(1L)
+                .projectTaskList(newTaskList)
+                .build();
+        newProject.setProjectTaskList(newTaskList);
+
+        when(projectRepository.findById(1L)).thenReturn(Optional.ofNullable(project));
+        when(projectRepository.save(newProject)).thenReturn(newProject);
+        when(taskRepository.findById(any())).thenReturn(Optional.ofNullable(task));
+        when(taskRepository.save(task)).thenReturn(task);
+
+
+        projectService.updateProject(1L, newProject);
+
+
+        verify(projectRepository, times(2)).save(projectCaptor.capture());
+        var capturedProject = projectCaptor.getAllValues();
+        assertThat(project.getProjectTaskList()).isNotEqualTo(capturedProject.get(1).getProjectTaskList());
     }
 
     //////////////////////////////
@@ -231,5 +260,12 @@ class ProjectServiceTest {
 
     @Test
     void deleteProject() {
+        when(projectRepository.findById(1L)).thenReturn(Optional.ofNullable(project));
+
+        projectService.deleteProject(1L);
+
+        verify(projectRepository, times(1)).findById(1L);
+        verify(projectRepository, times(1)).deleteById(1L);
     }
 }
+

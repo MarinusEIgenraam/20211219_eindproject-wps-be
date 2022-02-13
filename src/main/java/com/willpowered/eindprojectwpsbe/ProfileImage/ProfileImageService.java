@@ -126,7 +126,7 @@ public class ProfileImageService {
     }
 
 
-    public ProfileImageDto getFileById(long id) {
+    public ProfileImageDto getFileById(Long id) {
         var optionalImage = profileImageRepository.findById(id);
 
         if (optionalImage.isPresent()) {

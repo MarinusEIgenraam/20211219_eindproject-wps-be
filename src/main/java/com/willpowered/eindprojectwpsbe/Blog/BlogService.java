@@ -70,7 +70,7 @@ public class BlogService {
     //// Delete
 
     public void deleteBlog(Long id) {
-        var optionalBlog = blogRepository.findById(1L);
+        var optionalBlog = blogRepository.findById(id);
         if (optionalBlog.isPresent()) {
             blogRepository.deleteById(id);
         } else {

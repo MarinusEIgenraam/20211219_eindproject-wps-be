@@ -1,11 +1,13 @@
 package com.willpowered.eindprojectwpsbe.Task;
 
+import lombok.Builder;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 public class TaskInputDto {
     public Long taskId;
     public String taskName;

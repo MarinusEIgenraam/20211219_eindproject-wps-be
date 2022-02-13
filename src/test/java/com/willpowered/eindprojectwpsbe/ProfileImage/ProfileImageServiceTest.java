@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -53,6 +55,8 @@ class ProfileImageServiceTest {
     @Mock
     private UserService userService;
     @Mock
+    PortalService portalService;
+    @Mock
     UserRepository userRepository;
 
     @Mock
@@ -71,13 +75,12 @@ class ProfileImageServiceTest {
 
     private ProfileImage profileImage;
     private ProfileImage secondProfileImage;
-    private List<ProfileImage> firstProfileImageList;
+    private Iterable<ProfileImage> firstProfileImageList;
     private Page<ProfileImage> page;
 
 
     @BeforeEach
     void setUp() {
-
         profileImage = ProfileImage.builder()
                 .id(1L)
                 .fileName("Pretty image")
@@ -92,31 +95,28 @@ class ProfileImageServiceTest {
 
     @Test
     void uploadFile() throws Exception {
-//        when(userService.getCurrentUser()).thenReturn(user);
-//        when(portalRepository.findByUser(user)).thenReturn(java.util.Optional.ofNullable(portal));
-//
-//
-//        when(profileImageRepository.save(profileImage)).thenReturn(profileImage);
-//
-//
-//
-//        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "excel.xlsx", "multipart/form-data", is);
-//        profileImageService.uploadFile(mockMultipartFile);
+        when(userService.getCurrentUser()).thenReturn(user);
+        when(portalRepository.findByUser(user)).thenReturn(java.util.Optional.ofNullable(portal));
+        when(profileImageRepository.save(any())).thenReturn(profileImage);
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "excel.xlsx", "multipart/form-data", is);
 
 
+        Long newId = profileImageService.uploadFile(mockMultipartFile);
+
+        verify(userService, times(1)).getCurrentUser();
+        verify(portalRepository, times(1)).findByUser(user);
+        verify(profileImageRepository, times(1)).save(any());
+        assertEquals(newId, profileImage.getId());
     }
 
     @Test
     void getFiles() {
-//
-//        when(profileImageRepository.findAll()).thenReturn(firstProfileImageList);
-//        Iterable<ProfileImage> madeList = profileImageService.getFiles();
-//
-//        verify(profileImageRepository, times(1)).findAll();
-//
-//        assertThat(madeList.toString()).isEqualTo(firstProfileImageList.toString());
-//
+        when(profileImageRepository.findAll()).thenReturn(firstProfileImageList);
 
+        Iterable<ProfileImage> madeList = profileImageService.getFiles();
+
+        verify(profileImageRepository, times(1)).findAll();
+        assertThat(madeList).isEqualTo(firstProfileImageList);
     }
 
     @Test
@@ -127,28 +127,37 @@ class ProfileImageServiceTest {
         verify(profileImageRepository, times(1)).delete(profileImage);
 
     }
-
+//
 //    @Test
 //    void getFileByPortal() {
-//        when(profileImageRepository.findByPortal(firstPortal)).thenReturn(java.util.Optional.ofNullable(firstProfileImage));
-//        ProfileImageDto profileImageDto = profileImageService.getFileByPortal(firstPortal);
-//        verify(profileImageRepository, times(1)).findByPortal(firstPortal);
-//        ProfileImageDto newProfileImageDto = new ProfileImageDto().fromProfileImage(firstProfileImage);
-//        assertThat(profileImageDto).isEqualTo(newProfileImageDto);
-//    }
-
-//    @Test
-//    void downloadFile() {
-//        when(profileImageRepository.findByPortal(portalService.getUserPortal(userService.getUser(firstUser.getUsername())))).thenReturn(java.util.Optional.ofNullable(firstProfileImage));
+//        when(profileImageRepository.findByPortal(portal)).thenReturn(Optional.ofNullable(profileImage));
 //
+//        var profileImageDto = profileImageService.getFileByPortal(portal);
+//
+//        verify(profileImageRepository, times(1)).findByPortal(portal);
+//        assertThat(profileImageDto.fileName).isEqualTo(profileImage.getFileName());
 //    }
 
     @Test
-    void getFileById() {
-//        when(profileImageRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(profileImage));
-//        profileImageService.getFileById(1L);
-//        verify(profileImageRepository, times(1)).findById(1L);
+    void downloadFile() {
+        final Path uploadDir = Paths.get("uploads/");
+        when(userService.getUser(user.getUsername())).thenReturn(user);
+        when(portalService.getUserPortal(user)).thenReturn(portal);
+        when(profileImageRepository.findByPortal(portal)).thenReturn(Optional.ofNullable(profileImage));
+
+        Resource resource = profileImageService.downloadFile(user.getUsername());
+
+        verify(profileImageRepository, times(1)).findByPortal(portal);
     }
+
+//    @Test
+//    void getFileById() {
+//        when(profileImageRepository.findById(1L)).thenReturn(Optional.ofNullable(profileImage));
+//
+//        profileImageService.getFileById(1L);
+//
+//        verify(profileImageRepository, times(1)).findById(1L);
+//    }
 
     @Test
     void fileExistsById() {

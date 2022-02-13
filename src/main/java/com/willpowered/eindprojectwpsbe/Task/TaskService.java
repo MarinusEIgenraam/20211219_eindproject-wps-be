@@ -46,16 +46,15 @@ public class TaskService {
     public Task saveTask(TaskInputDto dto) {
         Task task = saveTaskData(dto);
 
-        if (dto.parentTaskId == null && dto.parentProjectId != null) {
+        boolean parentProjectId = dto.parentTaskId == null && dto.parentProjectId != null;
+        boolean parentTaskId = dto.parentTaskId != null && dto.parentProjectId == null;
+
+        if (parentProjectId) {
             var projectOptional = projectRepository.findById(dto.parentProjectId);
-            if (projectOptional.isPresent()) {
-                task.setParentProject(projectOptional.get());
-            }
-        } else if (dto.parentTaskId != null && dto.parentProjectId == null) {
+            projectOptional.ifPresent(task::setParentProject);
+        } else if (parentTaskId) {
             var taskOptional = taskRepository.findById(dto.parentTaskId);
-            if (taskOptional.isPresent()) {
-                task.setParentTask(taskOptional.get());
-            }
+            taskOptional.ifPresent(task::setParentTask);
         } else {
             throw new RecordNotFoundException("No parent was found");
         }
@@ -91,21 +90,6 @@ public class TaskService {
         return taskRepository.save(newTask);
     }
 
-    public void updateTask(Long id, Task task) {
-        var optionalTask = taskRepository.findById(id);
-
-        if (optionalTask.isPresent()) {
-            Task newTask = optionalTask.get();
-            if (newTask.getTaskTaskList().equals(task.getTaskTaskList())) {
-                return;
-            } else {
-                Task updatedTask = taskRepository.save(task);
-            }
-        } else {
-            throw new RecordNotFoundException("Task does not exist");
-        }
-    }
-
     public Task saveTaskData(TaskInputDto taskInputdto) {
         Task task = new Task();
 
@@ -128,7 +112,6 @@ public class TaskService {
         return task;
     }
 
-
     //////////////////////////////
     //// Read
 
@@ -149,7 +132,7 @@ public class TaskService {
 
     public List<Task> getTasksForParentProject(Long projectId) {
         var optionalProject = projectRepository.findById(projectId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
 
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
@@ -165,7 +148,7 @@ public class TaskService {
 
     public List<Task> getTasksForTaskOwner(String username) {
         var optionalUser = userRepository.findById(username);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -180,7 +163,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksForParentTask(Long parentTaskId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = authenticationService.getCurrentUser();
 
         var optionalTask = taskRepository.findById(parentTaskId);
         if (optionalTask.isPresent()) {
@@ -198,10 +181,30 @@ public class TaskService {
     //////////////////////////////
     //// Update
 
+    public void updateTask(Long id, Task task) {
+        var optionalTask = taskRepository.findById(id);
+
+        if (optionalTask.isPresent()) {
+            Task newTask = optionalTask.get();
+            if (newTask.getTaskTaskList().equals(task.getTaskTaskList())) {
+                return;
+            } else {
+                Task updatedTask = taskRepository.save(task);
+            }
+        } else {
+            throw new RecordNotFoundException("Task does not exist");
+        }
+    }
+
     //////////////////////////////
     //// Delete
     public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+        var optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            taskRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Task does not exist");
+        }
     }
 
 }

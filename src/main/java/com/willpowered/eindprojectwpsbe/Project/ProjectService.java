@@ -200,7 +200,11 @@ public class ProjectService {
     //// Delete
 
     public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+        var optionalProject = projectRepository.findById(id);
+        if (optionalProject.isPresent()) {
+            projectRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Project does not exist");
+        }
     }
-
 }

@@ -38,8 +38,7 @@ class BlogServiceTest {
     BlogRepository blogRepository;
     @Mock
     UserRepository userRepository;
-    @Mock
-    Blog blog;
+
     @Mock
     User user;
     @Mock
@@ -50,39 +49,37 @@ class BlogServiceTest {
     @Captor
     ArgumentCaptor<Blog> blogCaptor;
 
+    Blog firstBlog;
+    Blog secondBlog;
+    Blog thirdBlog;
 
-//    @BeforeEach
-//    void setUp() {
-//        Set<Authority> authorities = new HashSet<>();
-//        targetUser = User.builder()
-//                .username("targetUser")
-//                .password("password")
-//                .email("email@targetuser.nl")
-//                .build();
-//        firstBlog = Blog.builder()
-//                .blogId(1L)
-//                .blogName("Best blog ever")
-//                .url("www.thebest.nl")
-//                .imageUrl("www.prettyimage.nl")
-//                .description("This is the best of the best")
-//                .build();
-//        Blog secondBlog = Blog.builder()
-//                .blogId(2L)
-//                .blogName("Second best blog ever")
-//                .url("www.thesecondbest.nl")
-//                .imageUrl("www.mediocreimage.nl")
-//                .description("This is the second best of the best")
-//                .build();
-//        Blog thirdBlog = Blog.builder()
-//                .blogId(3L)
-//                .blogName("Third best blog ever")
-//                .url("www.thethirdbest.nl")
-//                .imageUrl("www.uglyimage.nl")
-//                .description("This is the third best of the best")
-//                .build();
-//        firstBlogList = Arrays.asList(firstBlog, secondBlog, thirdBlog);
-//
-//    }
+
+    @BeforeEach
+    void setUp() {
+        Set<Authority> authorities = new HashSet<>();
+        firstBlog = Blog.builder()
+                .blogId(1L)
+                .blogName("Best blog ever")
+                .url("www.thebest.nl")
+                .imageUrl("www.prettyimage.nl")
+                .description("This is the best of the best")
+                .build();
+        secondBlog = Blog.builder()
+                .blogId(2L)
+                .blogName("Second best blog ever")
+                .url("www.thesecondbest.nl")
+                .imageUrl("www.mediocreimage.nl")
+                .description("This is the second best of the best")
+                .build();
+        thirdBlog = Blog.builder()
+                .blogId(3L)
+                .blogName("Third best blog ever")
+                .url("www.thethirdbest.nl")
+                .imageUrl("www.uglyimage.nl")
+                .description("This is the third best of the best")
+                .build();
+
+    }
 
 
     //////////////////////////////
@@ -91,14 +88,14 @@ class BlogServiceTest {
     @Test
     void saveBlog() {
         when(userService.getCurrentUser()).thenReturn(user);
-        when(blogRepository.save(blog)).thenReturn(blog);
+        when(blogRepository.save(firstBlog)).thenReturn(firstBlog);
 
-        blogService.saveBlog(blog);
+        blogService.saveBlog(firstBlog);
 
         verify(blogRepository, times(1)).save(blogCaptor.capture());
         Blog capturedBlog = blogCaptor.getValue();
 
-        assertThat(blog).isEqualTo(capturedBlog);
+        assertThat(firstBlog).isEqualTo(capturedBlog);
     }
 
     //////////////////////////////
@@ -106,12 +103,12 @@ class BlogServiceTest {
 
     @Test
     void getBlog() {
-        when(blogRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(blog));
+        when(blogRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(firstBlog));
 
         Blog foundBlog = blogService.getBlog(1L);
         verify(blogRepository, times(1)).findById(1L);
 
-        assertThat(blog.getBlogOwner()).isEqualTo(foundBlog.getBlogOwner());
+        assertThat(firstBlog.getBlogOwner()).isEqualTo(foundBlog.getBlogOwner());
     }
 
     @Test
@@ -131,16 +128,16 @@ class BlogServiceTest {
 
     @Test
     void updateBlog() {
-        when(blogRepository.findById(blog.getBlogId())).thenReturn(java.util.Optional.ofNullable(blog));
-        when(blogRepository.save(blog)).thenReturn(blog);
+        when(blogRepository.findById(firstBlog.getBlogId())).thenReturn(java.util.Optional.ofNullable(firstBlog));
+        when(blogRepository.save(firstBlog)).thenReturn(firstBlog);
 
-        blogService.updateBlog(1L, blog);
+        blogService.updateBlog(1L, firstBlog);
 
-        verify(blogRepository, times(1)).findById(blog.getBlogId());
+        verify(blogRepository, times(1)).findById(firstBlog.getBlogId());
         verify(blogRepository, times(1)).save(blogCaptor.capture());
         var capturedBlog = blogCaptor.getValue();
 
-        assertThat(capturedBlog.getBlogId()).isEqualTo(blog.getBlogId());
+        assertThat(capturedBlog.getBlogId()).isEqualTo(firstBlog.getBlogId());
     }
 
     //////////////////////////////
@@ -148,7 +145,7 @@ class BlogServiceTest {
 
     @Test
     void deleteBlog() {
-        when(blogRepository.findById(1L)).thenReturn(Optional.ofNullable(blog));
+        when(blogRepository.findById(1L)).thenReturn(Optional.ofNullable(firstBlog));
         blogService.deleteBlog(1L);
 
         verify(blogRepository, times(1)).findById(1L);
