@@ -190,10 +190,11 @@ class AlertServiceTest {
 
     @Test
     void deleteAlert() {
+        when(alertRepository.findById(1L)).thenReturn(Optional.ofNullable(firstAlert));
 
-        alertRepository.delete(firstAlert);
         alertService.deleteAlert(1L);
 
-        verify(alertRepository, times(1)).delete(firstAlert);
+        verify(alertRepository, times(1)).deleteById(1L);
     }
+
 }

@@ -100,6 +100,7 @@ public class AlertService {
     //////////////////////////////
     //// Update
 
+
     public void updateAlert(Long id, Alert alert) {
         var optionalAlert = alertRepository.findById(id);
         if (optionalAlert.isPresent()) {
@@ -113,7 +114,12 @@ public class AlertService {
     //// Delete
 
     public void deleteAlert(Long id) {
-        alertRepository.deleteById(id);
+        var optionalAlert = alertRepository.findById(id);
+        if (optionalAlert.isPresent()) {
+            alertRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Alert does not exist");
+        }
     }
 
 
