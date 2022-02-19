@@ -49,8 +49,8 @@ public class Task {
     @ManyToOne
     @JoinTable(
             name = "task_tasks",
-            joinColumns = @JoinColumn(name = "parent_task"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+            joinColumns = @JoinColumn(name = "task"),
+            inverseJoinColumns = @JoinColumn(name = "parent_task"))
     @JsonBackReference("task_tasks")
     private Task parentTask;
 
@@ -58,8 +58,8 @@ public class Task {
     @ManyToOne
     @JoinTable(
             name = "project_tasks",
-            joinColumns = @JoinColumn(name = "parent_project"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+            joinColumns = @JoinColumn(name = "task"),
+            inverseJoinColumns = @JoinColumn(name = "parent_project"))
     @JsonBackReference("project_tasks")
     private Project parentProject;
 

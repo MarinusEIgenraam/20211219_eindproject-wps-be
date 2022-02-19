@@ -1,7 +1,9 @@
 package com.willpowered.eindprojectwpsbe.User;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import lombok.*;
@@ -42,12 +44,12 @@ public class User {
 
     @Nullable
     @ManyToMany(cascade = {CascadeType.ALL})
-    @JsonIgnore
     @JoinTable(
             name = "project_collaborators",
-            joinColumns = @JoinColumn(name = "projectId"),
-            inverseJoinColumns = @JoinColumn(name = "username"))
-    Set<Project> projects = new HashSet<>();
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonBackReference("project_collaborators")
+    Set<Project> projects;
 
     public User(String username, String password, Boolean enabled, String email, Set<Authority> authorities) {
         this.username = username;

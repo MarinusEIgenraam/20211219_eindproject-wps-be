@@ -28,8 +28,8 @@ public class Alert {
     @ManyToOne
     @JoinTable(
             name = "portal_alerts",
-            joinColumns = @JoinColumn(name = "portal"),
-            inverseJoinColumns = @JoinColumn(name = "alert_id"))
+            joinColumns = @JoinColumn(name = "alert"),
+            inverseJoinColumns = @JoinColumn(name = "portal"))
     @JsonBackReference("portal_alerts")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Portal portal;

@@ -13,6 +13,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -68,12 +69,14 @@ public class Project {
     private User projectOwner;
 
     @OneToMany(mappedBy = "parentProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    @Size(max = 30, min = 1)
+    @Size(max = 30, min = 1)
     @JsonManagedReference("project_tasks")
     private List<Task> projectTaskList;
 
+    @Nullable
     @ManyToMany(mappedBy = "projects")
-    private Set<User> collaborators = new HashSet<>();
+    @JsonManagedReference("project_collaborators")
+    private Set<User> collaborators;
 
 
 }
