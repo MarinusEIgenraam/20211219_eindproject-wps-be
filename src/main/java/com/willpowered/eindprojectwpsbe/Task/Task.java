@@ -44,13 +44,14 @@ public class Task {
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "task_owner", referencedColumnName = "username")
     private User taskOwner;
 
     @ManyToOne
     @JoinTable(
             name = "task_tasks",
-            joinColumns = @JoinColumn(name = "task"),
-            inverseJoinColumns = @JoinColumn(name = "parent_task"))
+            joinColumns = @JoinColumn(name = "task_id", referencedColumnName="taskId"),
+            inverseJoinColumns = @JoinColumn(name = "parent_task_id", referencedColumnName="taskId"))
     @JsonBackReference("task_tasks")
     private Task parentTask;
 
@@ -58,8 +59,8 @@ public class Task {
     @ManyToOne
     @JoinTable(
             name = "project_tasks",
-            joinColumns = @JoinColumn(name = "task"),
-            inverseJoinColumns = @JoinColumn(name = "parent_project"))
+            joinColumns = @JoinColumn(name = "task_id", referencedColumnName="taskId"),
+            inverseJoinColumns = @JoinColumn(name = "parent_project_id", referencedColumnName="projectId"))
     @JsonBackReference("project_tasks")
     private Project parentProject;
 

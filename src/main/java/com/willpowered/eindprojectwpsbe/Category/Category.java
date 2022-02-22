@@ -32,8 +32,8 @@ public class Category {
     @OneToMany(fetch = LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "category_projects",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
+            joinColumns = @JoinColumn(name = "category_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName="projectId"))
     @JsonManagedReference("category_projects")
     private List<Project> projects;
 

@@ -44,7 +44,18 @@ class PortalServiceTest {
         this.firstUser = new User("firstUser", "password", true, "user@user.nl", authorities);
         this.secondUser = new User("secondUser", "password", true, "user@user.nl", authorities);
         User thirdUser = new User("thirdUser", "password", true, "user@user.nl", authorities);
-        Alert firstAlert = new Alert("First alert", "Better check alerts");Alert secondAlert = new Alert("Second alert", "Better check alerts");Alert thirdAlert = new Alert("Third alert", "Better check alerts");
+        Alert firstAlert = Alert.builder()
+                .title("First alert")
+                .text("Better check your alerts")
+                .build();
+        Alert secondAlert = Alert.builder()
+                .title("Second alert")
+                .text("Better check your alerts")
+                .build();
+        Alert thirdAlert = Alert.builder()
+                .title("Third alert")
+                .text("Better check your alerts")
+                .build();
         List<Alert> firstAlertList = new ArrayList<>();
         firstAlertList.add(firstAlert);
         List<Alert> secondAlertList = new ArrayList<>();

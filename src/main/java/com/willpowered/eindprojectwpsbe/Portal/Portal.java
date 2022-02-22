@@ -30,6 +30,7 @@ public class Portal {
     private List<Alert> alertList;
 
     @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "portalOwner", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

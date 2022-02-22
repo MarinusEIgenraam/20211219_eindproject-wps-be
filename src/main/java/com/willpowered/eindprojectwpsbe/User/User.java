@@ -48,8 +48,7 @@ public class User {
             name = "project_collaborators",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
-    @JsonBackReference("project_collaborators")
-    Set<Project> projects;
+    Set<Project> projects = new HashSet<>();
 
     public User(String username, String password, Boolean enabled, String email, Set<Authority> authorities) {
         this.username = username;

@@ -75,8 +75,7 @@ public class Project {
 
     @Nullable
     @ManyToMany(mappedBy = "projects")
-    @JsonManagedReference("project_collaborators")
-    private Set<User> collaborators;
+    private Set<User> collaborators = new HashSet<>();
 
 
 }

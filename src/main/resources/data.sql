@@ -264,7 +264,7 @@ VALUES ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. E
                laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser');
 
 INSERT INTO tasks (description, end_time, is_running, start_time, task_name,
-                   task_owner_username)
+                   task_owner)
 VALUES ('got to catch them all', '9/9/2023', true, '1/1/1', 'fetch pokemon', 'user'),
        ('buy pokeballs from store', '9/9/2023', true, '1/1/1', 'get pokeballs', 'superuser'),
        ('practice my pokeball throw with pikachu', '9/9/2023', true, '1/1/1', 'practice trowing', 'user'),
@@ -543,7 +543,7 @@ values ('2021-09-12T08:00:1', 'Lorem ipsum dolor sit amet, consectetur adipisici
        ('2021-09-13T08:13:1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, officia.', 'superuser'),
        ('2021-09-14T08:14:1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, officia.', 'superuser'),
        ('2021-09-15T08:15:1', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus, officia.', 'superuser');
-INSERT INTO comment_comments (parent_comment, comment)
+INSERT INTO comment_comments (parent_comment_id, comment_id)
 values (1, 16),
        (1, 17),
        (1, 18),
@@ -664,7 +664,7 @@ values (1, 16),
        (6, 133),
        (6, 134),
        (6, 135);
-INSERT INTO project_tasks (parent_project, task)
+INSERT INTO project_tasks (parent_project_id, task_id)
 values (1, 1),
        (2, 2),
        (3, 3),
@@ -739,7 +739,7 @@ values (1, 1),
        (24, 119),
        (24, 120),
        (24, 121);
-INSERT INTO task_tasks (parent_task, task)
+INSERT INTO task_tasks (parent_task_id, task_id)
 values (1, 21),
        (2, 22),
        (3, 23),
@@ -785,7 +785,7 @@ values (1, 21),
        (13, 63),
        (14, 64),
        (15, 65);
-INSERT INTO project_votes (vote_type, user_name, project_id)
+INSERT INTO project_votes (vote_type, vote_owner, project_id)
 VALUES (1, 'user', 1),
        (1, 'superuser', 1),
        (1, 'admin', 1),
@@ -849,7 +849,7 @@ VALUES (1, 'user', 1),
        (1, 'user', 20),
        (1, 'superuser', 20),
        (1, 'admin', 20);
-INSERT INTO portals (user_username)
+INSERT INTO portals (portal_owner)
 VALUES ('user'),
        ('superuser'),
        ('admin'),
@@ -865,7 +865,7 @@ VALUES ('something happend', 'you have got mail'),
        ('something happend', 'you have got mail'),
        ('something happend', 'you have got mail');
 --
-INSERT INTO portal_alerts (portal, alert)
+INSERT INTO portal_alerts (portal_id, alert_id)
 VALUES (1, 1),
        (2, 2),
        (3, 3),

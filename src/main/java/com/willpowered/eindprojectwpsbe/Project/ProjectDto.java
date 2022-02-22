@@ -7,6 +7,7 @@ import com.willpowered.eindprojectwpsbe.User.UserDto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -28,7 +29,7 @@ public class ProjectDto {
     public CategoryDto category;
     public UserDto projectOwner;
     public List<TaskDto> projectTaskList;
-    public List<UserDto> collaborators;
+    public Set<UserDto> collaborators;
 
     public Integer commentCount;
 
@@ -49,7 +50,7 @@ public class ProjectDto {
         dto.category = CategoryDto.fromCategory(project.getCategory());
         dto.projectOwner = UserDto.fromUser(project.getProjectOwner());
         dto.projectTaskList = project.getProjectTaskList().stream().map(p -> TaskDto.fromTask(p)).collect(Collectors.toList());
-        dto.collaborators = project.getCollaborators().stream().map(p -> UserDto.fromUser(p)).collect(Collectors.toList());
+        dto.collaborators = project.getCollaborators().stream().map(p -> UserDto.fromUser(p)).collect(Collectors.toSet());
 
         return dto;
     }

@@ -29,12 +29,12 @@ public class Vote {
 
     @NotNull
     @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "projectId", referencedColumnName = "projectId")
+    @JoinColumn(name = "project_id", referencedColumnName = "projectId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
     @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "userName", referencedColumnName = "username")
+    @JoinColumn(name = "vote_owner", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

@@ -36,6 +36,11 @@ public class Comment {
 
     private LocalDateTime startTime;
 
+    @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "comment_owner", referencedColumnName = "username")
+    private User user;
+
     @Nullable
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "projectId", referencedColumnName = "projectId")
@@ -46,17 +51,12 @@ public class Comment {
     @JoinColumn(name = "blogId", referencedColumnName = "blogId")
     private Blog parentBlog;
 
-    @ManyToOne(fetch = LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "comment_owner", referencedColumnName = "username")
-    private User user;
-
     @Nullable
     @ManyToOne
     @JoinTable(
             name = "comment_comments",
-            joinColumns = @JoinColumn(name = "comment"),
-            inverseJoinColumns = @JoinColumn(name = "parent_comment"))
+            joinColumns = @JoinColumn(name = "comment_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "parent_comment_id", referencedColumnName="id"))
     @JsonBackReference("comment_comments")
     private Comment parentComment;
 

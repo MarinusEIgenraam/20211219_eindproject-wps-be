@@ -24,7 +24,7 @@ public class ProfileImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String fileName;
+    private String fileName = "profileImage.jpg";
 
     private String title;
 
