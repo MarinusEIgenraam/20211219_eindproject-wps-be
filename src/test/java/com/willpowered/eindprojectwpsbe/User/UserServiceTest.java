@@ -3,6 +3,10 @@ package com.willpowered.eindprojectwpsbe.User;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationInputDto;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Exception.UserNotFoundException;
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
+import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
+import com.willpowered.eindprojectwpsbe.ProfileImage.ProfileImage;
+import com.willpowered.eindprojectwpsbe.ProfileImage.ProfileImageRepository;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserInputDto;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
@@ -31,14 +35,23 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
-    UserRepository userRepository;
 
     @InjectMocks
     private UserService userService;
 
     @Mock
+    UserRepository userRepository;
+    @Mock
+    PortalRepository portalRepository;
+    @Mock
+    ProfileImageRepository profileImageRepository;
+    @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    ProfileImage profileImage;
+    @Mock
+    Portal portal;
 
     private User firstUser;
     private User secondUser;
@@ -140,6 +153,8 @@ class UserServiceTest {
 
         when(userRepository.findById(firstUser.getUsername())).thenReturn(java.util.Optional.ofNullable(firstUser));
         when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(firstUser);
+        when(profileImageRepository.save(any())).thenReturn(profileImage);
+        when(portalRepository.save(any())).thenReturn(portal);
 
         User repoCreated = userRepository.save(firstUser);
         verify(userRepository).save(firstUser);

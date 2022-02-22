@@ -26,19 +26,20 @@ public class ProfileImage {
 
     private String fileName = "profileImage.jpg";
 
-    private String title;
-
-    private String mediaType;
+    @Nullable
+    private String title = "profileImage";
 
     @Nullable
-    private String location;
+    private String mediaType;
 
-    private Date uploadedTimestamp;
+    private String location = "profileImage.jpg";
 
-    @OneToOne(fetch = LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Date uploadedTimestamp = new Date();
+
+    @OneToOne(mappedBy = "profileImage")
     private Portal portal;
 
+    @Nullable
     private String uploadedBy;
 
     @Transient

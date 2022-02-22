@@ -5,6 +5,10 @@ import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
 import com.willpowered.eindprojectwpsbe.Authority.AuthorityRepository;
 import com.willpowered.eindprojectwpsbe.Exception.*;
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
+import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
+import com.willpowered.eindprojectwpsbe.ProfileImage.ProfileImage;
+import com.willpowered.eindprojectwpsbe.ProfileImage.ProfileImageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +29,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
+    @Autowired
+    ProfileImageRepository profileImageRepository;
+    @Autowired
+    PortalRepository portalRepository;
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -61,6 +69,15 @@ public class UserService {
     public String registerUser(AuthenticationInputDto dto) {
         try {
             String encryptedPassword = passwordEncoder.encode(dto.getPassword());
+            ProfileImage profileImage = profileImageRepository.save(new ProfileImage());
+            Portal portal = new Portal();
+            portal.setProfileImage(profileImage);
+            Portal userPortal = portalRepository.save(portal);
+            portal.setProfileImage(profileImage);
+            profileImage.setPortal(userPortal);
+            profileImage.setUploadedBy(dto.getUsername());
+            profileImageRepository.save(profileImage);
+
 
             User user = new User();
             user.setUsername(dto.getUsername());
@@ -68,8 +85,9 @@ public class UserService {
             user.setEmail(dto.getEmail());
             user.setEnabled(true);
             user.addAuthority("ROLE_USER");
-
             User newUser = userRepository.save(user);
+            userPortal.setPortalOwner(newUser);
+            portalRepository.save(userPortal);
             return newUser.getUsername();
         }
         catch (Exception ex) {

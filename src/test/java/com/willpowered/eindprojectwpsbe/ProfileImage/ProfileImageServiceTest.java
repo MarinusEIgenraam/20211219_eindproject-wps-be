@@ -96,7 +96,7 @@ class ProfileImageServiceTest {
     @Test
     void uploadFile() throws Exception {
         when(userService.getCurrentUser()).thenReturn(user);
-        when(portalRepository.findByUser(user)).thenReturn(java.util.Optional.ofNullable(portal));
+        when(portalRepository.findByPortalOwner(user)).thenReturn(java.util.Optional.ofNullable(portal));
         when(profileImageRepository.save(any())).thenReturn(profileImage);
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "excel.xlsx", "multipart/form-data", is);
 
@@ -104,7 +104,7 @@ class ProfileImageServiceTest {
         Long newId = profileImageService.uploadFile(mockMultipartFile);
 
         verify(userService, times(1)).getCurrentUser();
-        verify(portalRepository, times(1)).findByUser(user);
+        verify(portalRepository, times(1)).findByPortalOwner(user);
         verify(profileImageRepository, times(1)).save(any());
         assertEquals(newId, profileImage.getId());
     }

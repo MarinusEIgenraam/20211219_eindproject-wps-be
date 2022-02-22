@@ -849,29 +849,29 @@ VALUES (1, 'user', 1),
        (1, 'user', 20),
        (1, 'superuser', 20),
        (1, 'admin', 20);
-INSERT INTO portals (portal_owner)
-VALUES ('user'),
-       ('superuser'),
-       ('admin'),
-       ('usermarinus'),
-       ('superusermarinus'),
-       ('adminmarinus');
-INSERT INTO alerts (text, title)
-VALUES ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail'),
-       ('something happend', 'you have got mail');
+-- INSERT INTO portals (portalOwner)
+-- VALUES ('user'),
+--        ('superuser'),
+--        ('admin'),
+--        ('usermarinus'),
+--        ('superusermarinus'),
+--        ('adminmarinus');
+-- INSERT INTO alerts (text, title)
+-- VALUES ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail'),
+--        ('something happend', 'you have got mail');
 --
-INSERT INTO portal_alerts (portal_id, alert_id)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (1, 4),
-       (2, 5),
-       (3, 6);
+-- INSERT INTO portal_alerts (portal_id, alert_id)
+-- VALUES (1, 1),
+--        (2, 2),
+--        (3, 3),
+--        (1, 4),
+--        (2, 5),
+--        (3, 6);
 INSERT INTO project_collaborators (project_id, username)
 VALUES
        (1, 'user'),

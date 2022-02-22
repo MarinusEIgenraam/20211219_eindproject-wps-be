@@ -24,16 +24,6 @@ public class UserController {
         return dto;
     }
 
-    @PostMapping(value = "")
-    public ResponseEntity<Object> createUser(@RequestBody UserInputDto user) {
-        String newUsername = userService.createUser(user);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(newUsername).toUri();
-
-        return ResponseEntity.created(location).build();
-    }
-
     @GetMapping
     public Page<UserDto> getUsers(
                     @RequestParam(value = "authority", required = false) String authority,

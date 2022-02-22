@@ -70,11 +70,11 @@ class AlertServiceTest {
 
         portalTarget = Portal.builder()
                 .id(1L)
-                .user(targetUser)
+                .portalOwner(targetUser)
                 .build();
         portalCurrent = Portal.builder()
                 .id(2L)
-                .user(currentUser)
+                .portalOwner(currentUser)
                 .build();
 
         firstAlert = Alert.builder()
@@ -109,7 +109,7 @@ class AlertServiceTest {
 
     @Test
     void addAlert() {
-        when(portalRepository.findByUser(targetUser)).thenReturn((Optional.ofNullable(portalTarget)));
+        when(portalRepository.findByPortalOwner(targetUser)).thenReturn((Optional.ofNullable(portalTarget)));
         when(authenticationService.getCurrentUsername()).thenReturn(currentUser.getUsername());
         when(alertRepository.save(any())).thenReturn(secondAlert);
 
@@ -157,13 +157,13 @@ class AlertServiceTest {
     @Test
     void getAlertsForUser() {
         when(userRepository.findById(targetUser.getUsername())).thenReturn(Optional.ofNullable(targetUser));
-        when(portalRepository.findByUser(targetUser)).thenReturn(Optional.ofNullable(portalTarget));
+        when(portalRepository.findByPortalOwner(targetUser)).thenReturn(Optional.ofNullable(portalTarget));
         when(alertRepository.findAllByPortal(portalTarget, pageable)).thenReturn(Arrays.asList(firstAlert, secondAlert));
 
         List<Alert> alerts = alertService.getAlertsForUser(targetUser.getUsername(), pageable);
 
         verify(userRepository, times(1)).findById(targetUser.getUsername());
-        verify(portalRepository, times(1)).findByUser(targetUser);
+        verify(portalRepository, times(1)).findByPortalOwner(targetUser);
         verify(alertRepository, times(1)).findAllByPortal(portalTarget, pageable);
         assertThat(alerts.get(1).getId()).isEqualTo(alertList.get(1).getId());
         assertThat(alerts.get(1).getTitle()).isEqualTo("Task invitation");

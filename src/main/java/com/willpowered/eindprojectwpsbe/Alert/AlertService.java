@@ -35,7 +35,7 @@ public class AlertService {
     //// Create
 
     public Alert addAlert(String title, User user) {
-        var optionalPortal = portalRepository.findByUser(user);
+        var optionalPortal = portalRepository.findByPortalOwner(user);
         var portal = optionalPortal.get();
         String currentUserName = authenticationService.getCurrentUsername();
 
@@ -84,7 +84,7 @@ public class AlertService {
         var optionalUser = userRepository.findById(username);
         if (optionalUser.isPresent()) {
             var user = optionalUser.get();
-            var optionalPortal = portalRepository.findByUser(user);
+            var optionalPortal = portalRepository.findByPortalOwner(user);
             if (optionalPortal.isPresent()) {
                 var portal = optionalPortal.get();
                 return alertRepository.findAllByPortal(portal, pageable);

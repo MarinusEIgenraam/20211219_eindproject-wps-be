@@ -62,9 +62,21 @@ class PortalServiceTest {
         secondAlertList.add(secondAlert);
         List<Alert>thirdAlertList = new ArrayList<>();
         thirdAlertList.add(thirdAlert);
-        this.firstPortal = new Portal(1L,firstAlertList, firstUser);
-        this.secondPortal = new Portal(2L, secondAlertList, secondUser);
-        this.thirdPortal = new Portal(3L,thirdAlertList, thirdUser);
+        this.firstPortal = Portal.builder()
+                .id(1L)
+                .alertList(firstAlertList)
+                .portalOwner(firstUser)
+                .build();
+        this.secondPortal = Portal.builder()
+                .id(2L)
+                .alertList(secondAlertList)
+                .portalOwner(secondUser)
+                .build();
+        this.thirdPortal = Portal.builder()
+                .id(3L)
+                .alertList(thirdAlertList)
+                .portalOwner(thirdUser)
+                .build();
     }
 
     @Test
@@ -78,17 +90,17 @@ class PortalServiceTest {
     @Test
     void updatePortal() {
         when(portalRepository.findById(1L)).thenReturn(Optional.of(firstPortal));
-        firstPortal.setUser(secondUser);
+        firstPortal.setPortalOwner(secondUser);
         portalService.updatePortal(1l, firstPortal);
         verify(portalRepository).save(firstPortal);
 
         assertThat(firstPortal.getId()).isEqualTo(1);
-        assertThat(firstPortal.getUser().getUsername()).isEqualTo("secondUser");
+        assertThat(firstPortal.getPortalOwner().getUsername()).isEqualTo("secondUser");
     }
 
     @Test
     void getUserPortal() {
-        when(portalRepository.findByUser(firstUser)).thenReturn(Optional.of(firstPortal));
+        when(portalRepository.findByPortalOwner(firstUser)).thenReturn(Optional.of(firstPortal));
         portalService.getUserPortal(firstUser);
     }
 
@@ -97,7 +109,7 @@ class PortalServiceTest {
         portalRepository.save(firstPortal);
         verify(portalRepository, times(1)).save(portalArgumentCaptor.capture());
 
-        assertThat(firstPortal.getUser().getUsername()).isEqualTo("firstUser");
+        assertThat(firstPortal.getPortalOwner().getUsername()).isEqualTo("firstUser");
         assertThat(firstPortal.getAlertList().get(0).getTitle()).isEqualTo("First alert");
     }
 

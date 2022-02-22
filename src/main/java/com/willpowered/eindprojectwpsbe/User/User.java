@@ -5,13 +5,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Authority.Authority;
+import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @Setter

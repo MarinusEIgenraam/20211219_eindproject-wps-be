@@ -54,7 +54,7 @@ class AlertControllerTest {
     void setUp() {
         firstPortal = Portal.builder()
                 .id(1L)
-                .user(firstUser)
+                .portalOwner(firstUser)
                 .alertList(firstAlertList)
                 .build();
         firstAlert = Alert.builder()

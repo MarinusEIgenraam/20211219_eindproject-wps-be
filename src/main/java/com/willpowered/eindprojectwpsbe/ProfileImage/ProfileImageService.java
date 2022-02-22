@@ -50,7 +50,7 @@ public class ProfileImageService {
 
     public long uploadFile(MultipartFile multipartFile) throws IOException {
         User currentUser = userService.getCurrentUser();
-        var optionalPortal = portalRepository.findByUser(currentUser);
+        var optionalPortal = portalRepository.findByPortalOwner(currentUser);
 
         String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 

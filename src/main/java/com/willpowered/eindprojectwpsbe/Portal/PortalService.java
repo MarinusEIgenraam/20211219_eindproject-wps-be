@@ -29,7 +29,7 @@ public class PortalService {
     public Portal savePortal(PortalInputDto dto) {
         User user = userService.getUser(dto.username);
         Portal portal = dto.toPortal();
-        portal.setUser(user);
+        portal.setPortalOwner(user);
         return portalRepository.save(portal);
     }
 
@@ -51,7 +51,7 @@ public class PortalService {
     }
 
     public Portal getUserPortal(User user) {
-        var optionalPortal = portalRepository.findByUser(user);
+        var optionalPortal = portalRepository.findByPortalOwner(user);
         if (optionalPortal.isPresent()) {
             return optionalPortal.get();
         } else {

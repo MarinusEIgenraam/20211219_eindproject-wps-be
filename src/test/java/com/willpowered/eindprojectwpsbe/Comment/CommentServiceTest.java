@@ -1,17 +1,14 @@
 package com.willpowered.eindprojectwpsbe.Comment;
 
-import com.willpowered.eindprojectwpsbe.Alert.Alert;
 import com.willpowered.eindprojectwpsbe.Alert.AlertService;
 import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Blog.BlogRepository;
 import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Project.Project;
 import com.willpowered.eindprojectwpsbe.Project.ProjectRepository;
-import com.willpowered.eindprojectwpsbe.TestEntityService;
 import com.willpowered.eindprojectwpsbe.User.User;
 import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.User.UserService;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PortalRepository extends JpaRepository<Portal, Long> {
-    Optional<Portal> findByUser (User user);
+    Optional<Portal> findByPortalOwner (User user);
 
 }

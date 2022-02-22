@@ -2,10 +2,12 @@ package com.willpowered.eindprojectwpsbe.Portal;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.willpowered.eindprojectwpsbe.Alert.Alert;
+import com.willpowered.eindprojectwpsbe.ProfileImage.ProfileImage;
 import com.willpowered.eindprojectwpsbe.User.User;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +27,7 @@ public class Portal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Nullable
     @OneToMany
     @JsonManagedReference("portal_alerts")
     private List<Alert> alertList;
@@ -32,7 +35,10 @@ public class Portal {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "portalOwner", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private User portalOwner;
 
-
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "profileImage", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProfileImage profileImage;
 }
