@@ -26,9 +26,9 @@ public class BlogController {
 
     @GetMapping
     public Page<BlogDto> getBlogsFor(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "startTime") String[] sort,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "startTime", required = false) String[] sort,
             @RequestParam(value = "blogOwner", required = false) String blogOwner
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
@@ -57,6 +57,7 @@ public class BlogController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin
     public BlogDto updateBlog(@PathVariable Long id, @RequestBody Blog blog) {
         blogService.updateBlog(id, blog);
         return BlogDto.fromBlog(blog);

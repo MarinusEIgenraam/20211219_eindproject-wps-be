@@ -32,9 +32,9 @@ public class CommentController {
             @RequestParam(value = "parentBlogId", required = false) Long parentBlogId,
             @RequestParam(value = "parentCommentId", required = false) Long parentCommentId,
             @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "startTime") String[] sort
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "startTime", required = false) String[] sort
     ) {
         var dtos = new ArrayList<CommentDto>();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());

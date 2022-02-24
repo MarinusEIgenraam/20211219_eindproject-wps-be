@@ -58,8 +58,10 @@ public class BlogService {
     //// Update
 
     public void updateBlog(Long id, Blog blog) {
-        var optionalBlog = blogRepository.findById(blog.getBlogId());
+        var optionalBlog = blogRepository.findById(id);
         if (optionalBlog.isPresent()) {
+            blog.setBlogOwner(userService.getCurrentUser());
+            blog.setBlogId(id);
             blogRepository.save(blog);
         } else {
             throw new RecordNotFoundException("Blog does not exist");

@@ -66,14 +66,18 @@ public class ProfileImageService {
         }
 
         ProfileImage newProfileImage = new ProfileImage();
+        if (optionalPortal.isPresent()) {
+            Portal portal = optionalPortal.get();
+            var optionalProfileImage = profileImageRepository.findByPortal(portal);
+            if (optionalProfileImage.isPresent()) {
+             newProfileImage = optionalProfileImage.get();
+            }
+        }
+
         newProfileImage.setFileName(originalFilename);
         newProfileImage.setLocation(originalFilename);
         newProfileImage.setTitle("profileImage");
-
-        if (optionalPortal.isPresent()) {
-            Portal portal = optionalPortal.get();
-            newProfileImage.setPortal(portal);
-        }
+        newProfileImage.setUploadedBy(currentUser.getUsername());
 
         ProfileImage saved = profileImageRepository.save(newProfileImage);
 

@@ -33,9 +33,9 @@ public class ProjectController {
 
     @GetMapping("/all")
     public Page<ProjectDto> getAllProjects(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "id,projectName") String[] sort) {
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "id,projectName", required = false) String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         var dtos = new ArrayList<ProjectDto>();
         List<Project> projects;
@@ -55,25 +55,23 @@ public class ProjectController {
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "collaborator", required = false) String collaborator,
             @RequestParam(value = "projectOwner", required = false) String projectOwner,
-            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "number", defaultValue = "0") int number,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "id,startTime") String[] sort
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "id,startTime", required = false) String[] sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         List<Project> projects;
         var dtos = new ArrayList<ProjectDto>();
 
-        if (categoryId == null && projectOwner == null && collaborator == null) {
-            projects = projectService.getAllProjects(pageable);
-        } else if (categoryId != null && projectOwner == null && collaborator == null) {
+        if (categoryId != null && projectOwner == null && collaborator == null) {
             projects = projectService.getProjectsForCategory(categoryId, pageable);
         } else if (categoryId == null && projectOwner != null && collaborator == null) {
             projects = projectService.getProjectsForProjectOwner(projectOwner, pageable);
         } else if (categoryId == null && projectOwner == null && collaborator != null) {
             projects = projectService.getProjectsForProjectCollaborator(collaborator, pageable);
         } else {
-            throw new BadRequestException();
+            projects = projectService.getAllProjects(pageable);
         }
 
         for (Project project : projects) {

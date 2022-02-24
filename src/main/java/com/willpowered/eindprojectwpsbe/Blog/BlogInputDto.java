@@ -19,7 +19,6 @@ public class BlogInputDto {
     public Blog toBlog() {
         var blog = new Blog();
 
-        blog.setBlogId(blogId);
         blog.setBlogName(blogName);
         blog.setUrl(url);
         blog.setImageUrl(imageUrl);

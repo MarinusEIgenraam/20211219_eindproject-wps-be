@@ -147,121 +147,121 @@ VALUES ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. E
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser'),
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin'),
        ('6/6/2021', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, voluptatum.', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consequatur cumque deserunt ex fuga ipsa
                magnam rerum sint! Aperiam architecto enim maxime nisi officiis quos rem vitae! Consequatur cupiditate
                doloremque ipsam laudantium libero temporibus.
 
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, nihil quam. Asperiores corporis esse
-               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'superuser');
+               laborum minus quaerat quidem reprehenderit tenetur.', 'www.google.com', 'https://i.imgur.com/Sdi0eAB.jpeg', 'admin');
 
 INSERT INTO tasks (description, end_time, is_running, start_time, task_name,
                    task_owner)
@@ -849,29 +849,37 @@ VALUES (1, 'user', 1),
        (1, 'user', 20),
        (1, 'superuser', 20),
        (1, 'admin', 20);
--- INSERT INTO portals (portalOwner)
--- VALUES ('user'),
---        ('superuser'),
---        ('admin'),
---        ('usermarinus'),
---        ('superusermarinus'),
---        ('adminmarinus');
--- INSERT INTO alerts (text, title)
--- VALUES ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail'),
---        ('something happend', 'you have got mail');
---
--- INSERT INTO portal_alerts (portal_id, alert_id)
--- VALUES (1, 1),
---        (2, 2),
---        (3, 3),
---        (1, 4),
---        (2, 5),
---        (3, 6);
+INSERT INTO profile_images (file_name, location, media_type, title)
+VALUES
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage'),
+    ('profileImage.jpg', 'profileImage.jpg', 'image', 'profileImage');
+INSERT INTO portals (portal_owner, profile_image)
+VALUES ('user', 1),
+       ('superuser', 2),
+       ('admin', 3),
+       ('usermarinus', 4),
+       ('superusermarinus', 5),
+       ('adminmarinus', 6);
+INSERT INTO alerts (text, title)
+VALUES ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail'),
+       ('something happend', 'you have got mail');
+INSERT INTO portal_alerts (portal_id, alert_id)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (1, 4),
+       (2, 5),
+       (3, 6);
 INSERT INTO project_collaborators (project_id, username)
 VALUES
        (1, 'user'),
