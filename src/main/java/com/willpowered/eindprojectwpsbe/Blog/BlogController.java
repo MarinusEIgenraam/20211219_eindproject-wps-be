@@ -31,7 +31,7 @@ public class BlogController {
             @RequestParam(value = "sort", defaultValue = "startTime", required = false) String[] sort,
             @RequestParam(value = "blogOwner", required = false) String blogOwner
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
         var dtos = new ArrayList<BlogDto>();
 
         Page<Blog> blogs;

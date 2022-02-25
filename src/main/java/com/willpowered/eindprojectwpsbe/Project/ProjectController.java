@@ -58,7 +58,7 @@ public class ProjectController {
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "number", defaultValue = "0") int number,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-            @RequestParam(value = "sort", defaultValue = "id,startTime", required = false) String[] sort
+            @RequestParam(value = "sort", defaultValue = "voteCount", required = false) String[] sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         List<Project> projects;
