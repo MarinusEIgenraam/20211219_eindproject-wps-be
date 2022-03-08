@@ -29,6 +29,22 @@ public class ProfileImageController {
     @Autowired
     PortalService portalService;
 
+    //////////////////////////////
+    //// Create
+
+    @PostMapping(value = "")
+    public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) throws IOException {
+        long newId = profileImageService.uploadFile(document);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newId).toUri();
+
+        return ResponseEntity.created(location).body(location);
+    }
+
+    //////////////////////////////
+    //// Read
+
     @GetMapping("/all")
     public ResponseEntity<Object> getFiles() {
         Iterable<ProfileImage> files = profileImageService.getFiles();
@@ -59,16 +75,8 @@ public class ProfileImageController {
                 .body(resource);
     }
 
-    @PostMapping(value = "")
-    public ResponseEntity<Object> uploadFile(@RequestPart MultipartFile document) throws IOException {
-        long newId = profileImageService.uploadFile(document);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
-
-        return ResponseEntity.created(location).body(location);
-    }
-
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteFile(@PathVariable long id) {

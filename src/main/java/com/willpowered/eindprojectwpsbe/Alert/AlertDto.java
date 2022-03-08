@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Alert;
 
 import com.willpowered.eindprojectwpsbe.Portal.PortalDto;
-import lombok.Builder;
 
 import java.time.LocalDate;
 

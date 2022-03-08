@@ -17,6 +17,9 @@ public class VoteController {
     @Autowired
     private VoteService voteService;
 
+    //////////////////////////////
+    //// Create
+
     @PostMapping
     public ResponseEntity<Void> vote(@RequestBody VoteInputDto voteInputDto) {
         voteService.vote(voteInputDto);

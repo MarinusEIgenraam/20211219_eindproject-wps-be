@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
 import com.willpowered.eindprojectwpsbe.Comment.CommentService;
-import com.willpowered.eindprojectwpsbe.Exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -19,6 +18,19 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private CommentService commentService;
+
+
+    //////////////////////////////
+    //// Create
+
+    @PostMapping
+    public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
+        Project project = projectService.saveProject(dto);
+        return ProjectDto.fromProject(project);
+    }
+
+    //////////////////////////////
+    //// Read
 
     @GetMapping("/{id}")
     public ProjectDto getProject(@PathVariable("id") Long id) {
@@ -82,17 +94,17 @@ public class ProjectController {
         return pageOfProjects;
     }
 
-    @PostMapping
-    public ProjectDto saveProject(@RequestBody ProjectInputDto dto) {
-        Project project = projectService.saveProject(dto);
-        return ProjectDto.fromProject(project);
-    }
+    //////////////////////////////
+    //// Update
 
     @PutMapping("/{id}")
     public ProjectDto updateProject(@PathVariable Long id, @RequestBody Project project) {
         projectService.updateProject(id, project);
         return ProjectDto.fromProject(project);
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public void deleteProject(@PathVariable("id") Long id) {

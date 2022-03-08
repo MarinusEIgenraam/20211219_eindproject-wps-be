@@ -19,26 +19,6 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
-    @Id
-    @Column(nullable = false, unique = true)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private Boolean enabled = true;
-
-    private String email;
-
-    @OneToMany(
-            targetEntity = Authority.class,
-            mappedBy = "username",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
-    private Set<Authority> authorities = new HashSet<>();
-
     @Nullable
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -46,6 +26,21 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     Set<Project> projects = new HashSet<>();
+    @Id
+    @Column(nullable = false, unique = true)
+    private String username;
+    @Column(nullable = false)
+    private String password;
+    @Column(nullable = false)
+    private Boolean enabled = true;
+    private String email;
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
 
     public User(String username, String password, Boolean enabled, String email, Set<Authority> authorities) {
         this.username = username;

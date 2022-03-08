@@ -33,7 +33,7 @@ public class TaskInputDto {
         task.setStartTime(startTime);
         task.setEditedTime(editedTime);
         task.setEndTime(endTime);
-        task.setTaskTaskList(taskTaskList.stream().map(p-> p.toTask()).collect(Collectors.toList()));
+        task.setTaskTaskList(taskTaskList.stream().map(p -> p.toTask()).collect(Collectors.toList()));
 
         return task;
     }

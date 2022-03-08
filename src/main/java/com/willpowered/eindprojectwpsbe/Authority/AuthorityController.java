@@ -14,10 +14,8 @@ public class AuthorityController {
     @Autowired
     private AuthorityService authorityService;
 
-    @GetMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
-        return ResponseEntity.ok().body(authorityService.getAuthorities(username));
-    }
+    //////////////////////////////
+    //// Create
 
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
@@ -25,11 +23,21 @@ public class AuthorityController {
             String authorityName = (String) fields.get("authority");
             authorityService.addAuthority(username, authorityName);
             return ResponseEntity.noContent().build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new BadRequestException();
         }
     }
+
+    //////////////////////////////
+    //// Read
+
+    @GetMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(authorityService.getAuthorities(username));
+    }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {

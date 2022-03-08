@@ -10,8 +10,8 @@ public class PortalDto {
     public static PortalDto fromPortal(Portal portal) {
         var dto = new PortalDto();
 
-        dto.id= portal.getId();
-        dto.portalOwner= UserDto.fromUser(portal.getPortalOwner());
+        dto.id = portal.getId();
+        dto.portalOwner = UserDto.fromUser(portal.getPortalOwner());
 
         return dto;
     }

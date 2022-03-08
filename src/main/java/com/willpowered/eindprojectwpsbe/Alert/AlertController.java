@@ -25,7 +25,7 @@ public class AlertController {
 
     @GetMapping("")
     public Page<AlertDto> getAllAlertsForUser(
-            @RequestParam(value = "username")String username,
+            @RequestParam(value = "username") String username,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "number", defaultValue = "0") int number,
             @RequestParam(value = "size", defaultValue = "10", required = false) int size,

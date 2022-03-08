@@ -10,6 +10,7 @@ public class NotAuthorizedException extends RuntimeException implements Serializ
     public NotAuthorizedException(String message) {
         super(message);
     }
+
     public NotAuthorizedException() {
         super("Not authorized.");
     }

@@ -16,6 +16,18 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    //////////////////////////////
+    //// Create
+
+    @PostMapping
+    public CategoryDto saveCategory(@RequestBody CategoryInputDto dto) {
+        var category = categoryService.saveCategory(dto.toCategory());
+        return CategoryDto.fromCategory(category);
+    }
+
+    //////////////////////////////
+    //// Read
+
     @GetMapping("/{id}")
     public CategoryDto getCategory(@PathVariable("id") Long id) {
         var category = categoryService.getCategory(id);
@@ -34,17 +46,17 @@ public class CategoryController {
         return dtos;
     }
 
-    @PostMapping
-    public CategoryDto saveCategory(@RequestBody CategoryInputDto dto) {
-        var category = categoryService.saveCategory(dto.toCategory());
-        return CategoryDto.fromCategory(category);
-    }
+    //////////////////////////////
+    //// Update
 
     @PutMapping("/{id}")
     public CategoryDto updateCategory(@PathVariable Long id, @RequestBody CategoryInputDto dto) {
         categoryService.updateCategory(id, dto.toCategory());
         return CategoryDto.fromCategory(dto.toCategory());
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable("id") Long id) {

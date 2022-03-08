@@ -1,7 +1,6 @@
 package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 
-import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import com.willpowered.eindprojectwpsbe.Portal.PortalRepository;
@@ -31,19 +30,16 @@ import java.util.Objects;
 public class ProfileImageService {
 
     private final Path uploadDir = Paths.get("uploads/");
-
-    @Autowired
-    private ProfileImageRepository profileImageRepository;
-    @Autowired
-    private PortalRepository portalRepository;
-    @Autowired
-    private AuthenticationService authenticationService;
     @Autowired
     UserRepository userRepository;
     @Autowired
     PortalService portalService;
     @Autowired
     UserService userService;
+    @Autowired
+    private ProfileImageRepository profileImageRepository;
+    @Autowired
+    private PortalRepository portalRepository;
 
     //////////////////////////////
     //// Create
@@ -70,7 +66,7 @@ public class ProfileImageService {
             Portal portal = optionalPortal.get();
             var optionalProfileImage = profileImageRepository.findByPortal(portal);
             if (optionalProfileImage.isPresent()) {
-             newProfileImage = optionalProfileImage.get();
+                newProfileImage = optionalProfileImage.get();
             }
         }
 
@@ -99,7 +95,7 @@ public class ProfileImageService {
                     .buildAndExpand("download").toUri();
 
             ProfileImageDto profileImageDto = new ProfileImageDto();
-            profileImageDto.fromProfileImage(optionalImage.get());
+            ProfileImageDto.fromProfileImage(optionalImage.get());
             profileImageDto.downloadUri = uri.toString();
 
             return profileImageDto;
@@ -138,7 +134,7 @@ public class ProfileImageService {
                     .buildAndExpand("download").toUri();
 
             ProfileImageDto profileImageDto = new ProfileImageDto();
-            profileImageDto.fromProfileImage(optionalImage.get());
+            ProfileImageDto.fromProfileImage(optionalImage.get());
             profileImageDto.downloadUri = uri.toString();
 
             return profileImageDto;

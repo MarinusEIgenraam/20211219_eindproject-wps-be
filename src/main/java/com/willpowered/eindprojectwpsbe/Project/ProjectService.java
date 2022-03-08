@@ -3,7 +3,6 @@ package com.willpowered.eindprojectwpsbe.Project;
 import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Category.Category;
 import com.willpowered.eindprojectwpsbe.Category.CategoryRepository;
-import com.willpowered.eindprojectwpsbe.Comment.CommentRepository;
 import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
 import com.willpowered.eindprojectwpsbe.Task.Task;
 import com.willpowered.eindprojectwpsbe.Task.TaskInputDto;
@@ -39,8 +38,6 @@ public class ProjectService {
     private CategoryRepository categoryRepository;
     @Autowired
     private AuthenticationService authenticationService;
-    @Autowired
-    private CommentRepository commentRepository;
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -129,7 +126,7 @@ public class ProjectService {
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
             User currentUser = null;
-            if (authentication != null){
+            if (authentication != null) {
                 currentUser = userService.getCurrentUser();
             }
             return projectRepository.findAllByCategory(categoryId, currentUser, pageable);
@@ -157,10 +154,10 @@ public class ProjectService {
         if (optionalUser.isPresent()) {
             User collaborator = optionalUser.get();
             User currentUser = null;
-            if (authentication != null){
+            if (authentication != null) {
                 currentUser = userService.getCurrentUser();
             }
-            return projectRepository.findAllByCollaborators(collaborator, currentUser,pageable);
+            return projectRepository.findAllByCollaborators(collaborator, currentUser, pageable);
         } else {
             throw new RecordNotFoundException("No user found");
         }

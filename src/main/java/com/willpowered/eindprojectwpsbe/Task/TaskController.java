@@ -16,6 +16,18 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+
+    //////////////////////////////
+    //// Create
+
+    @PostMapping
+    public TaskDto saveTask(@RequestBody TaskInputDto dto) {
+        return TaskDto.fromTask(taskService.saveTask(dto));
+    }
+
+    //////////////////////////////
+    //// Read
+
     @GetMapping("/{id}")
     public TaskDto getTask(@PathVariable("id") Long id) {
         var task = taskService.getTask(id);
@@ -34,7 +46,6 @@ public class TaskController {
         return dtos;
     }
 
-
     @GetMapping
     public List<TaskDto> getTasks(
             @RequestParam(value = "parentProjectId", required = false) Long parentProjectId,
@@ -46,7 +57,7 @@ public class TaskController {
         List<Task> tasks;
         if (parentProjectId != null && parentTaskId == null && taskOwner == null) {
             tasks = taskService.getTasksForParentProject(parentProjectId);
-        } else if  (parentProjectId == null && parentTaskId != null && taskOwner == null) {
+        } else if (parentProjectId == null && parentTaskId != null && taskOwner == null) {
             tasks = taskService.getTasksForParentTask(parentTaskId);
         } else if (parentProjectId == null && parentTaskId == null && taskOwner != null) {
             tasks = taskService.getTasksForTaskOwner(taskOwner);
@@ -61,22 +72,17 @@ public class TaskController {
         return dtos;
     }
 
-    @PostMapping
-    public TaskDto saveTask(@RequestBody TaskInputDto dto) {
-        return TaskDto.fromTask(taskService.saveTask(dto));
-    }
-
-//    @PutMapping("/{id}")
-//    public TaskInputDto updateTask(@PathVariable Long id, @RequestBody TaskInputDto taskInputDto) {
-//        taskService.updateTask(id, taskInputDto);
-//        return taskInputDto;
-//    }
+    //////////////////////////////
+    //// Update
 
     @PutMapping("/{id}")
     public TaskDto updateTask(@PathVariable Long id, @RequestBody Task task) {
         taskService.updateTask(id, task);
         return TaskDto.fromTask(task);
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable("id") Long id) {

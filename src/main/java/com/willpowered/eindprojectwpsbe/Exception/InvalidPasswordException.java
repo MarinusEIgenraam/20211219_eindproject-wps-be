@@ -10,6 +10,7 @@ public class InvalidPasswordException extends RuntimeException implements Serial
     public InvalidPasswordException(String message) {
         super(message);
     }
+
     public InvalidPasswordException() {
         super("Invalid password.");
     }

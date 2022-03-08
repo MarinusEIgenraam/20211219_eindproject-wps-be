@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Table(name = "authorities")
 @IdClass(AuthorityKey.class)
-public class Authority implements Serializable{
+public class Authority implements Serializable {
 
     @Id
     @Column(nullable = false)

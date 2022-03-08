@@ -15,6 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByUser(User user, Pageable pageable);
 
     List<Comment> findAllByParentProject(Project project, Pageable pageable);
+
     List<Comment> findAllByParentProject(Project project);
 
     List<Comment> findAllByParentBlog(Blog blog, Pageable pageable);
