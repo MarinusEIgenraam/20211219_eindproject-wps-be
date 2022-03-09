@@ -53,7 +53,6 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4-1206-jdbc42</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -103,6 +102,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -130,8 +131,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-
 	</build>
 
 </project>
