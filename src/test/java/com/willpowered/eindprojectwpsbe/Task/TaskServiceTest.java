@@ -130,32 +130,15 @@ class TaskServiceTest {
     //////////////////////////////
     //// Create
 
-//    @Test
-//    void saveTaskWithParentProject() {
-//        when(projectRepository.findById(any())).thenReturn(Optional.ofNullable(project));
-//        when(taskRepository.findById(any())).thenReturn(Optional.ofNullable(firstTask));
-//        when(userRepository.findById("null")).thenReturn(Optional.ofNullable(user));
-//        when(userService.getCurrentUser()).thenReturn(user);
-//        when(taskRepository.save(any())).thenReturn(firstTask);
-//        when(taskService.saveTaskData(firstTaskInputDto)).thenReturn(firstTask);
-//
-//        Task savedTask = taskService.saveTask(firstTaskInputDto);
-//
-//        verify(taskRepository, times(2)).save(any());
-//    }
-//
-//    @Test
-//    void saveTaskWithParentTask() {
-//        when(taskService.saveTaskData(secondTaskInputDto)).thenReturn(firstTask);
-//        when(taskRepository.findById(1L)).thenReturn(Optional.ofNullable(firstTask));
-//        when(userRepository.findById("null")).thenReturn(Optional.ofNullable(user));
-//        when(userService.getCurrentUser()).thenReturn(user);
-//        when(taskRepository.save(any())).thenReturn(secondTask);
-//
-//        Task savedTask = taskService.saveTask(secondTaskInputDto);
-//
-//
-//    }
+    @Test
+    void saveTaskWithParentProject() {
+
+    }
+
+    @Test
+    void saveTaskWithParentTask() {
+
+    }
 
     @Test
     void saveTaskData() {

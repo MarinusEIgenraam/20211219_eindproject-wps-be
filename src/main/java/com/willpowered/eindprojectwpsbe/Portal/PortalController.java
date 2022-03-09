@@ -14,12 +14,8 @@ public class PortalController {
     @Autowired
     private PortalService portalService;
 
-    @GetMapping("/{id}")
-    public PortalDto getPortal(@PathVariable("id") Long id) {
-        var portal = portalService.getPortal(id);
-        return PortalDto.fromPortal(portal);
-    }
-
+    //////////////////////////////
+    //// Create
 
     @PostMapping
     public PortalDto savePortal(@RequestBody PortalInputDto dto) {
@@ -27,11 +23,26 @@ public class PortalController {
         return PortalDto.fromPortal(portal);
     }
 
+    //////////////////////////////
+    //// Read
+
+    @GetMapping("/{id}")
+    public PortalDto getPortal(@PathVariable("id") Long id) {
+        var portal = portalService.getPortal(id);
+        return PortalDto.fromPortal(portal);
+    }
+
+    //////////////////////////////
+    //// Update
+
     @PutMapping("/{id}")
     public PortalDto updatePortal(@PathVariable Long id, @RequestBody Portal portal) {
         portalService.updatePortal(id, portal);
         return PortalDto.fromPortal(portal);
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public void deletePortal(@PathVariable("id") Long id) {

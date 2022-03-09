@@ -32,14 +32,15 @@ public class Blog {
     private String blogName;
 
     @Nullable
-    private String url;
-    @Nullable
-    private String imageUrl;
-
-    @Nullable
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;
+
+    @Nullable
+    private String url;
+
+    @Nullable
+    private String imageUrl;
 
     private Instant startTime;
 

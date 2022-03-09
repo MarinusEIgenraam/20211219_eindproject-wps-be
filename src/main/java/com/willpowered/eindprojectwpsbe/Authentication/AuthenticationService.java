@@ -1,7 +1,7 @@
 package com.willpowered.eindprojectwpsbe.Authentication;
 
-import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import com.willpowered.eindprojectwpsbe.Security.JwtUtil;
+import com.willpowered.eindprojectwpsbe.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,16 +21,13 @@ import java.security.Principal;
 public class AuthenticationService {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     JwtUtil jwtUtl;
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     //////////////////////////////
     //// Read
@@ -44,8 +41,7 @@ public class AuthenticationService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-        }
-        catch (BadCredentialsException ex) {
+        } catch (BadCredentialsException ex) {
             throw new UsernameNotFoundException("Incorrect username or password");
         }
 
@@ -62,8 +58,7 @@ public class AuthenticationService {
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             return authentication;
-        }
-        else {
+        } else {
             return null;
         }
     }

@@ -22,11 +22,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("SELECT p FROM Project p WHERE :collaborator MEMBER OF p.collaborators AND (:currentuser = p.projectOwner OR :currentuser MEMBER OF p.collaborators  OR p.publiclyVisible = true)")
     List<Project> findAllByCollaborators(@Param("collaborator") User collaborator,
-                                         @Param("currentuser")User currentUser, Pageable pageable);
+                                         @Param("currentuser") User currentUser, Pageable pageable);
 
     @Query(
             "SELECT p FROM Project p WHERE :category = p.category.id AND (p.publiclyVisible = true OR :user = p.projectOwner OR :user MEMBER OF p.collaborators  OR p.publiclyVisible = true)")
     List<Project> findAllByCategory(@Param("category") Long categoryId,
-                                                   @Param("user") User user, Pageable pageable);
+                                    @Param("user") User user, Pageable pageable);
 
 }

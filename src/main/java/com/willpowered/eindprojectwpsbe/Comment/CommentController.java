@@ -20,6 +20,17 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    //////////////////////////////
+    //// Create
+
+    @PostMapping
+    public CommentDto saveComment(@RequestBody CommentInputDto dto) {
+        return CommentDto.fromComment(commentService.saveComment(dto));
+    }
+
+    //////////////////////////////
+    //// Read
+
     @GetMapping("/{id}")
     public CommentDto getComment(@PathVariable("id") Long id) {
         var comment = commentService.getComment(id);
@@ -42,11 +53,11 @@ public class CommentController {
         List<Comment> comments;
         if (parentProjectId != null && parentCommentId == null && parentBlogId == null && username == null) {
             comments = commentService.getCommentsForParentProject(parentProjectId, pageable);
-        } else if  (parentProjectId == null && parentCommentId != null && parentBlogId == null && username == null) {
+        } else if (parentProjectId == null && parentCommentId != null && parentBlogId == null && username == null) {
             comments = commentService.getCommentsForParentComment(parentCommentId, pageable);
         } else if (parentProjectId == null && parentCommentId == null && parentBlogId != null && username == null) {
             comments = commentService.getCommentsForParentBlog(parentBlogId, pageable);
-        }else if (parentProjectId == null && parentCommentId == null && parentBlogId == null && username != null) {
+        } else if (parentProjectId == null && parentCommentId == null && parentBlogId == null && username != null) {
             comments = commentService.getCommentsForUser(username, pageable);
         } else {
             throw new BadRequestException();
@@ -61,16 +72,17 @@ public class CommentController {
         return pageOfComments;
     }
 
-    @PostMapping
-    public CommentDto saveComment(@RequestBody CommentInputDto dto) {
-        return CommentDto.fromComment(commentService.saveComment(dto));
-    }
+    //////////////////////////////
+    //// Update
 
     @PutMapping("/{id}")
     public CommentDto updateComment(@PathVariable Long id, @RequestBody Comment comment) {
         commentService.updateComment(id, comment);
         return CommentDto.fromComment(comment);
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable("id") Long id) {

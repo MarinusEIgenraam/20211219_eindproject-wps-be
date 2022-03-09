@@ -10,6 +10,7 @@ public class UserNotFoundException extends RuntimeException implements Serializa
     public UserNotFoundException(String username) {
         super("Cannot find user " + username);
     }
+
     public UserNotFoundException() {
         super("User not found.");
     }

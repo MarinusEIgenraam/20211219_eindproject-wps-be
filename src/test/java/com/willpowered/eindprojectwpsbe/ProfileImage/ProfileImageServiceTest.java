@@ -127,16 +127,10 @@ class ProfileImageServiceTest {
         verify(profileImageRepository, times(1)).delete(profileImage);
 
     }
-//
-//    @Test
-//    void getFileByPortal() {
-//        when(profileImageRepository.findByPortal(portal)).thenReturn(Optional.ofNullable(profileImage));
-//
-//        var profileImageDto = profileImageService.getFileByPortal(portal);
-//
-//        verify(profileImageRepository, times(1)).findByPortal(portal);
-//        assertThat(profileImageDto.fileName).isEqualTo(profileImage.getFileName());
-//    }
+
+    @Test
+    void getFileByPortal() {
+}
 
     @Test
     void downloadFile() {
@@ -150,14 +144,9 @@ class ProfileImageServiceTest {
         verify(profileImageRepository, times(1)).findByPortal(portal);
     }
 
-//    @Test
-//    void getFileById() {
-//        when(profileImageRepository.findById(1L)).thenReturn(Optional.ofNullable(profileImage));
-//
-//        profileImageService.getFileById(1L);
-//
-//        verify(profileImageRepository, times(1)).findById(1L);
-//    }
+    @Test
+    void getFileById() {
+}
 
     @Test
     void fileExistsById() {

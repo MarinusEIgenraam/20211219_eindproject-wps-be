@@ -27,11 +27,11 @@ import java.util.List;
 public class TaskService {
 
     @Autowired
+    ProjectRepository projectRepository;
+    @Autowired
     private TaskRepository taskRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    ProjectRepository projectRepository;
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
@@ -137,7 +137,7 @@ public class TaskService {
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
             User currentUser = null;
-            if (authentication != null){
+            if (authentication != null) {
                 currentUser = userService.getCurrentUser();
             }
             return taskRepository.findAllByParentProject(project, currentUser);
@@ -153,7 +153,7 @@ public class TaskService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             User currentUser = null;
-            if (authentication != null){
+            if (authentication != null) {
                 currentUser = userService.getCurrentUser();
             }
             return taskRepository.findAllByTaskOwner(user, currentUser);
@@ -169,7 +169,7 @@ public class TaskService {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             User currentUser = null;
-            if (authentication != null){
+            if (authentication != null) {
                 currentUser = userService.getCurrentUser();
             }
             return taskRepository.findAllByParentTask(task, currentUser);

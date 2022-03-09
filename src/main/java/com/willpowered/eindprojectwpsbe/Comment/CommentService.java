@@ -2,7 +2,6 @@ package com.willpowered.eindprojectwpsbe.Comment;
 
 
 import com.willpowered.eindprojectwpsbe.Alert.AlertService;
-import com.willpowered.eindprojectwpsbe.Authentication.AuthenticationService;
 import com.willpowered.eindprojectwpsbe.Blog.Blog;
 import com.willpowered.eindprojectwpsbe.Blog.BlogRepository;
 import com.willpowered.eindprojectwpsbe.Exception.RecordNotFoundException;
@@ -24,6 +23,8 @@ public class CommentService {
 
 
     @Autowired
+    UserService userService;
+    @Autowired
     private ProjectRepository projectRepository;
     @Autowired
     private UserRepository userRepository;
@@ -33,8 +34,6 @@ public class CommentService {
     private CommentRepository commentRepository;
     @Autowired
     private AlertService alertService;
-    @Autowired
-    UserService userService;
 
     //////////////////////////////
     //// Create

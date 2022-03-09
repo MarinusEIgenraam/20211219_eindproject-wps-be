@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +15,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //////////////////////////////
+    //// Read
+
     @GetMapping(value = "/{username}")
     public UserDto getUser(@PathVariable("username") String username) {
         var user = userService.getUser(username);
@@ -26,11 +27,11 @@ public class UserController {
 
     @GetMapping
     public Page<UserDto> getUsers(
-                    @RequestParam(value = "authority", required = false) String authority,
-                    @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                    @RequestParam(value = "size", defaultValue = "10", required = false) int size,
-                    @RequestParam(value = "sort", defaultValue = "authority,username", required = false) String[] sort
-    ){
+            @RequestParam(value = "authority", required = false) String authority,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @RequestParam(value = "sort", defaultValue = "authority,username", required = false) String[] sort
+    ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         List<User> users;
         Page<UserDto> userDtoPage;
@@ -50,6 +51,9 @@ public class UserController {
         return pageOfUsers;
     }
 
+    //////////////////////////////
+    //// Update
+
     @PutMapping(value = "/{username}")
     public ResponseEntity<Object> updateUser(@PathVariable("username") String username, @RequestBody User user) {
         userService.updateUser(username, user);
@@ -61,6 +65,9 @@ public class UserController {
         userService.setPassword(passwordInputDto);
         return ResponseEntity.noContent().build();
     }
+
+    //////////////////////////////
+    //// Delete
 
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {

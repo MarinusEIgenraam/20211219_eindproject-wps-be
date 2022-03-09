@@ -1,30 +1,11 @@
 package com.willpowered.eindprojectwpsbe.Project;
 
-import com.sun.istack.Nullable;
 import com.willpowered.eindprojectwpsbe.Category.CategoryDto;
 import com.willpowered.eindprojectwpsbe.User.UserDto;
 
-import java.time.LocalDate;
 
+public class ParentProjectDto extends ProjectDto {
 
-public class ParentProjectDto {
-
-    @Nullable
-    public Long projectId;
-    public String projectName;
-    public String url;
-    public String imageUrl;
-    public String description;
-    public LocalDate startTime;
-    @Nullable
-    public LocalDate editedTime;
-    public LocalDate endTime;
-    public Integer voteCount;
-    public Boolean isRunning;
-    public Boolean publiclyVisible;
-    public CategoryDto category;
-    public UserDto projectOwner;
-    public Integer commentCount;
 
     public static ParentProjectDto fromParentProject(Project project) {
 

@@ -107,13 +107,6 @@ class UserServiceTest {
 
     @Test
     void getUsersByRole() {
-//        List<User> userList = new ArrayList<>();
-//        userList.add(firstUser);
-//        when(userRepository.findByAuthoritiesContains(userAuthority.getAuthority(), pageable)).thenReturn(userList);
-//
-//        List<User> foundUsers = userService.getUsersByRole("ROLE_USER", pageable);
-//
-//        assertThat(foundUsers.get(0).getAuthorities().stream().map(p -> p.getAuthority().equals("ROLE_USER")));
     }
 
     @Test
@@ -182,23 +175,6 @@ class UserServiceTest {
 
     @Test
     void setPassword() {
-//        String username = "firstUser";
-//        String password = "password";
-//        String encodedPassword = passwordEncoder.encode(password);
-//        Authentication authentication = Mockito.mock(Authentication.class);
-//        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-//
-//        when(userRepository.findById(firstUser.getUsername())).thenReturn(Optional.ofNullable(firstUser));
-//        when(userRepository.save(firstUser)).thenReturn(firstUser);
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//
-//        asserThat(userService.setPassword(username, password).assertThrows
-//            assertThrows(RecordNotFoundException.class, () -> machineService.getMachine(null));
-//        }
-//
-//        verify(userRepository).save(firstUser);
-//        assertThat(createdUserUsername).isSameAs(repoCreated.getUsername());
     }
 
     @Test

@@ -2,14 +2,10 @@ package com.willpowered.eindprojectwpsbe.ProfileImage;
 
 import com.willpowered.eindprojectwpsbe.Portal.Portal;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Date;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @Setter

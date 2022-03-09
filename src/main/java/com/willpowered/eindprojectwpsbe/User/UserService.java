@@ -24,15 +24,15 @@ import java.util.List;
 public class UserService {
 
     @Autowired
+    ProfileImageRepository profileImageRepository;
+    @Autowired
+    PortalRepository portalRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthorityRepository authorityRepository;
-    @Autowired
-    ProfileImageRepository profileImageRepository;
-    @Autowired
-    PortalRepository portalRepository;
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -89,8 +89,7 @@ public class UserService {
             userPortal.setPortalOwner(newUser);
             portalRepository.save(userPortal);
             return newUser.getUsername();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new BadRequestException("Cannot create user.");
         }
 
@@ -191,8 +190,7 @@ public class UserService {
         long countUpper = password.chars().filter(ch -> ch >= 'A' && ch <= 'Z').count();
         long countSpecial = password.chars().filter(ch -> SPECIAL_CHARS.indexOf(ch) >= 0).count();
 
-        boolean validPassword = true;
-        if (password.length() < MIN_LENGTH) validPassword = false;
+        boolean validPassword = password.length() >= MIN_LENGTH;
         if (countLower < MIN_LOWER) validPassword = false;
         if (countUpper < MIN_UPPER) validPassword = false;
         if (countDigit < MIN_DIGITS) validPassword = false;

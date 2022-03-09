@@ -20,12 +20,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query(
             "SELECT t FROM Task t WHERE :taskOwner = t.taskOwner AND (t.taskOwner = :user OR t.parentProject.projectOwner = :user OR t.parentProject.publiclyVisible = true OR :user MEMBER OF t.parentProject.collaborators)")
-    List<Task> findAllByTaskOwner(@Param("taskOwner")User taskOwner,
-                                      @Param("user")User user);
+    List<Task> findAllByTaskOwner(@Param("taskOwner") User taskOwner,
+                                  @Param("user") User user);
 
     @Query(
             "SELECT t FROM Task t WHERE :task = t.parentTask AND (t.taskOwner = :user OR t.parentProject.projectOwner = :user OR t.parentProject.publiclyVisible = true OR :user MEMBER OF t.parentProject.collaborators)")
-    List<Task> findAllByParentTask(@Param("task")Task task,
-                                      @Param("user")User user);
+    List<Task> findAllByParentTask(@Param("task") Task task,
+                                   @Param("user") User user);
 
 }

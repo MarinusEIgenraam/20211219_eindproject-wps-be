@@ -18,10 +18,9 @@ import java.util.List;
 public class PortalService {
 
     @Autowired
-    private PortalRepository portalRepository;
-
-    @Autowired
     UserService userService;
+    @Autowired
+    private PortalRepository portalRepository;
 
     //////////////////////////////
     //// Create
@@ -43,7 +42,7 @@ public class PortalService {
     public Portal getPortal(Long id) {
         var portal = portalRepository.findById(id);
 
-        if(portal.isPresent()) {
+        if (portal.isPresent()) {
             return portal.get();
         } else {
             throw new RecordNotFoundException("Portal does not exist");

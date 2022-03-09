@@ -1,6 +1,5 @@
 package com.willpowered.eindprojectwpsbe.Authentication;
 
-import com.willpowered.eindprojectwpsbe.User.UserInputDto;
 import com.willpowered.eindprojectwpsbe.User.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -55,8 +55,8 @@ public class Comment {
     @ManyToOne
     @JoinTable(
             name = "comment_comments",
-            joinColumns = @JoinColumn(name = "comment_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name = "parent_comment_id", referencedColumnName="id"))
+            joinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "parent_comment_id", referencedColumnName = "id"))
     @JsonBackReference("comment_comments")
     private Comment parentComment;
 
